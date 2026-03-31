@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Cyril — Training Program</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Coach">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <meta name="theme-color" content="#f4511e">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0f;
+    --card: #1a1a1c;
+    --card2: #222224;
+    --accent: #f4511e;
+    --accent2: #ff7043;
+    --green: #00e676;
+    --yellow: #ffd740;
+    --blue: #40c4ff;
+    --purple: #b388ff;
+    --text: #f0f0f0;
+    --muted: #888;
+    --border: #2a2a2d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #1a0a06 0%, #0e0e0f 60%);
+    border-bottom: 2px solid var(--accent);
+    padding: 20px 16px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .title-block h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .title-block h1 span { color: var(--accent); }
+
+  .title-block p {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .week-toggle {
+    display: flex;
+    gap: 6px;
+  }
+
+  .week-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .week-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* SESSION TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tab.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(244,81,30,0.1);
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .session { display: none; }
+  .session.active { display: block; }
+
+  /* SESSION HEADER */
+  .session-header {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+
+  .session-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+
+  .session-header h2 span { color: var(--accent); }
+
+  .session-goal {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .session-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .badge-time { background: rgba(64,196,255,0.15); color: var(--blue); }
+  .badge-intensity { background: rgba(255,215,64,0.15); color: var(--yellow); }
+  .badge-focus { background: rgba(179,136,255,0.15); color: var(--purple); }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 14px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .section-label span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* EXERCISE CARDS */
+  .exercise {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .exercise:active { border-color: var(--accent); }
+
+  .ex-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .ex-body { flex: 1; min-width: 0; }
+
+  .ex-name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ex-sets {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .ex-sets strong {
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .ex-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .yt-btn {
+    flex-shrink: 0;
+    background: rgba(255,0,0,0.12);
+    border: 1px solid rgba(255,0,0,0.25);
+    color: #ff4444;
+    text-decoration: none;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .yt-btn:active {
+    background: rgba(255,0,0,0.25);
+    transform: scale(0.95);
+  }
+
+  /* SUPERSET */
+  .superset-group {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .superset-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.03);
+    padding: 5px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .superset-group .exercise {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .superset-group .exercise:last-child {
+    border-bottom: none;
+  }
+
+  /* IF FLARES */
+  .flare-box {
+    background: rgba(244,81,30,0.06);
+    border: 1px solid rgba(244,81,30,0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .flare-box-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .flare-item {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.5;
+    padding: 2px 0;
+  }
+
+  .flare-item strong { color: var(--text); }
+
+  /* PREHAB BOX */
+  .prehab-box {
+    background: rgba(0,230,118,0.06);
+    border: 1px solid rgba(0,230,118,0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .prehab-box-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+
+  /* WEEK PROGRESS */
+  .week-progression {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .week-progression h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .prog-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .prog-item:last-child { border-bottom: none; }
+
+  .prog-weeks {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--accent);
+    min-width: 60px;
+    flex-shrink: 0;
+  }
+
+  .prog-desc { color: #bbb; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 4px 12px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    gap: 3px;
+  }
+
+  .nav-btn .nav-icon { font-size: 20px; }
+  .nav-btn.active { color: var(--accent); }
+
+  /* OVERVIEW TAB */
+  .overview-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .overview-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  .day-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .day-row:last-child { border-bottom: none; }
+
+  .day-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 30px;
+    color: var(--muted);
+  }
+
+  .day-name { font-weight: 600; }
+  .day-detail { color: var(--muted); font-size: 12px; margin-top: 1px; }
+
+  .injury-row {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: flex-start;
+  }
+
+  .injury-row:last-child { border-bottom: none; }
+  .injury-name { font-weight: 600; min-width: 120px; flex-shrink: 0; }
+  .injury-status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-green { background: rgba(0,230,118,0.15); color: var(--green); }
+  .status-yellow { background: rgba(255,215,64,0.15); color: var(--yellow); }
+  .status-orange { background: rgba(255,112,67,0.15); color: #ff7043; }
+
+  /* Weeks progression content */
+  .prog-content { display: none; }
+  .prog-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="title-block">
+      <h1>CYRIL <span>///</span> PROGRAM</h1>
+      <p>4-Week Hypertrophy Block — Upper/Lower</p>
+    </div>
+    <div class="week-toggle">
+      <button class="week-btn active" onclick="setWeek(1)">WK 1–2</button>
+      <button class="week-btn" onclick="setWeek(2)">WK 3–4</button>
+    </div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="showTab('overview', this)">Overview</button>
+    <button class="tab" onclick="showTab('upperA', this)">Upper A</button>
+    <button class="tab" onclick="showTab('lowerA', this)">Lower A</button>
+    <button class="tab" onclick="showTab('upperB', this)">Upper B</button>
+    <button class="tab" onclick="showTab('lowerB', this)">Lower B</button>
+  </div>
+</header>
+
+<div class="content">
+
+  <!-- ===== OVERVIEW ===== -->
+  <div class="session active" id="session-overview">
+
+    <div class="overview-card">
+      <h3>📅 Weekly Structure</h3>
+      <div class="day-row">
+        <div class="day-label">D1</div>
+        <div>
+          <div class="day-name">Upper A — Push emphasis</div>
+          <div class="day-detail">Chest · Shoulders · Triceps · Back</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-label">D2</div>
+        <div>
+          <div class="day-name">Lower A — Quad/Glute</div>
+          <div class="day-detail">Belt squat · RDL · Split squat · Hip prehab</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-label">D3</div>
+        <div>
+          <div class="day-name">Rest / Shadowboxing at home</div>
+          <div class="day-detail">10–15 min technique, footwork — no power</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-label">D4</div>
+        <div>
+          <div class="day-name">Upper B — Pull emphasis</div>
+          <div class="day-detail">Back · Biceps · Rear delt · Chest accessory</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-label">D5</div>
+        <div>
+          <div class="day-name">Lower B — Posterior chain</div>
+          <div class="day-detail">Hip thrust · Hinge · Abduction · Conditioning</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-label">D6–7</div>
+        <div>
+          <div class="day-name">Rest · Shadowboxing · Mobility</div>
+          <div class="day-detail">Hip mobility block 3–5×/week at home</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <h3>📈 Progression</h3>
+      <div class="prog-item">
+        <div class="prog-weeks">WK 1–2</div>
+        <div class="prog-desc">Establish movements. 4 sets main lifts. 2–3 RIR. Learn the sessions.</div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-weeks">WK 3–4</div>
+        <div class="prog-desc">Add 1 set to main lifts if recovery good. Tighten to 1–2 RIR. Push closer to failure.</div>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <h3>⚠️ Injury Status</h3>
+      <div class="injury-row">
+        <div class="injury-name">TFCC Wrist (R)</div>
+        <div><span class="injury-status status-green">Green 0–2/10</span></div>
+      </div>
+      <div class="injury-row">
+        <div class="injury-name">Patellar Tendon</div>
+        <div><span class="injury-status status-yellow">Manage Volume</span></div>
+      </div>
+      <div class="injury-row">
+        <div class="injury-name">Golfer's Elbow</div>
+        <div><span class="injury-status status-yellow">Intermittent</span></div>
+      </div>
+      <div class="injury-row">
+        <div class="injury-name">Left Shoulder</div>
+        <div><span class="injury-status status-orange">No Machine Press</span></div>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <h3>🥊 Muay Thai Return</h3>
+      <div class="prog-item">
+        <div class="prog-weeks">NOW</div>
+        <div class="prog-desc">Shadowboxing at home 3×/week. Note next-day wrist/shoulder response (0–10).</div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-weeks">WK 3–5</div>
+        <div class="prog-desc">Light bag rounds if wrist/shoulder green. 6×2 min, easy. Straight punches first.</div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-weeks">WK 6–8</div>
+        <div class="prog-desc">Return to class. Lower intensity. Limit high kicks if hip/knee not ready.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== UPPER A ===== -->
+  <div class="session" id="session-upperA">
+
+    <div class="session-header">
+      <h2>Upper A — <span>Push Focus</span></h2>
+      <div class="session-goal">Build chest & shoulder volume. Protect left shoulder and right wrist.</div>
+      <div class="session-meta">
+        <span class="badge badge-time">⏱ 55–65 min</span>
+        <span class="badge badge-intensity" id="upperA-intensity">★ 2–3 RIR</span>
+        <span class="badge badge-focus">🎯 Chest · Shoulder · Back</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Warm-up · 7 min</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">🩹</div>
+        <div class="ex-body">
+          <div class="ex-name">Band Pull-Aparts</div>
+          <div class="ex-sets"><strong>2 × 15</strong> · Light band</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=band+pull+apart+shoulder+warm+up" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🔄</div>
+        <div class="ex-body">
+          <div class="ex-name">Shoulder CARs</div>
+          <div class="ex-sets"><strong>5 slow circles</strong> · Each arm</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=shoulder+CARs+controlled+articular+rotation" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🌀</div>
+        <div class="ex-body">
+          <div class="ex-name">Thoracic Rotation (Quadruped)</div>
+          <div class="ex-sets"><strong>5 each side</strong></div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=thoracic+rotation+quadruped+mobility" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Main Lifts</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">💪</div>
+        <div class="ex-body">
+          <div class="ex-name">DB Incline Press (Neutral Grip)</div>
+          <div class="ex-sets" id="upperA-main1"><strong>4 × 8–10</strong> · 2–3 RIR · Rest 2 min</div>
+          <div class="ex-note">Neutral or angled grip — no wrist extension. Wrist wrap ok.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+neutral+grip+form" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🔙</div>
+        <div class="ex-body">
+          <div class="ex-name">Chest-Supported Row (Neutral)</div>
+          <div class="ex-sets" id="upperA-main2"><strong>4 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
+          <div class="ex-note">Neutral grip. Straps recommended once you get them.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+neutral+grip+form" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Accessories — Superset A then B</span></div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset A — Rest 60s between rounds</div>
+        <div class="exercise">
+          <div class="ex-icon">📡</div>
+          <div class="ex-body">
+            <div class="ex-name">Landmine Press</div>
+            <div class="ex-sets"><strong>3 × 10–12</strong></div>
+            <div class="ex-note">Plan B: Cable chest press or DB flat press</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=landmine+press+technique+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">⬇️</div>
+          <div class="ex-body">
+            <div class="ex-name">Neutral-Grip Lat Pulldown</div>
+            <div class="ex-sets"><strong>3 × 10–12</strong></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown+form" target="_blank">▶</a>
+        </div>
+      </div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset B — Rest 60s between rounds</div>
+        <div class="exercise">
+          <div class="ex-icon">💥</div>
+          <div class="ex-body">
+            <div class="ex-name">Rope Triceps Pressdown</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong></div>
+            <div class="ex-note">Plan B: Overhead cable extension</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=rope+triceps+pressdown+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🔨</div>
+          <div class="ex-body">
+            <div class="ex-name">Hammer Curl</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong> · Light–moderate</div>
+            <div class="ex-note">Plan B: Cable curl with rope handle (easier on elbow)</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=hammer+curl+form+technique" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Cool-down · Wrist Prehab (Ambrose) · 5 min</span></div>
+      <div class="prehab-box">
+        <div class="prehab-box-title">🩺 TFCC Rehab — Light DB or Band</div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">1. Wrist Flexion</div><div class="ex-sets"><strong>3 × 12</strong> · Curl wrist up from neutral</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=wrist+flexion+exercise+TFCC+rehab" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">2. Wrist Extension</div><div class="ex-sets"><strong>3 × 12</strong> · Pain-free range only</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=wrist+extension+exercise+rehab" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">3. Pronation</div><div class="ex-sets"><strong>3 × 12</strong> · Rotate palm down, light hammer</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=forearm+pronation+supination+exercise+dumbbell" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">4. Supination</div><div class="ex-sets"><strong>3 × 12</strong> · Rotate palm up</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=forearm+pronation+supination+exercise+dumbbell" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>If it flares</span></div>
+      <div class="flare-box">
+        <div class="flare-box-title">⚡ Substitutions</div>
+        <div class="flare-item"><strong>Left shoulder:</strong> DB Incline → Landmine Press · Cable press → cable crossover (low-to-high)</div>
+        <div class="flare-item"><strong>Right wrist:</strong> Add wrist wrap on pressing · Hammer curl → cable curl with rope</div>
+        <div class="flare-item"><strong>Golfer's elbow:</strong> Cut hammer curl to 2 sets · Switch to rope handle cable curl</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== LOWER A ===== -->
+  <div class="session" id="session-lowerA">
+
+    <div class="session-header">
+      <h2>Lower A — <span>Quad / Glute</span></h2>
+      <div class="session-goal">Build quad and glute volume with controlled tempo. Protect knee with volume management.</div>
+      <div class="session-meta">
+        <span class="badge badge-time">⏱ 55–65 min</span>
+        <span class="badge badge-intensity" id="lowerA-intensity">★ 2–3 RIR</span>
+        <span class="badge badge-focus">🎯 Quad · Glute · Hamstring</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Warm-up · Hip Prehab (Ambrose) · 7 min</span></div>
+      <div class="prehab-box">
+        <div class="prehab-box-title">🩺 Hip Control Protocol</div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">Banded Marching</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+marching+hip+activation+glute" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">Banded Kick-Outs (Supine Tabletop)</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+kick+outs+supine+tabletop+hip+activation" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">Seated Hip Int/Ext Rotation (Ball)</div><div class="ex-sets"><strong>2 × 10</strong> each direction</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+hip+internal+external+rotation+exercise" target="_blank">▶</a>
+        </div>
+        <div class="exercise" style="background:transparent;border:none;padding:8px 0;margin:0">
+          <div class="ex-body"><div class="ex-name" style="font-size:13px">Lateral Hip Abduction (Cable/Band)</div><div class="ex-sets"><strong>2 × 12</strong> each side · Foot slightly inward</div></div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+hip+abduction+standing+form" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Main Lifts</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">🦵</div>
+        <div class="ex-body">
+          <div class="ex-name">Belt Squat</div>
+          <div class="ex-sets" id="lowerA-main1"><strong>4 × 8–10</strong> · 2–3 RIR · Rest 2 min</div>
+          <div class="ex-note">3-sec lowering. Stop just before knee discomfort. Best choice for long femurs + knee health. Plan B: Hack squat → Leg press.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form+technique" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🏋️</div>
+        <div class="ex-body">
+          <div class="ex-name">Romanian Deadlift</div>
+          <div class="ex-sets" id="lowerA-main2"><strong>4 × 8–10</strong> · 2–3 RIR · Rest 2 min</div>
+          <div class="ex-note">Hip hinge, neutral spine. Straps once you have them.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+hip+hinge" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Accessories — Superset A then B</span></div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset A</div>
+        <div class="exercise">
+          <div class="ex-icon">🦵</div>
+          <div class="ex-body">
+            <div class="ex-name">Bulgarian Split Squat</div>
+            <div class="ex-sets"><strong>3 × 10</strong> each · BW or light DB</div>
+            <div class="ex-note">Vertical shin bias. Slow and controlled. No forward lean.</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+vertical+shin+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🔄</div>
+          <div class="ex-body">
+            <div class="ex-name">Lying or Seated Ham Curl</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+machine+form" target="_blank">▶</a>
+        </div>
+      </div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset B</div>
+        <div class="exercise">
+          <div class="ex-icon">🦶</div>
+          <div class="ex-body">
+            <div class="ex-name">Seated Calf Raise</div>
+            <div class="ex-sets"><strong>3 × 15–20</strong></div>
+            <div class="ex-note">Plan B: Standing or leg press calf</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+calf+raise+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🏔️</div>
+          <div class="ex-body">
+            <div class="ex-name">Copenhagen Side Plank (Short Lever)</div>
+            <div class="ex-sets"><strong>2 × 20s</strong> each side</div>
+            <div class="ex-note">Scale down if too hard. Key for hip health + Muay Thai.</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=copenhagen+side+plank+short+lever+adductor" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>If it flares</span></div>
+      <div class="flare-box">
+        <div class="flare-box-title">⚡ Substitutions</div>
+        <div class="flare-item"><strong>Knee:</strong> Belt squat → hack squat → leg press (pain-free ROM only) · Drop split squat → low-box step-up · Cut quad volume by 1 set · Use isometrics if really bad</div>
+        <div class="flare-item"><strong>Lower back:</strong> RDL → hip thrust or ham curl</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== UPPER B ===== -->
+  <div class="session" id="session-upperB">
+
+    <div class="session-header">
+      <h2>Upper B — <span>Pull Focus</span></h2>
+      <div class="session-goal">Back and bicep volume. Shoulder health work. Chest accessory.</div>
+      <div class="session-meta">
+        <span class="badge badge-time">⏱ 55–65 min</span>
+        <span class="badge badge-intensity" id="upperB-intensity">★ 2–3 RIR</span>
+        <span class="badge badge-focus">🎯 Back · Biceps · Rear Delt</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Warm-up · 7 min</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">🩹</div>
+        <div class="ex-body">
+          <div class="ex-name">Face Pulls or Band Pull-Aparts</div>
+          <div class="ex-sets"><strong>2 × 20</strong></div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+face+pull+form+rear+delt" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🔄</div>
+        <div class="ex-body">
+          <div class="ex-name">Shoulder Int/Ext Rotation (Light Band)</div>
+          <div class="ex-sets"><strong>10 each</strong> direction</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=shoulder+internal+external+rotation+band+warm+up" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">⬇️</div>
+        <div class="ex-body">
+          <div class="ex-name">Dead Hang (if wrist OK)</div>
+          <div class="ex-sets"><strong>20s</strong> · Skip if wrist irritated</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=dead+hang+benefits+shoulder+decompression" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Main Lifts</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">🚣</div>
+        <div class="ex-body">
+          <div class="ex-name">Cable Row (Neutral Handle)</div>
+          <div class="ex-sets" id="upperB-main1"><strong>4 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
+          <div class="ex-note">Neutral handle. Straps once available. Full scapular retraction.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+seated+row+neutral+grip+form" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">⬇️</div>
+        <div class="ex-body">
+          <div class="ex-name">Neutral-Grip Pulldown</div>
+          <div class="ex-sets" id="upperB-main2"><strong>4 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown+form+technique" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Accessories — Superset A then B</span></div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset A</div>
+        <div class="exercise">
+          <div class="ex-icon">💪</div>
+          <div class="ex-body">
+            <div class="ex-name">DB Incline Press or Cable Chest Press</div>
+            <div class="ex-sets"><strong>3 × 10–12</strong></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+chest+press+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🎯</div>
+          <div class="ex-body">
+            <div class="ex-name">Rear Delt Cable Fly / Machine</div>
+            <div class="ex-sets"><strong>3 × 15–20</strong></div>
+            <div class="ex-note">Key for shoulder health. Light, squeeze the rear delt.</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=rear+delt+cable+fly+form" target="_blank">▶</a>
+        </div>
+      </div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset B</div>
+        <div class="exercise">
+          <div class="ex-icon">💥</div>
+          <div class="ex-body">
+            <div class="ex-name">Overhead Cable Extension</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong></div>
+            <div class="ex-note">Plan B: Rope pressdown</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🔗</div>
+          <div class="ex-body">
+            <div class="ex-name">Cable Curl (Rope or Bar Handle)</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong></div>
+            <div class="ex-note">Rope handle easier on golfer's elbow than supinated bar</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+bicep+curl+form+technique" target="_blank">▶</a>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🅨</div>
+        <div class="ex-body">
+          <div class="ex-name">Y-Raise (Cable or Prone)</div>
+          <div class="ex-sets"><strong>2 × 12–15</strong></div>
+          <div class="ex-note">Lower trap activation. Key for long-term shoulder health.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=Y+raise+lower+trap+activation+form" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Cool-down · Wrist Prehab (Ambrose) · 5 min</span></div>
+      <div class="prehab-box">
+        <div class="prehab-box-title">🩺 Same as Upper A — Flexion · Extension · Pronation · Supination · 3×12 each</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>If it flares</span></div>
+      <div class="flare-box">
+        <div class="flare-box-title">⚡ Substitutions</div>
+        <div class="flare-item"><strong>Golfer's elbow:</strong> Drop cable curl to 2 sets · Rope handle only · Add wrist extensor eccentric 2×10 light</div>
+        <div class="flare-item"><strong>Left shoulder on pressing:</strong> Skip chest accessory entirely · Add extra rear delt set instead</div>
+        <div class="flare-item"><strong>Right wrist:</strong> Skip dead hang · Use straps or wrist wrap on rows</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== LOWER B ===== -->
+  <div class="session" id="session-lowerB">
+
+    <div class="session-header">
+      <h2>Lower B — <span>Posterior Chain</span></h2>
+      <div class="session-goal">Hip thrust and hinge focus. Belt squat for quad work. Hip abduction for Muay Thai. Optional light conditioning.</div>
+      <div class="session-meta">
+        <span class="badge badge-time">⏱ 55–65 min</span>
+        <span class="badge badge-intensity" id="lowerB-intensity">★ 2–3 RIR</span>
+        <span class="badge badge-focus">🎯 Glute · Hinge · Hip Abduction</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Warm-up · Hip Prehab (Ambrose) · 7 min</span></div>
+      <div class="prehab-box">
+        <div class="prehab-box-title">🩺 Same Hip Protocol as Lower A</div>
+        <div class="flare-item" style="color:#888;font-size:12px;margin-top:6px">Banded marching · Kick-outs · Seated hip rotation · Lateral abduction — 2 rounds</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Main Lifts</span></div>
+
+      <div class="exercise">
+        <div class="ex-icon">🍑</div>
+        <div class="ex-body">
+          <div class="ex-name">Hip Thrust (Barbell or Machine)</div>
+          <div class="ex-sets" id="lowerB-main1"><strong>4 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
+          <div class="ex-note">Full hip extension at top. No hyperextension of lumbar.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=hip+thrust+form+barbell+technique" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-icon">🦵</div>
+        <div class="ex-body">
+          <div class="ex-name">Belt Squat (Wider Stance)</div>
+          <div class="ex-sets" id="lowerB-main2"><strong>3 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
+          <div class="ex-note">Wider stance = more glute/adductor. 3-sec lowering. Plan B: Hack squat → Leg press.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+wide+stance+glute+form" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Accessories — Superset A then B</span></div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset A</div>
+        <div class="exercise">
+          <div class="ex-icon">⚖️</div>
+          <div class="ex-body">
+            <div class="ex-name">Single-Leg RDL</div>
+            <div class="ex-sets"><strong>3 × 10</strong> each · Light DB</div>
+            <div class="ex-note">Focus on balance and control. Key for kicking base leg.</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=single+leg+RDL+dumbbell+form+balance" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🔄</div>
+          <div class="ex-body">
+            <div class="ex-name">Seated Leg Curl</div>
+            <div class="ex-sets"><strong>3 × 12–15</strong></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+leg+curl+machine+form" target="_blank">▶</a>
+        </div>
+      </div>
+
+      <div class="superset-group">
+        <div class="superset-label">⚡ Superset B</div>
+        <div class="exercise">
+          <div class="ex-icon">↔️</div>
+          <div class="ex-body">
+            <div class="ex-name">Cable Hip Abduction (Standing)</div>
+            <div class="ex-sets"><strong>3 × 15</strong> each side</div>
+            <div class="ex-note">Foot slightly inward. Key for roundkick mechanics.</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=standing+cable+hip+abduction+form" target="_blank">▶</a>
+        </div>
+        <div class="exercise">
+          <div class="ex-icon">🏔️</div>
+          <div class="ex-body">
+            <div class="ex-name">Copenhagen Side Plank</div>
+            <div class="ex-sets"><strong>2 × 20–25s</strong> each side</div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=copenhagen+side+plank+adductor+muay+thai" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Optional Conditioning · 8 min</span></div>
+      <div class="exercise">
+        <div class="ex-icon">🚲</div>
+        <div class="ex-body">
+          <div class="ex-name">Bike or Rower — Low intensity</div>
+          <div class="ex-sets"><strong>8 min</strong> · Keep HR under 140</div>
+          <div class="ex-note">Not a HIIT session. Active recovery / aerobic base.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=low+intensity+cardio+zone+2+training" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>If it flares</span></div>
+      <div class="flare-box">
+        <div class="flare-box-title">⚡ Substitutions</div>
+        <div class="flare-item"><strong>Knee:</strong> Belt squat → hack squat → leg press · Single-leg RDL → hip thrust variation · Skip conditioning · Add isometric wall sit instead</div>
+        <div class="flare-item"><strong>Lower back:</strong> Hip thrust → glute bridge on floor · Drop leg press</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showBottom('overview', this)">
+    <span class="nav-icon">📋</span>Overview
+  </button>
+  <button class="nav-btn" onclick="showBottom('upperA', this)">
+    <span class="nav-icon">🔵</span>Upper A
+  </button>
+  <button class="nav-btn" onclick="showBottom('lowerA', this)">
+    <span class="nav-icon">🔴</span>Lower A
+  </button>
+  <button class="nav-btn" onclick="showBottom('upperB', this)">
+    <span class="nav-icon">🔵</span>Upper B
+  </button>
+  <button class="nav-btn" onclick="showBottom('lowerB', this)">
+    <span class="nav-icon">🔴</span>Lower B
+  </button>
+</div>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('session-' + id).classList.add('active');
+    btn.classList.add('active');
+    // sync bottom nav
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const tabs = document.querySelectorAll('.tab');
+    const idx = Array.from(tabs).indexOf(btn);
+    if (navBtns[idx]) navBtns[idx].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function showBottom(id, btn) {
+    document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('session-' + id).classList.add('active');
+    btn.classList.add('active');
+    // sync top tabs
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const tabs = document.querySelectorAll('.tab');
+    const idx = Array.from(navBtns).indexOf(btn);
+    if (tabs[idx]) tabs[idx].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  let currentWeek = 1;
+  function setWeek(week) {
+    currentWeek = week;
+    document.querySelectorAll('.week-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === week - 1);
+    });
+
+    const isWk34 = week === 2;
+    const rirText = isWk34 ? '★ 1–2 RIR' : '★ 2–3 RIR';
+    const sets = isWk34 ? '5' : '4';
+
+    ['upperA','lowerA','upperB','lowerB'].forEach(s => {
+      const el = document.getElementById(s + '-intensity');
+      if (el) el.textContent = rirText;
+    });
+
+    const mainUpdates = {
+      'upperA-main1': `<strong>${sets} × 8–10</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 2 min`,
+      'upperA-main2': `<strong>${sets} × 10–12</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
+      'lowerA-main1': `<strong>${sets} × 8–10</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 2 min`,
+      'lowerA-main2': `<strong>${sets} × 8–10</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 2 min`,
+      'upperB-main1': `<strong>${sets} × 10–12</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
+      'upperB-main2': `<strong>${sets} × 10–12</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
+      'lowerB-main1': `<strong>${sets} × 10–12</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
+      'lowerB-main2': `<strong>${sets} × 12–15</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
+    };
+
+    Object.entries(mainUpdates).forEach(([id, html]) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    });
+  }
+</script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
+</body>
+</html>
