@@ -518,6 +518,140 @@
   /* Weeks progression content */
   .prog-content { display: none; }
   .prog-content.active { display: block; }
+
+/* AI ADAPT BUTTON */
+.adapt-fab {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 18px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(244,81,30,0.4);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.adapt-fab:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(244,81,30,0.3); }
+.adapt-fab.visible { display: flex; }
+
+/* ADAPT DRAWER */
+.adapt-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a1c;
+  border-top: 2px solid var(--accent);
+  border-radius: 16px 16px 0 0;
+  padding: 20px 16px 36px;
+  z-index: 300;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.adapt-drawer.open { transform: translateY(0); }
+.adapt-drawer-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.adapt-drawer h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.adapt-drawer p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.adapt-input-row {
+  display: flex;
+  gap: 8px;
+}
+.adapt-input {
+  flex: 1;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+}
+.adapt-input:focus { border-color: var(--accent); }
+.adapt-submit {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.adapt-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ADAPTED BANNER */
+.adapted-banner {
+  background: rgba(244,81,30,0.08);
+  border: 1px solid rgba(244,81,30,0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.adapted-banner.visible { display: flex; }
+.restore-btn {
+  background: transparent;
+  border: 1px solid rgba(244,81,30,0.4);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+/* DRAWER OVERLAY */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 299;
+  display: none;
+}
+.drawer-overlay.visible { display: block; }
 </style>
 </head>
 <body>
@@ -1251,8 +1385,223 @@
       if (el) el.innerHTML = html;
     });
   }
+
+// ─── AI SESSION ADAPTER ───────────────────────────────────────────
+
+const COACH_CONTEXT = `You are Cyril's personal gym coach AI. Your job is to adapt his current training session based on a constraint he gives you.
+
+ATHLETE PROFILE:
+- Age 37, intermediate lifter, long femurs/forearms, sedentary job
+- Sessions: lunch break, 45–70 min MAX — never suggest 90-min sessions
+- Current block: Hypertrophy, 2–3 RIR, 8–12 reps main lifts
+
+INJURIES (always respect these):
+- TFCC Wrist (R): green 0–2/10. No dips, no palm push-ups, no wrist extension under load. Neutral grips only.
+- Patellar Tendinopathy: manage volume, 3-sec lowering on squats
+- Golfer's Elbow: limit high-volume gripping, neutral grip hammer curls only
+- Left Shoulder: NO fixed-path machine chest press
+
+RULES:
+- Always keep warm-up and prehab — never remove them
+- Keep wrist prehab on upper days, hip prehab on lower days
+- Prefer neutral grips on everything
+- Always give a Plan B substitution note if modifying an exercise
+- If time is short: cut sets before cutting exercises, cut accessories before main lifts
+- Never suggest anything that contradicts the injury rules above
+
+OUTPUT FORMAT:
+Return ONLY a valid JSON array. No markdown, no explanation, no backticks. Each object:
+{ "section": "Main Lifts" | "Accessories", "icon": "emoji", "name": "exercise name", "sets": "3 × 10–12 · 2 RIR · Rest 90s", "note": "optional coaching note or Plan B" }`;
+
+function getApiKey() {
+  let key = localStorage.getItem('anthropic_api_key');
+  if (!key) {
+    key = prompt('Enter your Anthropic API key to enable AI Adapt:');
+    if (key) localStorage.setItem('anthropic_api_key', key);
+  }
+  return key;
+}
+
+const originalSessionContent = {};
+
+function getCurrentSessionId() {
+  const active = document.querySelector('.session.active');
+  return active ? active.id.replace('session-', '') : null;
+}
+
+function openAdaptDrawer() {
+  document.getElementById('adaptDrawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('visible');
+  document.getElementById('adaptInput').focus();
+}
+
+function closeAdaptDrawer() {
+  document.getElementById('adaptDrawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('visible');
+}
+
+function getSessionSummary(sessionId) {
+  const session = document.getElementById('session-' + sessionId);
+  if (!session) return '';
+  const names = [...session.querySelectorAll('.ex-name')].map(el => el.textContent).join(', ');
+  return `Session: ${sessionId}. Exercises: ${names}`;
+}
+
+function renderAdaptedExercises(sessionId, exercises) {
+  const session = document.getElementById('session-' + sessionId);
+  if (!session) return;
+
+  if (!originalSessionContent[sessionId]) {
+    const mainSection = session.querySelector('.section:nth-of-type(2)');
+    const accSection = session.querySelector('.section:nth-of-type(3)');
+    originalSessionContent[sessionId] = {
+      main: mainSection ? mainSection.innerHTML : '',
+      acc: accSection ? accSection.innerHTML : ''
+    };
+  }
+
+  const mainExercises = exercises.filter(e => e.section === 'Main Lifts');
+  const accExercises = exercises.filter(e => e.section === 'Accessories');
+
+  function buildExerciseHTML(ex) {
+    return `
+      <div class="exercise">
+        <div class="ex-icon">${ex.icon || '💪'}</div>
+        <div class="ex-body">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-sets"><strong>${ex.sets}</strong></div>
+          ${ex.note ? `<div class="ex-note">${ex.note}</div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  const sections = session.querySelectorAll('.section');
+
+  if (mainExercises.length && sections[1]) {
+    sections[1].innerHTML = `
+      <div class="section-label"><span>Main Lifts</span></div>
+      ${mainExercises.map(buildExerciseHTML).join('')}`;
+  }
+
+  if (accExercises.length && sections[2]) {
+    sections[2].innerHTML = `
+      <div class="section-label"><span>Accessories</span></div>
+      <div class="superset-group">
+        <div class="superset-label">⚡ Adapted — Rest 60s between rounds</div>
+        ${accExercises.map(buildExerciseHTML).join('')}
+      </div>`;
+  }
+
+  const banner = document.getElementById('adaptedBanner-' + sessionId);
+  if (banner) banner.classList.add('visible');
+}
+
+function restoreSession(sessionId) {
+  if (!originalSessionContent[sessionId]) return;
+  const session = document.getElementById('session-' + sessionId);
+  const sections = session.querySelectorAll('.section');
+  if (sections[1]) sections[1].innerHTML = originalSessionContent[sessionId].main;
+  if (sections[2]) sections[2].innerHTML = originalSessionContent[sessionId].acc;
+  const banner = document.getElementById('adaptedBanner-' + sessionId);
+  if (banner) banner.classList.remove('visible');
+  delete originalSessionContent[sessionId];
+}
+
+async function submitAdapt() {
+  const constraint = document.getElementById('adaptInput').value.trim();
+  if (!constraint) return;
+
+  const sessionId = getCurrentSessionId();
+  if (!sessionId || sessionId === 'overview') return;
+
+  const submitBtn = document.getElementById('adaptSubmit');
+  submitBtn.textContent = '…';
+  submitBtn.disabled = true;
+
+  closeAdaptDrawer();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': getApiKey(),
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: COACH_CONTEXT,
+        messages: [{
+          role: 'user',
+          content: `${getSessionSummary(sessionId)}\n\nConstraint: ${constraint}\n\nAdapt this session. Return ONLY the JSON array.`
+        }]
+      })
+    });
+
+    const data = await response.json();
+    let text = data.content[0].text.trim();
+    text = text.replace(/```json|```/g, '').trim();
+    const exercises = JSON.parse(text);
+    renderAdaptedExercises(sessionId, exercises);
+  } catch (err) {
+    console.error('Adapt error:', err);
+    alert('Could not adapt session. Check your API key and try again.');
+  } finally {
+    submitBtn.textContent = 'Go';
+    submitBtn.disabled = false;
+    document.getElementById('adaptInput').value = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['upperA','lowerA','upperB','lowerB'].forEach(id => {
+    const session = document.getElementById('session-' + id);
+    if (!session) return;
+    const banner = document.createElement('div');
+    banner.className = 'adapted-banner';
+    banner.id = 'adaptedBanner-' + id;
+    banner.innerHTML = `⚡ Session adapted for today <button class="restore-btn" onclick="restoreSession('${id}')">← Restore</button>`;
+    session.insertBefore(banner, session.firstChild);
+  });
+});
+
+function updateFabVisibility(tabId) {
+  const fab = document.getElementById('adaptFab');
+  if (tabId && tabId !== 'overview') {
+    fab.classList.add('visible');
+  } else {
+    fab.classList.remove('visible');
+  }
+}
+
+const _originalShowTab = showTab;
+showTab = function(tabId, btn) {
+  _originalShowTab(tabId, btn);
+  updateFabVisibility(tabId);
+};
 </script>
 
+
+<!-- AI ADAPT FAB -->
+<button class="adapt-fab" id="adaptFab" onclick="openAdaptDrawer()">⚡ Adapt</button>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeAdaptDrawer()"></div>
+
+<!-- ADAPT DRAWER -->
+<div class="adapt-drawer" id="adaptDrawer">
+  <div class="adapt-drawer-handle"></div>
+  <h3>⚡ Adapt Today's Session</h3>
+  <p>Tell me your constraint and I'll trim the session for you.</p>
+  <div class="adapt-input-row">
+    <input class="adapt-input" id="adaptInput" type="text"
+      placeholder="e.g. only 45 min, knee hurts today…"
+      onkeydown="if(event.key==='Enter') submitAdapt()" />
+    <button class="adapt-submit" id="adaptSubmit" onclick="submitAdapt()">Go</button>
+  </div>
+</div>
 
 <script>
   if ('serviceWorker' in navigator) {
