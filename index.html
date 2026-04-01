@@ -570,12 +570,12 @@
   border-radius: 6px;
   color: #000000;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 5px 12px;
+  padding: 6px 14px;
   display: none;
   white-space: nowrap;
 }
@@ -2029,17 +2029,13 @@ document.addEventListener('DOMContentLoaded', () => {
   ['upperA','lowerA','upperB','lowerB'].forEach(id => {
     const session = document.getElementById('session-' + id);
     if (!session) return;
-    const sessionHeader = session.querySelector('.session-header');
-    if (!sessionHeader) return;
-    // Add a flex row at the bottom of the session header for the button
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex;justify-content:flex-end;margin-top:10px;';
+    const meta = session.querySelector('.session-meta');
+    if (!meta) return;
     const btn = document.createElement('button');
     btn.className = 'adapt-inline-btn visible';
     btn.textContent = '⚡ Adapt';
     btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
-    row.appendChild(btn);
-    sessionHeader.appendChild(row);
+    meta.appendChild(btn);
   });
 });
 
