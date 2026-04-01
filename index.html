@@ -1206,104 +1206,8 @@
 
 <div class="content">
 
-  <!-- ===== OVERVIEW ===== -->
-  <div class="session active" id="session-overview">
-
-    <div class="overview-card">
-      <h3>📅 Weekly Structure</h3>
-      <div class="day-row">
-        <div class="day-label">D1</div>
-        <div>
-          <div class="day-name">Upper A — Push emphasis</div>
-          <div class="day-detail">Chest · Shoulders · Triceps · Back</div>
-        </div>
-      </div>
-      <div class="day-row">
-        <div class="day-label">D2</div>
-        <div>
-          <div class="day-name">Lower A — Quad/Glute</div>
-          <div class="day-detail">Belt squat · RDL · Split squat · Hip prehab</div>
-        </div>
-      </div>
-      <div class="day-row">
-        <div class="day-label">D3</div>
-        <div>
-          <div class="day-name">Rest / Shadowboxing at home</div>
-          <div class="day-detail">10–15 min technique, footwork — no power</div>
-        </div>
-      </div>
-      <div class="day-row">
-        <div class="day-label">D4</div>
-        <div>
-          <div class="day-name">Upper B — Pull emphasis</div>
-          <div class="day-detail">Back · Biceps · Rear delt · Chest accessory</div>
-        </div>
-      </div>
-      <div class="day-row">
-        <div class="day-label">D5</div>
-        <div>
-          <div class="day-name">Lower B — Posterior chain</div>
-          <div class="day-detail">Hip thrust · Hinge · Abduction · Conditioning</div>
-        </div>
-      </div>
-      <div class="day-row">
-        <div class="day-label">D6–7</div>
-        <div>
-          <div class="day-name">Rest · Shadowboxing · Mobility</div>
-          <div class="day-detail">Hip mobility block 3–5×/week at home</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="overview-card">
-      <h3>📈 Progression</h3>
-      <div class="prog-item">
-        <div class="prog-weeks">WK 1–2</div>
-        <div class="prog-desc">Establish movements. 4 sets main lifts. 2–3 RIR. Learn the sessions.</div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-weeks">WK 3–4</div>
-        <div class="prog-desc">Add 1 set to main lifts if recovery good. Tighten to 1–2 RIR. Push closer to failure.</div>
-      </div>
-    </div>
-
-    <div class="overview-card">
-      <h3>⚠️ Injury Status</h3>
-      <div class="injury-row">
-        <div class="injury-name">TFCC Wrist (R)</div>
-        <div><span class="injury-status status-green">Green 0–2/10</span></div>
-      </div>
-      <div class="injury-row">
-        <div class="injury-name">Patellar Tendon</div>
-        <div><span class="injury-status status-yellow">Manage Volume</span></div>
-      </div>
-      <div class="injury-row">
-        <div class="injury-name">Golfer's Elbow</div>
-        <div><span class="injury-status status-yellow">Intermittent</span></div>
-      </div>
-      <div class="injury-row">
-        <div class="injury-name">Left Shoulder</div>
-        <div><span class="injury-status status-orange">No Machine Press</span></div>
-      </div>
-    </div>
-
-    <div class="overview-card">
-      <h3>🥊 Muay Thai Return</h3>
-      <div class="prog-item">
-        <div class="prog-weeks">NOW</div>
-        <div class="prog-desc">Shadowboxing at home 3×/week. Note next-day wrist/shoulder response (0–10).</div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-weeks">WK 3–5</div>
-        <div class="prog-desc">Light bag rounds if wrist/shoulder green. 6×2 min, easy. Straight punches first.</div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-weeks">WK 6–8</div>
-        <div class="prog-desc">Return to class. Lower intensity. Limit high kicks if hip/knee not ready.</div>
-      </div>
-    </div>
-
-  </div>
+  <!-- ===== OVERVIEW (dynamic) ===== -->
+  <div class="session active" id="session-overview"></div>
 
   <!-- ===== UPPER A ===== -->
   <div class="session" id="session-upperA">
@@ -2234,10 +2138,108 @@
     document.querySelectorAll('.tab[data-block="main"]').forEach(t => t.style.display = (block === 'main' || block === 'main34') ? '' : 'none');
     document.querySelectorAll('.tab[data-block="recovery"]').forEach(t => t.style.display = block === 'recovery' ? '' : 'none');
 
-    // Switch to overview
+    // Render overview for this block and switch to it
+    renderOverview(block === 'recovery' ? 'recovery' : 'main');
     const overviewTab = document.querySelector('.tab');
     if (overviewTab) showTab('overview', overviewTab);
   }
+
+// ─── DYNAMIC OVERVIEW ─────────────────────────────────────────────
+
+const OVERVIEW_DATA = {
+  main: {
+    accent: 'var(--accent)',
+    cards: [
+      { title: '📅 Weekly Structure', type: 'days', items: [
+        { label: 'D1', name: 'Upper A — Push emphasis', detail: 'Chest · Shoulders · Triceps · Back' },
+        { label: 'D2', name: 'Lower A — Quad/Glute', detail: 'Belt squat · RDL · Split squat · Hip prehab' },
+        { label: 'D3', name: 'Rest / Shadowboxing at home', detail: '10–15 min technique, footwork — no power' },
+        { label: 'D4', name: 'Upper B — Pull emphasis', detail: 'Back · Biceps · Rear delt · Chest accessory' },
+        { label: 'D5', name: 'Lower B — Posterior chain', detail: 'Hip thrust · Hinge · Abduction · Conditioning' },
+        { label: 'D6–7', name: 'Rest · Shadowboxing · Mobility', detail: 'Hip mobility block 3–5×/week at home' },
+      ]},
+      { title: '📈 Progression', type: 'prog', items: [
+        { weeks: 'WK 1–2', desc: 'Establish movements. 4 sets main lifts. 2–3 RIR. Learn the sessions.' },
+        { weeks: 'WK 3–4', desc: 'Add 1 set to main lifts if recovery good. Tighten to 1–2 RIR. Push closer to failure.' },
+      ]},
+      { title: '⚠️ Injury Status', type: 'injuries', items: [
+        { name: 'TFCC Wrist (R)', status: 'Green 0–2/10', cls: 'status-green' },
+        { name: 'Patellar Tendon', status: 'Manage Volume', cls: 'status-yellow' },
+        { name: "Golfer's Elbow", status: 'Intermittent', cls: 'status-yellow' },
+        { name: 'Left Shoulder', status: 'No Machine Press', cls: 'status-orange' },
+      ]},
+      { title: '🥊 Muay Thai Return', type: 'prog', items: [
+        { weeks: 'NOW', desc: 'Shadowboxing at home 3×/week. Note next-day wrist/shoulder response (0–10).' },
+        { weeks: 'WK 3–5', desc: 'Light bag rounds if wrist/shoulder green. 6×2 min, easy. Straight punches first.' },
+        { weeks: 'WK 6–8', desc: 'Return to class. Lower intensity. Limit high kicks if hip/knee not ready.' },
+      ]},
+    ]
+  },
+  recovery: {
+    accent: '#888',
+    cards: [
+      { title: '🔄 Recovery Block — 2 Weeks', type: 'text',
+        text: 'Full Body · 3 sessions/week · 55 min max' },
+      { title: '🎯 Goal', type: 'text',
+        text: "Active recovery block triggered by golfer's elbow flare and accumulated fatigue. The goal is NOT to progress — it's to let tendons recover while maintaining the muscle stimulus. Volume is reduced by ~30%, intensity stays moderate (RIR 3+)." },
+      { title: '⚠️ Key Rules', type: 'list', items: [
+        'No biceps isolation for 2 weeks',
+        'All pulling movements: neutral or overhand grip only — no supinated grip under load',
+        'If any pulling movement aggravates elbow at 3+/10 → switch to 1-arm cable or skip',
+        'If a session feels off (bad sleep, soreness) → cut 1 set per exercise, don\'t change movements',
+        'Week 2 should feel easier — that\'s intentional',
+      ]},
+      { title: '📅 Sessions', type: 'days', items: [
+        { label: 'A', name: 'Push emphasis', detail: 'Belt squat · DB Incline · Row · RDL' },
+        { label: 'B', name: 'Pull emphasis', detail: 'Hack squat · Pulldown · DB Press · Hip thrust' },
+        { label: 'C', name: 'Legs emphasis', detail: 'Bulgarian split squat · Cable row · DB Bench · Calves' },
+      ]},
+      { title: '🔁 Return Condition', type: 'text',
+        text: "Resume the hypertrophy block (WK 1-2) after these 2 weeks ONLY if golfer's elbow is back to 1/10 or less. If still flaring — consult Ambrose." },
+    ]
+  }
+};
+
+function renderOverview(block) {
+  const data = block === 'recovery' ? OVERVIEW_DATA.recovery : OVERVIEW_DATA.main;
+  const el = document.getElementById('session-overview');
+  const accentColor = data.accent;
+
+  el.innerHTML = data.cards.map(card => {
+    const titleStyle = `color:${accentColor}`;
+    let content = '';
+
+    if (card.type === 'days') {
+      content = card.items.map(d => `
+        <div class="day-row">
+          <div class="day-label">${d.label}</div>
+          <div><div class="day-name">${d.name}</div><div class="day-detail">${d.detail}</div></div>
+        </div>`).join('');
+    } else if (card.type === 'prog') {
+      content = card.items.map(p => `
+        <div class="prog-item">
+          <div class="prog-weeks" style="color:${accentColor}">${p.weeks}</div>
+          <div class="prog-desc">${p.desc}</div>
+        </div>`).join('');
+    } else if (card.type === 'injuries') {
+      content = card.items.map(i => `
+        <div class="injury-row">
+          <div class="injury-name">${i.name}</div>
+          <div><span class="injury-status ${i.cls}">${i.status}</span></div>
+        </div>`).join('');
+    } else if (card.type === 'text') {
+      content = `<div style="font-size:13px;color:#bbb;line-height:1.6;">${card.text}</div>`;
+    } else if (card.type === 'list') {
+      content = `<ul style="margin:0;padding-left:18px;font-size:13px;color:#bbb;line-height:1.8;">` +
+        card.items.map(li => `<li>${li}</li>`).join('') + '</ul>';
+    }
+
+    return `<div class="overview-card"><h3 style="${titleStyle}">${card.title}</h3>${content}</div>`;
+  }).join('');
+}
+
+// Render on load
+renderOverview('main');
 
 // ─── AI SESSION ADAPTER ───────────────────────────────────────────
 
