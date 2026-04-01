@@ -1869,6 +1869,7 @@
     </div>
 
     <div id="historyList"></div>
+    <button onclick="exportHistory()" style="width:100%;margin-top:12px;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;">📥 Export History as JSON</button>
   </div>
 
 </div>
@@ -1917,6 +1918,15 @@
 </div>
 
 <script>
+  // ─── DATA MIGRATION ────────────────────────────────────────────────
+  (function migrateHistory() {
+    const oldData = localStorage.getItem('gym_history');
+    if (oldData && !localStorage.getItem('gymapp_history_v1')) {
+      localStorage.setItem('gymapp_history_v1', oldData);
+      localStorage.removeItem('gym_history');
+    }
+  })();
+
   function showTab(id, btn) {
     document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -2523,7 +2533,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B' };
 
 function getPreviousExerciseData(exName) {
-  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
   for (const entry of history) {
     const ex = entry.exercises.find(e => e.name === exName);
     if (ex && ex.sets.length > 0) return ex.sets;
@@ -2705,17 +2715,28 @@ function saveSession() {
     exercises
   };
 
-  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
   history.unshift(entry);
-  localStorage.setItem('gym_history', JSON.stringify(history));
+  localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
 
   renderHistory();
+}
+
+function exportHistory() {
+  const data = localStorage.getItem('gymapp_history_v1') || '[]';
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gym-history-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function renderHistory() {
   const list = document.getElementById('historyList');
   if (!list) return;
-  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
 
   if (history.length === 0) {
     list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px 0;font-size:14px;">No sessions logged yet.<br>Go to a session and tap 📝 Log to start.</div>';
@@ -2759,7 +2780,7 @@ showBottom = function(id, btn) {
 let progressChart = null;
 
 function getAllExerciseNames() {
-  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
   const names = new Set();
   history.forEach(entry => entry.exercises.forEach(ex => names.add(ex.name)));
   return [...names].sort();
@@ -2775,7 +2796,7 @@ function populateChartSelect() {
 }
 
 function getExerciseHistory(name) {
-  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
   const data = [];
   history.slice().reverse().forEach(entry => {
     const ex = entry.exercises.find(e => e.name === name);
