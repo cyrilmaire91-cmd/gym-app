@@ -163,6 +163,13 @@
     border-radius: 10px;
     padding: 14px 16px;
     margin-bottom: 14px;
+    position: relative;
+  }
+  .session-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
   }
 
   .session-header h2 {
@@ -553,6 +560,7 @@
   padding: 6px 14px;
   display: none;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .adapt-inline-btn.visible { display: inline-block; }
 .adapt-inline-btn:active { background: var(--card); }
@@ -2438,13 +2446,19 @@ document.addEventListener('DOMContentLoaded', () => {
   ['upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
     const session = document.getElementById('session-' + id);
     if (!session) return;
-    const meta = session.querySelector('.session-meta');
-    if (!meta) return;
+    const header = session.querySelector('.session-header');
+    const h2 = header ? header.querySelector('h2') : null;
+    if (!header || !h2) return;
+    // Wrap h2 and button in a flex row
+    const topRow = document.createElement('div');
+    topRow.className = 'session-header-top';
+    h2.parentNode.insertBefore(topRow, h2);
+    topRow.appendChild(h2);
     const btn = document.createElement('button');
     btn.className = 'adapt-inline-btn visible';
     btn.textContent = '⚡ Adapt';
     btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
-    meta.appendChild(btn);
+    topRow.appendChild(btn);
   });
 });
 
