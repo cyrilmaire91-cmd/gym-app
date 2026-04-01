@@ -2968,7 +2968,11 @@ function pickerAdjust(dir) {
   document.getElementById('pickerInput').focus();
 }
 
+let pickerClosing = false;
+
 function confirmPicker() {
+  if (pickerClosing) return;
+  pickerClosing = true;
   const typed = document.getElementById('pickerInput').value;
   if (typed !== '') pickerValue = parseFloat(typed) || 0;
   if (activePill) {
@@ -2979,12 +2983,31 @@ function confirmPicker() {
 }
 
 function closePicker() {
-  document.getElementById('pickerInput').blur();
+  const input = document.getElementById('pickerInput');
+  input.blur();
   document.getElementById('pickerOverlay').classList.remove('visible');
   document.getElementById('pickerSheet').classList.remove('open');
   document.getElementById('pickerSheet').style.bottom = '0';
   activePill = null;
+  setTimeout(() => { pickerClosing = false; }, 100);
 }
+
+// Enter key and blur on the picker input both confirm
+document.addEventListener('DOMContentLoaded', () => {
+  const pi = document.getElementById('pickerInput');
+  if (!pi) return;
+  pi.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      e.preventDefault();
+      confirmPicker();
+    }
+  });
+  pi.addEventListener('blur', () => {
+    if (document.getElementById('pickerSheet').classList.contains('open')) {
+      confirmPicker();
+    }
+  });
+});
 
 // Reposition sheet above keyboard using visualViewport
 if (window.visualViewport) {
