@@ -805,35 +805,16 @@
 .log-set-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-top: 6px;
+  min-height: 44px;
 }
-.log-set-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  min-width: 22px;
-  text-align: center;
-}
-.log-input {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 14px;
-  padding: 6px 8px;
-  width: 60px;
-  text-align: center;
-  outline: none;
-}
-.log-input:focus { border-color: var(--accent); }
-.log-input::placeholder { color: #555; }
+.log-set-row.set-warmup { opacity: 0.6; }
+.log-set-row.set-dropset .log-pill { border-color: var(--purple); color: var(--purple); }
 .log-check {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   border: 2px solid var(--border);
   background: transparent;
   color: var(--muted);
@@ -842,33 +823,154 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 .log-check.done {
   background: var(--green);
   border-color: var(--green);
   color: #000;
 }
+.log-pill {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  min-width: 70px;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.log-pill.editing {
+  border-color: var(--accent);
+  background: rgba(244,81,30,0.08);
+}
+.log-pill input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  width: 40px;
+  text-align: center;
+  outline: none;
+}
+.log-pill .pill-unit {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: 2px;
+}
+.log-set-tag {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: -4px;
+}
+.tag-warmup { background: rgba(64,196,255,0.15); color: var(--blue); }
+.tag-drop { background: rgba(179,136,255,0.15); color: var(--purple); }
+.tag-rpe { background: rgba(255,215,64,0.15); color: var(--yellow); }
+.log-menu-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.log-context-menu {
+  position: absolute;
+  right: 8px;
+  top: 48px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 0;
+  z-index: 250;
+  min-width: 160px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.log-context-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.log-context-menu button:active { background: var(--card2); }
+.log-context-menu button.destructive { color: #ff4444; }
+.log-add-set {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 0;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.log-add-set .add-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+}
+.log-prescription {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.log-prescription strong { color: var(--accent2); }
 .log-note {
   background: var(--card2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text);
   font-family: 'Barlow', sans-serif;
   font-size: 12px;
-  padding: 6px 8px;
+  padding: 8px 10px;
   width: 100%;
   margin-top: 6px;
   outline: none;
   resize: none;
-  height: 28px;
+  height: 32px;
 }
 .log-note:focus { border-color: var(--accent); }
 .log-note::placeholder { color: #555; }
-.log-unit {
-  font-size: 11px;
-  color: var(--muted);
-  font-weight: 600;
-}
 .log-save-bar {
   position: fixed;
   bottom: 60px;
@@ -2129,33 +2231,203 @@ function startLogging(sessionId) {
   document.getElementById('logSaveBar').classList.add('visible');
 
   const exercises = getExercisesForSession(sessionId);
-  exercises.forEach((ex, exIdx) => {
+  exercises.forEach((ex) => {
     const container = document.createElement('div');
     container.className = 'log-sets-container';
     container.dataset.logExercise = ex.name;
+    container.style.position = 'relative';
 
     for (let s = 0; s < ex.numSets; s++) {
-      const row = document.createElement('div');
-      row.className = 'log-set-row';
-      row.innerHTML = `
-        <span class="log-set-label">S${s+1}</span>
-        <input class="log-input" type="number" placeholder="${ex.targetReps}" data-field="reps" inputmode="numeric" />
-        <span class="log-unit">reps</span>
-        <input class="log-input" type="number" placeholder="kg" data-field="weight" inputmode="decimal" />
-        <span class="log-unit">kg</span>
-        <button class="log-check" onclick="this.classList.toggle('done')">✓</button>
-      `;
-      container.appendChild(row);
+      container.appendChild(createSetRow(ex.targetReps, 0));
     }
 
+    // Add set button
+    const addRow = document.createElement('div');
+    addRow.className = 'log-add-set';
+    addRow.innerHTML = '<span class="add-icon">+</span> Add set';
+    addRow.onclick = () => addSetToContainer(container, ex.targetReps);
+    container.appendChild(addRow);
+
+    // Prescription info
+    const prescription = document.createElement('div');
+    prescription.className = 'log-prescription';
+    const setsEl = ex.element.querySelector('.ex-sets');
+    prescription.innerHTML = `<strong>Rx:</strong> ${setsEl ? setsEl.textContent : ''}`;
+    container.appendChild(prescription);
+
+    // Note
     const noteInput = document.createElement('textarea');
     noteInput.className = 'log-note';
-    noteInput.placeholder = 'Note (optional)…';
+    noteInput.placeholder = 'Session note (optional)…';
     noteInput.dataset.logNote = ex.name;
     container.appendChild(noteInput);
 
     ex.element.querySelector('.ex-body').appendChild(container);
   });
+}
+
+function createSetRow(defaultReps, defaultWeight) {
+  const row = document.createElement('div');
+  row.className = 'log-set-row';
+
+  // Checkbox
+  const check = document.createElement('button');
+  check.className = 'log-check';
+  check.textContent = '✓';
+  check.onclick = () => {
+    check.classList.toggle('done');
+    if (check.classList.contains('done')) startRestTimer();
+  };
+  row.appendChild(check);
+
+  // Weight pill
+  const weightPill = createPill(defaultWeight || '', 'kg', 'weight');
+  row.appendChild(weightPill);
+
+  // Reps pill
+  const repsPill = createPill(defaultReps || '', 'reps', 'reps');
+  row.appendChild(repsPill);
+
+  // Menu button
+  const menuBtn = document.createElement('button');
+  menuBtn.className = 'log-menu-btn';
+  menuBtn.textContent = '⋯';
+  menuBtn.onclick = (e) => { e.stopPropagation(); openSetMenu(row, menuBtn); };
+  row.appendChild(menuBtn);
+
+  return row;
+}
+
+function createPill(value, unit, field) {
+  const pill = document.createElement('div');
+  pill.className = 'log-pill';
+  pill.dataset.field = field;
+  pill.dataset.value = value || '';
+  renderPillDisplay(pill, unit);
+  pill.onclick = () => editPill(pill, unit);
+  return pill;
+}
+
+function renderPillDisplay(pill, unit) {
+  const val = pill.dataset.value;
+  const display = val ? `${val} <span class="pill-unit">${unit}</span>` : `<span style="color:#555">— ${unit}</span>`;
+  pill.innerHTML = display;
+  pill.classList.remove('editing');
+}
+
+function editPill(pill, unit) {
+  if (pill.classList.contains('editing')) return;
+  pill.classList.add('editing');
+  const val = pill.dataset.value || '';
+  pill.innerHTML = `<input type="number" value="${val}" inputmode="${unit === 'kg' ? 'decimal' : 'numeric'}" placeholder="0" /><span class="pill-unit">${unit}</span>`;
+  const input = pill.querySelector('input');
+  input.focus();
+  input.select();
+  const finish = () => {
+    pill.dataset.value = input.value;
+    renderPillDisplay(pill, unit);
+  };
+  input.onblur = finish;
+  input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } };
+}
+
+let activeMenu = null;
+function openSetMenu(row, btn) {
+  closeSetMenu();
+  const menu = document.createElement('div');
+  menu.className = 'log-context-menu';
+  const container = row.closest('.log-sets-container');
+  const setRows = container.querySelectorAll('.log-set-row');
+  const tags = row.querySelector('.log-set-tag');
+  const currentTag = tags ? tags.dataset.tag : null;
+
+  const items = [
+    { label: currentTag === 'warmup' ? '✓ Warmup' : 'Warmup', action: () => toggleSetTag(row, 'warmup') },
+    { label: currentTag === 'drop' ? '✓ Dropset' : 'Dropset', action: () => toggleSetTag(row, 'drop') },
+    { label: 'RPE…', action: () => setRPE(row) },
+    { label: 'Copy set', action: () => copySet(row, container) },
+    { label: 'Delete', action: () => deleteSet(row, container), destructive: true, disabled: setRows.length <= 1 }
+  ];
+
+  items.forEach(item => {
+    const b = document.createElement('button');
+    b.textContent = item.label;
+    if (item.destructive) b.className = 'destructive';
+    if (item.disabled) { b.style.opacity = '0.3'; b.style.pointerEvents = 'none'; }
+    b.onclick = () => { item.action(); closeSetMenu(); };
+    menu.appendChild(b);
+  });
+
+  row.style.position = 'relative';
+  row.appendChild(menu);
+  activeMenu = menu;
+  setTimeout(() => document.addEventListener('click', closeSetMenu, { once: true }), 10);
+}
+
+function closeSetMenu() {
+  if (activeMenu) { activeMenu.remove(); activeMenu = null; }
+}
+
+function toggleSetTag(row, tag) {
+  let tagEl = row.querySelector('.log-set-tag');
+  if (tagEl && tagEl.dataset.tag === tag) {
+    tagEl.remove();
+    row.classList.remove('set-warmup', 'set-dropset');
+    return;
+  }
+  if (tagEl) tagEl.remove();
+  row.classList.remove('set-warmup', 'set-dropset');
+  tagEl = document.createElement('span');
+  tagEl.className = `log-set-tag tag-${tag}`;
+  tagEl.dataset.tag = tag;
+  tagEl.textContent = tag === 'warmup' ? 'W' : 'D';
+  row.insertBefore(tagEl, row.querySelector('.log-pill'));
+  if (tag === 'warmup') row.classList.add('set-warmup');
+  if (tag === 'drop') row.classList.add('set-dropset');
+}
+
+function setRPE(row) {
+  const val = prompt('RPE (1-10):');
+  if (!val) return;
+  let tagEl = row.querySelector('.log-set-tag');
+  if (tagEl) tagEl.remove();
+  row.classList.remove('set-warmup', 'set-dropset');
+  tagEl = document.createElement('span');
+  tagEl.className = 'log-set-tag tag-rpe';
+  tagEl.dataset.tag = 'rpe';
+  tagEl.textContent = `@${val}`;
+  row.insertBefore(tagEl, row.querySelector('.log-pill'));
+}
+
+function copySet(row, container) {
+  const weightPill = row.querySelector('[data-field="weight"]');
+  const repsPill = row.querySelector('[data-field="reps"]');
+  const w = weightPill ? weightPill.dataset.value : '';
+  const r = repsPill ? repsPill.dataset.value : '';
+  const newRow = createSetRow(r, w);
+  const addBtn = container.querySelector('.log-add-set');
+  container.insertBefore(newRow, addBtn);
+}
+
+function deleteSet(row, container) {
+  const setRows = container.querySelectorAll('.log-set-row');
+  if (setRows.length <= 1) return;
+  row.remove();
+}
+
+function addSetToContainer(container, defaultReps) {
+  const rows = container.querySelectorAll('.log-set-row');
+  let w = '', r = defaultReps || '';
+  if (rows.length > 0) {
+    const lastRow = rows[rows.length - 1];
+    const wp = lastRow.querySelector('[data-field="weight"]');
+    const rp = lastRow.querySelector('[data-field="reps"]');
+    if (wp && wp.dataset.value) w = wp.dataset.value;
+    if (rp && rp.dataset.value) r = rp.dataset.value;
+  }
+  const newRow = createSetRow(r, w);
+  const addBtn = container.querySelector('.log-add-set');
+  container.insertBefore(newRow, addBtn);
 }
 
 function cancelLogging() {
@@ -2175,11 +2447,15 @@ function saveSession() {
     const exName = container.dataset.logExercise;
     const sets = [];
     container.querySelectorAll('.log-set-row').forEach(row => {
-      const reps = row.querySelector('[data-field="reps"]').value;
-      const weight = row.querySelector('[data-field="weight"]').value;
+      const repsPill = row.querySelector('[data-field="reps"]');
+      const weightPill = row.querySelector('[data-field="weight"]');
+      const reps = repsPill ? repsPill.dataset.value : '';
+      const weight = weightPill ? weightPill.dataset.value : '';
       const done = row.querySelector('.log-check').classList.contains('done');
+      const tagEl = row.querySelector('.log-set-tag');
+      const tag = tagEl ? tagEl.dataset.tag : null;
       if (reps || weight || done) {
-        sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
+        sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done, tag });
       }
     });
     const noteEl = container.querySelector('.log-note');
