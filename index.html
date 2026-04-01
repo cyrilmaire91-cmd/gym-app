@@ -37,7 +37,7 @@
     color: var(--text);
     font-family: 'Barlow', sans-serif;
     min-height: 100vh;
-    padding-bottom: 80px;
+    padding-bottom: 20px;
   }
 
   /* HEADER */
@@ -459,40 +459,6 @@
 
   .prog-desc { color: #bbb; }
 
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--card);
-    border-top: 1px solid var(--border);
-    display: flex;
-    z-index: 100;
-  }
-
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 4px 12px;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    gap: 3px;
-  }
-
-  .nav-btn .nav-icon { font-size: 20px; }
-  .nav-btn.active { color: var(--accent); }
-
   /* OVERVIEW TAB */
   .overview-card {
     background: var(--card);
@@ -693,7 +659,7 @@
 /* REST TIMER BAR */
 .timer-bar {
   position: fixed;
-  bottom: 60px;
+  bottom: 0;
   left: 0;
   right: 0;
   background: var(--card);
@@ -766,7 +732,7 @@
 }
 .timer-presets-row {
   position: fixed;
-  bottom: 112px;
+  bottom: 52px;
   left: 0;
   right: 0;
   display: none;
@@ -1897,27 +1863,6 @@
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <button class="nav-btn active" onclick="showBottom('overview', this)">
-    <span class="nav-icon">📋</span>Overview
-  </button>
-  <button class="nav-btn" onclick="showBottom('upperA', this)">
-    <span class="nav-icon">🔵</span>Upper A
-  </button>
-  <button class="nav-btn" onclick="showBottom('lowerA', this)">
-    <span class="nav-icon">🔴</span>Lower A
-  </button>
-  <button class="nav-btn" onclick="showBottom('upperB', this)">
-    <span class="nav-icon">🔵</span>Upper B
-  </button>
-  <button class="nav-btn" onclick="showBottom('lowerB', this)">
-    <span class="nav-icon">🔴</span>Lower B
-  </button>
-  <button class="nav-btn" onclick="showBottom('history', this)">
-    <span class="nav-icon">📊</span>History
-  </button>
-</div>
 
 <script>
   // ─── DATA MIGRATION ────────────────────────────────────────────────
@@ -1932,28 +1877,8 @@
   function showTab(id, btn) {
     document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('session-' + id).classList.add('active');
     btn.classList.add('active');
-    // sync bottom nav
-    const navBtns = document.querySelectorAll('.nav-btn');
-    const tabs = document.querySelectorAll('.tab');
-    const idx = Array.from(tabs).indexOf(btn);
-    if (navBtns[idx]) navBtns[idx].classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
-  function showBottom(id, btn) {
-    document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('session-' + id).classList.add('active');
-    btn.classList.add('active');
-    // sync top tabs
-    const navBtns = document.querySelectorAll('.nav-btn');
-    const tabs = document.querySelectorAll('.tab');
-    const idx = Array.from(navBtns).indexOf(btn);
-    if (tabs[idx]) tabs[idx].classList.add('active');
     window.scrollTo(0, 0);
   }
 
@@ -2787,12 +2712,6 @@ const _showTabWithAdapt = showTab;
 showTab = function(tabId, btn) {
   _showTabWithAdapt(tabId, btn);
   if (tabId === 'history') renderHistory();
-};
-
-const _showBottomOrig = showBottom;
-showBottom = function(id, btn) {
-  _showBottomOrig(id, btn);
-  if (id === 'history') renderHistory();
 };
 
 // ─── PROGRESS CHARTS ──────────────────────────────────────────────
