@@ -987,6 +987,33 @@
 .log-note:focus { box-shadow: 0 0 0 1.5px var(--accent); }
 .log-note::placeholder { color: #444; }
 
+/* NEXT EXERCISE BUTTON */
+.next-exercise-btn {
+  width: 100%;
+  height: 52px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  display: none;
+}
+.next-exercise-btn.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+.next-exercise-btn:active { transform: scale(0.98); }
+
 /* HISTORY NAV TAB */
 
 /* HISTORY VIEW */
@@ -2258,6 +2285,12 @@ function setupAccordions() {
     addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
     container.appendChild(addRow);
 
+    // Next exercise button
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'next-exercise-btn';
+    nextBtn.onclick = (e) => { e.stopPropagation(); goToNextExercise(wrap); };
+    container.appendChild(nextBtn);
+
     // Note
     const noteInput = document.createElement('textarea');
     noteInput.className = 'log-note';
@@ -2304,6 +2337,49 @@ function updateDoneState(wrap) {
     summary.textContent = ` · ${checks.length}/${total} done`;
   } else if (summary) {
     summary.remove();
+  }
+
+  // Show/hide Next button
+  const nextBtn = wrap.querySelector('.next-exercise-btn');
+  if (!nextBtn) return;
+  const allDone = checks.length === total && total > 0;
+  if (allDone) {
+    const isLast = !getNextExerciseWrap(wrap);
+    nextBtn.textContent = isLast ? 'FINISH WORKOUT ✓' : 'NEXT EXERCISE →';
+    // Trigger reflow for animation
+    nextBtn.style.display = 'block';
+    requestAnimationFrame(() => nextBtn.classList.add('visible'));
+  } else {
+    nextBtn.classList.remove('visible');
+    setTimeout(() => { if (!nextBtn.classList.contains('visible')) nextBtn.style.display = 'none'; }, 150);
+  }
+}
+
+function getNextExerciseWrap(currentWrap) {
+  let next = currentWrap.nextElementSibling;
+  while (next) {
+    if (next.classList.contains('exercise-wrap')) return next;
+    next = next.nextElementSibling;
+  }
+  return null;
+}
+
+function goToNextExercise(currentWrap) {
+  const nextWrap = getNextExerciseWrap(currentWrap);
+  if (nextWrap) {
+    // Close current, open next
+    currentWrap.classList.remove('expanded');
+    nextWrap.classList.add('expanded');
+    currentExpandedWrap = nextWrap;
+    setTimeout(() => nextWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  } else {
+    // Last exercise — finish workout
+    currentWrap.classList.remove('expanded');
+    currentExpandedWrap = null;
+    saveSession();
+    const sessionId = getCurrentSessionId();
+    const saveBtn = document.querySelector('#session-' + sessionId + ' .save-session-btn');
+    if (saveBtn) { saveBtn.textContent = '✓ Saved!'; setTimeout(() => saveBtn.textContent = '✓ Save Session to History', 2000); }
   }
 }
 
