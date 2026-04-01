@@ -993,37 +993,27 @@
   font-weight: 600;
   margin-top: 2px;
 }
-.picker-input-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.picker-hidden-input {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
 }
-.picker-direct-input {
-  flex: 1;
-  background: var(--card2);
-  border: none;
-  border-radius: 10px;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 12px 16px;
-  text-align: center;
-  outline: none;
-}
-.picker-direct-input:focus { box-shadow: 0 0 0 1.5px var(--accent); }
 .picker-done-btn {
   background: var(--accent);
   border: none;
   border-radius: 10px;
   color: white;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 12px 24px;
+  padding: 14px;
   cursor: pointer;
+  width: 100%;
+  margin-top: 12px;
 }
 .log-add-set {
   display: flex;
@@ -2113,10 +2103,8 @@
     </div>
     <button class="picker-adj" onclick="pickerAdjust(1)" style="touch-action:manipulation">+</button>
   </div>
-  <div class="picker-input-row">
-    <input class="picker-direct-input" id="pickerInput" type="number" inputmode="decimal" placeholder="Type value" />
-    <button class="picker-done-btn" onclick="confirmPicker()">Done</button>
-  </div>
+  <input class="picker-hidden-input" id="pickerInput" type="text" inputmode="decimal" />
+  <button class="picker-done-btn" onclick="confirmPicker()">Done</button>
 </div>
 
 
@@ -2931,16 +2919,38 @@ function openPicker(pill) {
   pickerStep = parseFloat(pill.dataset.step) || 1;
   pickerValue = parseFloat(pill.dataset.value) || parseFloat(pill.dataset.placeholder) || 0;
   const unit = pill.dataset.unit;
+  const input = document.getElementById('pickerInput');
 
   document.getElementById('pickerLabel').textContent = pill.dataset.label.toUpperCase();
   document.getElementById('pickerUnit').textContent = unit;
-  document.getElementById('pickerInput').value = pickerValue || '';
-  document.getElementById('pickerInput').inputMode = pickerStep < 1 ? 'decimal' : 'numeric';
+  input.value = pickerValue || '';
+  input.inputMode = pickerStep < 1 ? 'decimal' : 'numeric';
+  input.type = 'text'; // use text to allow inputMode control on iOS
   updatePickerDrum();
 
   document.getElementById('pickerOverlay').classList.add('visible');
   document.getElementById('pickerSheet').classList.add('open');
+
+  // Focus synchronously inside the user gesture to trigger keyboard on iOS
+  input.focus();
 }
+
+// Sync keyboard typing to the drum display in real time
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('pickerInput');
+  if (input) {
+    input.addEventListener('input', () => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val) && val >= 0) {
+        pickerValue = val;
+        const fmt = (v) => pickerStep < 1 ? v.toFixed(1) : String(Math.round(v));
+        document.getElementById('pickerMain').textContent = fmt(pickerValue);
+        document.getElementById('pickerPrev').textContent = pickerValue - pickerStep >= 0 ? fmt(pickerValue - pickerStep) : '—';
+        document.getElementById('pickerNext').textContent = fmt(pickerValue + pickerStep);
+      }
+    });
+  }
+});
 
 function updatePickerDrum() {
   const fmt = (v) => pickerStep < 1 ? v.toFixed(1) : String(Math.round(v));
@@ -2954,6 +2964,7 @@ function pickerAdjust(dir) {
   pickerValue = Math.max(0, pickerValue + dir * pickerStep);
   pickerValue = Math.round(pickerValue * 10) / 10;
   updatePickerDrum();
+  document.getElementById('pickerInput').focus();
 }
 
 function confirmPicker() {
