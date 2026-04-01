@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Cyril — Training Program</title>
 
   <!-- PWA -->
@@ -30,7 +30,7 @@
     --border: #2a2a2d;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
 
   body {
     background: var(--bg);
@@ -1880,14 +1880,14 @@
   <div class="picker-handle"></div>
   <div class="picker-label" id="pickerLabel">WEIGHT (KG)</div>
   <div class="picker-drum">
-    <button class="picker-adj" onclick="pickerAdjust(-1)">−</button>
+    <button class="picker-adj" onclick="pickerAdjust(-1)" style="touch-action:manipulation">−</button>
     <div class="picker-values">
       <div class="picker-val-adj" id="pickerPrev">—</div>
       <div class="picker-val-main" id="pickerMain">0</div>
       <div class="picker-val-adj" id="pickerNext">—</div>
       <div class="picker-val-unit" id="pickerUnit">kg</div>
     </div>
-    <button class="picker-adj" onclick="pickerAdjust(1)">+</button>
+    <button class="picker-adj" onclick="pickerAdjust(1)" style="touch-action:manipulation">+</button>
   </div>
   <div class="picker-input-row">
     <input class="picker-direct-input" id="pickerInput" type="number" inputmode="decimal" placeholder="Type value" />
