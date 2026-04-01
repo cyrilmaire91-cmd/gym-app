@@ -652,6 +652,107 @@
   display: none;
 }
 .drawer-overlay.visible { display: block; }
+
+/* REST TIMER */
+.timer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 400;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.timer-overlay.visible { display: flex; }
+.timer-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.timer-ring svg {
+  transform: rotate(-90deg);
+  width: 200px;
+  height: 200px;
+}
+.timer-ring circle {
+  fill: none;
+  stroke-width: 8;
+  cx: 100;
+  cy: 100;
+  r: 90;
+}
+.timer-ring .track { stroke: var(--border); }
+.timer-ring .progress { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.3s; }
+.timer-time {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--text);
+}
+.timer-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+.timer-presets {
+  display: flex;
+  gap: 8px;
+}
+.timer-preset {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.timer-preset.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.timer-dismiss {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.timer-start-btn {
+  background: var(--card);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -1577,8 +1678,113 @@ showTab = function(tabId, btn) {
   _originalShowTab(tabId, btn);
   updateFabVisibility(tabId);
 };
+
+// ─── REST TIMER ───────────────────────────────────────────────────
+
+let timerDuration = 90;
+let timerRemaining = 0;
+let timerInterval = null;
+const circumference = 2 * Math.PI * 90;
+
+function initTimerRing() {
+  const prog = document.getElementById('timerProgress');
+  prog.style.strokeDasharray = circumference;
+  prog.style.strokeDashoffset = 0;
+}
+
+function setTimerDuration(sec) {
+  timerDuration = sec;
+  document.querySelectorAll('.timer-preset').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (!timerInterval) {
+    timerRemaining = sec;
+    updateTimerDisplay();
+  }
+}
+
+function updateTimerDisplay() {
+  const min = Math.floor(timerRemaining / 60);
+  const sec = timerRemaining % 60;
+  document.getElementById('timerTime').textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+  const prog = document.getElementById('timerProgress');
+  const fraction = timerRemaining / timerDuration;
+  prog.style.strokeDashoffset = circumference * (1 - fraction);
+}
+
+function startRestTimer() {
+  timerRemaining = timerDuration;
+  updateTimerDisplay();
+  document.getElementById('timerOverlay').classList.add('visible');
+
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timerRemaining--;
+    updateTimerDisplay();
+    if (timerRemaining <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerDone();
+    }
+  }, 1000);
+}
+
+function timerDone() {
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e) {}
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    gain.gain.value = 0.3;
+    osc.start();
+    osc.stop(ctx.currentTime + 0.3);
+  } catch(e) {}
+  document.getElementById('timerTime').textContent = 'GO!';
+  document.getElementById('timerProgress').style.strokeDashoffset = circumference;
+}
+
+function dismissTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  document.getElementById('timerOverlay').classList.remove('visible');
+}
+
+// Inject rest timer buttons into every exercise card
+document.addEventListener('DOMContentLoaded', () => {
+  initTimerRing();
+  document.querySelectorAll('.session .exercise').forEach(ex => {
+    if (ex.closest('.prehab-box')) return;
+    const ytBtn = ex.querySelector('.yt-btn');
+    if (!ytBtn) return;
+    const restBtn = document.createElement('button');
+    restBtn.className = 'timer-start-btn';
+    restBtn.textContent = '⏱ Rest';
+    restBtn.onclick = (e) => { e.stopPropagation(); startRestTimer(); };
+    ytBtn.parentNode.insertBefore(restBtn, ytBtn);
+  });
+});
 </script>
 
+
+<!-- REST TIMER OVERLAY -->
+<div class="timer-overlay" id="timerOverlay">
+  <div class="timer-label">REST TIMER</div>
+  <div class="timer-ring">
+    <svg viewBox="0 0 200 200">
+      <circle class="track" />
+      <circle class="progress" id="timerProgress" />
+    </svg>
+    <div class="timer-time" id="timerTime">1:30</div>
+  </div>
+  <div class="timer-presets">
+    <button class="timer-preset" onclick="setTimerDuration(60)">60s</button>
+    <button class="timer-preset active" onclick="setTimerDuration(90)">90s</button>
+    <button class="timer-preset" onclick="setTimerDuration(120)">120s</button>
+    <button class="timer-preset" onclick="setTimerDuration(180)">180s</button>
+  </div>
+  <button class="timer-dismiss" onclick="dismissTimer()">Dismiss</button>
+</div>
 
 <!-- AI ADAPT FAB -->
 <button class="adapt-fab" id="adaptFab" onclick="openAdaptDrawer()">⚡ Adapt</button>
