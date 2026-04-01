@@ -76,39 +76,111 @@
     margin-top: 3px;
   }
 
-  .week-toggle {
-    display: flex;
-    gap: 6px;
-  }
-
-  .week-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    padding: 6px 12px;
-    border-radius: 6px;
+  /* BURGER MENU */
+  .burger-btn {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
     cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .burger-btn span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
   }
 
-  .week-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
+  /* SLIDE PANEL */
+  .panel-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
   }
-  .week-btn.recovery {
-    border-color: #555;
-    color: #999;
+  .panel-backdrop.visible { opacity: 1; pointer-events: auto; }
+  .panel-backdrop.closing { opacity: 0; transition: opacity 260ms ease; }
+
+  .slide-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75%;
+    max-width: 320px;
+    height: 100vh;
+    height: 100dvh;
+    background: #1a1a18;
+    z-index: 601;
+    transform: translateX(100%);
+    transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
   }
-  .week-btn.recovery.active {
-    background: #555;
-    border-color: #555;
-    color: white;
+  .slide-panel.open { transform: translateX(0); }
+  .slide-panel.closing { transform: translateX(100%); transition: transform 260ms cubic-bezier(0.32, 0, 0.67, 0); }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .panel-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .panel-close {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .panel-item {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .panel-item:last-child { border-bottom: none; }
+  .panel-item.active {
+    border-left-color: var(--accent);
+  }
+  .panel-item-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text);
+  }
+  .panel-item.active .panel-item-label { color: var(--accent); }
+  .panel-item-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
   }
 
   /* SESSION TABS */
@@ -1172,11 +1244,9 @@
       <h1>CYRIL <span>///</span> PROGRAM</h1>
       <p>4-Week Hypertrophy Block — Upper/Lower</p>
     </div>
-    <div class="week-toggle">
-      <button class="week-btn active" onclick="setBlock('main')">WK 1–2</button>
-      <button class="week-btn" onclick="setBlock('main34')">WK 3–4</button>
-      <button class="week-btn recovery" onclick="setBlock('recovery')">Recovery</button>
-    </div>
+    <button class="burger-btn" onclick="openPanel()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
   <div class="tabs" id="tabs">
     <button class="tab active" onclick="showTab('overview', this)">Overview</button>
@@ -1190,6 +1260,27 @@
     <button class="tab" onclick="showTab('history', this)">📊 History</button>
   </div>
 </header>
+
+<!-- SLIDE PANEL -->
+<div class="panel-backdrop" id="panelBackdrop" onclick="closePanel()"></div>
+<div class="slide-panel" id="slidePanel">
+  <div class="panel-header">
+    <div class="panel-title">Program</div>
+    <button class="panel-close" onclick="closePanel()">×</button>
+  </div>
+  <div class="panel-item active" data-block="main" onclick="selectBlock('main')">
+    <div class="panel-item-label">WK 1–2</div>
+    <div class="panel-item-sub">4-Week Hypertrophy Block</div>
+  </div>
+  <div class="panel-item" data-block="main34" onclick="selectBlock('main34')">
+    <div class="panel-item-label">WK 3–4</div>
+    <div class="panel-item-sub">4-Week Hypertrophy Block</div>
+  </div>
+  <div class="panel-item" data-block="recovery" onclick="selectBlock('recovery')">
+    <div class="panel-item-label">Recovery</div>
+    <div class="panel-item-sub">2-Week Deload Block</div>
+  </div>
+</div>
 
 <div class="content">
 
@@ -2126,11 +2217,8 @@
 
   function setBlock(block) {
     currentBlock = block;
-    // Update week buttons
-    document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
-    if (block === 'main') document.querySelectorAll('.week-btn')[0].classList.add('active');
-    else if (block === 'main34') document.querySelectorAll('.week-btn')[1].classList.add('active');
-    else if (block === 'recovery') document.querySelectorAll('.week-btn')[2].classList.add('active');
+    // Update panel active state
+    document.querySelectorAll('.panel-item').forEach(i => i.classList.toggle('active', i.dataset.block === block));
 
     // Apply week-specific changes for main blocks
     if (block === 'main' || block === 'main34') {
@@ -2166,6 +2254,33 @@
     const overviewTab = document.querySelector('.tab');
     if (overviewTab) showTab('overview', overviewTab);
   }
+
+// ─── SLIDE PANEL ──────────────────────────────────────────────────
+
+function openPanel() {
+  document.getElementById('panelBackdrop').classList.add('visible');
+  document.getElementById('slidePanel').classList.add('open');
+}
+
+function closePanel() {
+  const panel = document.getElementById('slidePanel');
+  const backdrop = document.getElementById('panelBackdrop');
+  panel.classList.add('closing');
+  panel.classList.remove('open');
+  backdrop.classList.add('closing');
+  backdrop.classList.remove('visible');
+  const onDone = () => {
+    panel.removeEventListener('transitionend', onDone);
+    panel.classList.remove('closing');
+    backdrop.classList.remove('closing');
+  };
+  panel.addEventListener('transitionend', onDone, { once: true });
+}
+
+function selectBlock(block) {
+  setBlock(block);
+  closePanel();
+}
 
 // ─── DYNAMIC OVERVIEW ─────────────────────────────────────────────
 
