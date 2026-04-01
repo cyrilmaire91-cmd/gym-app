@@ -835,25 +835,105 @@
 }
 .save-session-btn:active { transform: scale(0.98); }
 
-/* LOG SET ROW */
-.log-sets-container { margin-top: 8px; }
-.log-set-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  min-height: 44px;
+/* EXPANDED EXERCISE HEADER */
+.ex-expand-header { margin-bottom: 10px; }
+.ex-expand-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  margin-bottom: 6px;
 }
-.log-set-row.set-warmup { opacity: 0.6; }
-.log-set-row.set-dropset .log-pill { border-color: var(--purple); color: var(--purple); }
+.ex-expand-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.ex-expand-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-rpe { background: rgba(255,215,64,0.15); color: var(--yellow); }
+.badge-rest { background: rgba(64,196,255,0.15); color: var(--blue); }
+.ex-video-link {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 3px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* SET TABLE */
+.log-sets-container { margin-top: 0; }
+.set-table-header {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr 1fr 36px;
+  gap: 6px;
+  padding: 0 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+.set-table-header span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+.set-table-header span:first-child { text-align: left; }
+.log-set-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr 1fr 36px;
+  gap: 6px;
+  align-items: center;
+  min-height: 44px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+}
+.log-set-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.log-prev {
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+}
+.log-cell-input {
+  background: var(--card2);
+  border: none;
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 6px;
+  text-align: center;
+  outline: none;
+  width: 100%;
+  min-height: 36px;
+}
+.log-cell-input:focus { box-shadow: 0 0 0 1.5px var(--accent); }
+.log-cell-input::placeholder { color: #444; }
 .log-check {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: 2px solid var(--border);
   background: transparent;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -861,154 +941,53 @@
   flex-shrink: 0;
 }
 .log-check.done {
-  background: var(--green);
-  border-color: var(--green);
-  color: #000;
-}
-.log-pill {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 14px;
-  min-width: 70px;
-  text-align: center;
-  cursor: pointer;
-  white-space: nowrap;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.log-pill.editing {
+  background: var(--accent);
   border-color: var(--accent);
-  background: rgba(244,81,30,0.08);
+  color: white;
 }
-.log-pill input {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  width: 40px;
-  text-align: center;
-  outline: none;
-}
-.log-pill .pill-unit {
-  font-size: 11px;
-  color: var(--muted);
-  margin-left: 2px;
-}
-.log-set-tag {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: -4px;
-}
-.tag-warmup { background: rgba(64,196,255,0.15); color: var(--blue); }
-.tag-drop { background: rgba(179,136,255,0.15); color: var(--purple); }
-.tag-rpe { background: rgba(255,215,64,0.15); color: var(--yellow); }
-.log-menu-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-.log-context-menu {
-  position: absolute;
-  right: 8px;
-  top: 48px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 6px 0;
-  z-index: 250;
-  min-width: 160px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-}
-.log-context-menu button {
-  display: block;
-  width: 100%;
-  padding: 10px 16px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 14px;
-  text-align: left;
-  cursor: pointer;
-}
-.log-context-menu button:active { background: var(--card2); }
-.log-context-menu button.destructive { color: #ff4444; }
 .log-add-set {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 4px;
   padding: 8px 0;
   cursor: pointer;
   color: var(--muted);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 .log-add-set .add-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 1.5px dashed var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--muted);
 }
-.log-prescription {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.5;
-}
-.log-prescription strong { color: var(--accent2); }
 .log-note {
   background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: none;
+  border-radius: 6px;
   color: var(--text);
   font-family: 'Barlow', sans-serif;
   font-size: 12px;
   padding: 8px 10px;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 8px;
   outline: none;
   resize: none;
   height: 32px;
 }
-.log-note:focus { border-color: var(--accent); }
-.log-note::placeholder { color: #555; }
+.log-note:focus { box-shadow: 0 0 0 1.5px var(--accent); }
+.log-note::placeholder { color: #444; }
 
 /* HISTORY NAV TAB */
-.nav-btn.history-active { color: var(--green); }
 
 /* HISTORY VIEW */
 .history-card {
@@ -2180,9 +2159,9 @@ function setupAccordions() {
     parent.insertBefore(wrap, ex);
     wrap.appendChild(ex);
 
-    // Remove YT button, timer button — replace with chevron + done dot
-    const ytBtn = ex.querySelector('.yt-btn');
-    if (ytBtn) ytBtn.remove();
+    // Save YT href before removing, then replace with chevron + done dot
+    const origYtBtn = ex.querySelector('.yt-btn');
+    if (origYtBtn) { ex.dataset.ytHref = origYtBtn.href; origYtBtn.remove(); }
     const timerBtn = ex.querySelector('.timer-start-btn');
     if (timerBtn) timerBtn.remove();
 
@@ -2208,19 +2187,68 @@ function setupAccordions() {
     // Parse exercise info
     const nameEl = ex.querySelector('.ex-name');
     const setsEl = ex.querySelector('.ex-sets');
+    const noteEl = ex.querySelector('.ex-note');
+    const ytBtn = ex.querySelector('a[href*="youtube"]') || ex.dataset.ytUrl;
     const setsMatch = setsEl ? setsEl.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
     const numSets = setsMatch ? parseInt(setsMatch[1]) : 3;
     const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
     const exName = nameEl ? nameEl.textContent : 'Exercise';
 
-    // Build set rows inside accordion
+    // Extract rest time from sets text
+    const restMatch = setsEl ? setsEl.textContent.match(/Rest\s*(\d+\s*(?:min|s))/i) : null;
+    const restText = restMatch ? restMatch[1].toUpperCase() : '90S';
+    // Extract RIR/RPE
+    const rirMatch = setsEl ? setsEl.textContent.match(/(\d+[–-]\d+)\s*RIR/) : null;
+    const rirText = rirMatch ? rirMatch[1] : null;
+
+    // Get previous history for this exercise
+    const prevData = getPreviousExerciseData(exName);
+
+    // ── HEADER SECTION ──
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'ex-expand-header';
+    headerDiv.onclick = (e) => e.stopPropagation();
+
+    const hName = document.createElement('div');
+    hName.className = 'ex-expand-name';
+    hName.textContent = exName;
+    headerDiv.appendChild(hName);
+
+    const badgesDiv = document.createElement('div');
+    badgesDiv.className = 'ex-expand-badges';
+    if (rirText) badgesDiv.innerHTML += `<span class="ex-expand-badge badge-rpe">RPE ${rirText}</span>`;
+    badgesDiv.innerHTML += `<span class="ex-expand-badge badge-rest">REST: ${restText}</span>`;
+    headerDiv.appendChild(badgesDiv);
+
+    // Video guide button (if YT link was on the original card — stored before removal)
+    const ytHref = ex.dataset.ytHref;
+    if (ytHref) {
+      const vidLink = document.createElement('a');
+      vidLink.className = 'ex-video-link';
+      vidLink.href = ytHref;
+      vidLink.target = '_blank';
+      vidLink.textContent = '▶ Video guide';
+      vidLink.onclick = (e) => e.stopPropagation();
+      badgesDiv.appendChild(vidLink);
+    }
+
+    inner.appendChild(headerDiv);
+
+    // ── SET TABLE ──
     const container = document.createElement('div');
     container.className = 'log-sets-container';
     container.dataset.logExercise = exName;
-    container.style.position = 'relative';
+    container.onclick = (e) => e.stopPropagation();
+
+    // Column headers
+    const tableHeader = document.createElement('div');
+    tableHeader.className = 'set-table-header';
+    tableHeader.innerHTML = '<span>SET</span><span>PREVIOUS</span><span>KG</span><span>REPS</span><span></span>';
+    container.appendChild(tableHeader);
 
     for (let s = 0; s < numSets; s++) {
-      container.appendChild(createSetRow(targetReps, 0, wrap));
+      const prevSet = prevData && prevData[s] ? prevData[s] : null;
+      container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet));
     }
 
     // Add set button
@@ -2230,16 +2258,10 @@ function setupAccordions() {
     addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
     container.appendChild(addRow);
 
-    // Prescription
-    const prescription = document.createElement('div');
-    prescription.className = 'log-prescription';
-    prescription.innerHTML = `<strong>Rx:</strong> ${setsEl ? setsEl.textContent : ''}`;
-    container.appendChild(prescription);
-
     // Note
     const noteInput = document.createElement('textarea');
     noteInput.className = 'log-note';
-    noteInput.placeholder = 'Note (optional)…';
+    noteInput.placeholder = 'Add a note…';
     noteInput.dataset.logNote = exName;
     noteInput.onclick = (e) => e.stopPropagation();
     container.appendChild(noteInput);
@@ -2303,157 +2325,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B' };
 
-function createSetRow(defaultReps, defaultWeight, wrap) {
+function getPreviousExerciseData(exName) {
+  const history = JSON.parse(localStorage.getItem('gym_history') || '[]');
+  for (const entry of history) {
+    const ex = entry.exercises.find(e => e.name === exName);
+    if (ex && ex.sets.length > 0) return ex.sets;
+  }
+  return null;
+}
+
+function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   const row = document.createElement('div');
   row.className = 'log-set-row';
 
-  // Checkbox
+  // Set number
+  const num = document.createElement('span');
+  num.className = 'log-set-num';
+  num.textContent = String(setNum || '?').padStart(2, '0');
+  row.appendChild(num);
+
+  // Previous
+  const prev = document.createElement('span');
+  prev.className = 'log-prev';
+  prev.textContent = prevSet ? `${prevSet.weight} × ${prevSet.reps}` : '—';
+  row.appendChild(prev);
+
+  // Weight input
+  const weightInput = document.createElement('input');
+  weightInput.className = 'log-cell-input';
+  weightInput.type = 'number';
+  weightInput.inputMode = 'decimal';
+  weightInput.placeholder = prevSet ? String(prevSet.weight) : '0';
+  weightInput.dataset.field = 'weight';
+  weightInput.dataset.value = defaultWeight || '';
+  if (defaultWeight) weightInput.value = defaultWeight;
+  weightInput.onclick = (e) => e.stopPropagation();
+  weightInput.onchange = () => { weightInput.dataset.value = weightInput.value; };
+  row.appendChild(weightInput);
+
+  // Reps input
+  const repsInput = document.createElement('input');
+  repsInput.className = 'log-cell-input';
+  repsInput.type = 'text';
+  repsInput.inputMode = 'numeric';
+  repsInput.placeholder = defaultReps ? String(defaultReps) : '0';
+  repsInput.dataset.field = 'reps';
+  repsInput.dataset.value = '';
+  repsInput.onclick = (e) => e.stopPropagation();
+  repsInput.onchange = () => { repsInput.dataset.value = repsInput.value; };
+  row.appendChild(repsInput);
+
+  // Done checkbox
   const check = document.createElement('button');
   check.className = 'log-check';
   check.textContent = '✓';
   check.onclick = (e) => {
     e.stopPropagation();
     check.classList.toggle('done');
-    if (check.classList.contains('done')) startRestTimer();
+    // Auto-fill from placeholder if empty
+    if (check.classList.contains('done')) {
+      if (!weightInput.value && weightInput.placeholder !== '0') { weightInput.value = weightInput.placeholder; weightInput.dataset.value = weightInput.placeholder; }
+      if (!repsInput.value && repsInput.placeholder !== '0') { repsInput.value = repsInput.placeholder; repsInput.dataset.value = repsInput.placeholder; }
+      startRestTimer();
+    }
     const w = wrap || row.closest('.exercise-wrap');
     if (w) updateDoneState(w);
   };
   row.appendChild(check);
 
-  // Weight pill
-  const weightPill = createPill(defaultWeight || '', 'kg', 'weight');
-  row.appendChild(weightPill);
-
-  // Reps pill
-  const repsPill = createPill(defaultReps || '', 'reps', 'reps');
-  row.appendChild(repsPill);
-
-  // Menu button
-  const menuBtn = document.createElement('button');
-  menuBtn.className = 'log-menu-btn';
-  menuBtn.textContent = '⋯';
-  menuBtn.onclick = (e) => { e.stopPropagation(); openSetMenu(row, menuBtn); };
-  row.appendChild(menuBtn);
-
   return row;
 }
 
-function createPill(value, unit, field) {
-  const pill = document.createElement('div');
-  pill.className = 'log-pill';
-  pill.dataset.field = field;
-  pill.dataset.value = value || '';
-  renderPillDisplay(pill, unit);
-  pill.onclick = (e) => { e.stopPropagation(); editPill(pill, unit); };
-  return pill;
-}
-
-function renderPillDisplay(pill, unit) {
-  const val = pill.dataset.value;
-  const display = val ? `${val} <span class="pill-unit">${unit}</span>` : `<span style="color:#555">— ${unit}</span>`;
-  pill.innerHTML = display;
-  pill.classList.remove('editing');
-}
-
-function editPill(pill, unit) {
-  if (pill.classList.contains('editing')) return;
-  pill.classList.add('editing');
-  const val = pill.dataset.value || '';
-  pill.innerHTML = `<input type="number" value="${val}" inputmode="${unit === 'kg' ? 'decimal' : 'numeric'}" placeholder="0" /><span class="pill-unit">${unit}</span>`;
-  const input = pill.querySelector('input');
-  input.focus();
-  input.select();
-  const finish = () => {
-    pill.dataset.value = input.value;
-    renderPillDisplay(pill, unit);
-  };
-  input.onblur = finish;
-  input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } };
-}
-
-let activeMenu = null;
-function openSetMenu(row, btn) {
-  closeSetMenu();
-  const menu = document.createElement('div');
-  menu.className = 'log-context-menu';
-  const container = row.closest('.log-sets-container');
-  const setRows = container.querySelectorAll('.log-set-row');
-  const tags = row.querySelector('.log-set-tag');
-  const currentTag = tags ? tags.dataset.tag : null;
-
-  const items = [
-    { label: currentTag === 'warmup' ? '✓ Warmup' : 'Warmup', action: () => toggleSetTag(row, 'warmup') },
-    { label: currentTag === 'drop' ? '✓ Dropset' : 'Dropset', action: () => toggleSetTag(row, 'drop') },
-    { label: 'RPE…', action: () => setRPE(row) },
-    { label: 'Copy set', action: () => copySet(row, container) },
-    { label: 'Delete', action: () => deleteSet(row, container), destructive: true, disabled: setRows.length <= 1 }
-  ];
-
-  items.forEach(item => {
-    const b = document.createElement('button');
-    b.textContent = item.label;
-    if (item.destructive) b.className = 'destructive';
-    if (item.disabled) { b.style.opacity = '0.3'; b.style.pointerEvents = 'none'; }
-    b.onclick = () => { item.action(); closeSetMenu(); };
-    menu.appendChild(b);
-  });
-
-  row.style.position = 'relative';
-  row.appendChild(menu);
-  activeMenu = menu;
-  setTimeout(() => document.addEventListener('click', closeSetMenu, { once: true }), 10);
-}
-
-function closeSetMenu() {
-  if (activeMenu) { activeMenu.remove(); activeMenu = null; }
-}
-
-function toggleSetTag(row, tag) {
-  let tagEl = row.querySelector('.log-set-tag');
-  if (tagEl && tagEl.dataset.tag === tag) {
-    tagEl.remove();
-    row.classList.remove('set-warmup', 'set-dropset');
-    return;
-  }
-  if (tagEl) tagEl.remove();
-  row.classList.remove('set-warmup', 'set-dropset');
-  tagEl = document.createElement('span');
-  tagEl.className = `log-set-tag tag-${tag}`;
-  tagEl.dataset.tag = tag;
-  tagEl.textContent = tag === 'warmup' ? 'W' : 'D';
-  row.insertBefore(tagEl, row.querySelector('.log-pill'));
-  if (tag === 'warmup') row.classList.add('set-warmup');
-  if (tag === 'drop') row.classList.add('set-dropset');
-}
-
-function setRPE(row) {
-  const val = prompt('RPE (1-10):');
-  if (!val) return;
-  let tagEl = row.querySelector('.log-set-tag');
-  if (tagEl) tagEl.remove();
-  row.classList.remove('set-warmup', 'set-dropset');
-  tagEl = document.createElement('span');
-  tagEl.className = 'log-set-tag tag-rpe';
-  tagEl.dataset.tag = 'rpe';
-  tagEl.textContent = `@${val}`;
-  row.insertBefore(tagEl, row.querySelector('.log-pill'));
-}
-
-function copySet(row, container) {
-  const weightPill = row.querySelector('[data-field="weight"]');
-  const repsPill = row.querySelector('[data-field="reps"]');
-  const w = weightPill ? weightPill.dataset.value : '';
-  const r = repsPill ? repsPill.dataset.value : '';
-  const newRow = createSetRow(r, w);
-  const addBtn = container.querySelector('.log-add-set');
-  container.insertBefore(newRow, addBtn);
-}
-
-function deleteSet(row, container) {
-  const setRows = container.querySelectorAll('.log-set-row');
-  if (setRows.length <= 1) return;
-  row.remove();
-}
 
 function addSetToContainer(container, defaultReps, wrap) {
   const rows = container.querySelectorAll('.log-set-row');
@@ -2462,10 +2404,11 @@ function addSetToContainer(container, defaultReps, wrap) {
     const lastRow = rows[rows.length - 1];
     const wp = lastRow.querySelector('[data-field="weight"]');
     const rp = lastRow.querySelector('[data-field="reps"]');
-    if (wp && wp.dataset.value) w = wp.dataset.value;
-    if (rp && rp.dataset.value) r = rp.dataset.value;
+    if (wp) w = wp.value || wp.dataset.value || '';
+    if (rp) r = rp.value || rp.dataset.value || '';
   }
-  const newRow = createSetRow(r, w, wrap);
+  const setNum = rows.length + 1;
+  const newRow = createSetRow(r, w, wrap, setNum, null);
   const addBtn = container.querySelector('.log-add-set');
   container.insertBefore(newRow, addBtn);
 }
@@ -2479,15 +2422,13 @@ function saveSession() {
     const exName = container.dataset.logExercise;
     const sets = [];
     container.querySelectorAll('.log-set-row').forEach(row => {
-      const repsPill = row.querySelector('[data-field="reps"]');
-      const weightPill = row.querySelector('[data-field="weight"]');
-      const reps = repsPill ? repsPill.dataset.value : '';
-      const weight = weightPill ? weightPill.dataset.value : '';
-      const done = row.querySelector('.log-check').classList.contains('done');
-      const tagEl = row.querySelector('.log-set-tag');
-      const tag = tagEl ? tagEl.dataset.tag : null;
+      const repsInput = row.querySelector('[data-field="reps"]');
+      const weightInput = row.querySelector('[data-field="weight"]');
+      const reps = repsInput ? (repsInput.value || repsInput.dataset.value) : '';
+      const weight = weightInput ? (weightInput.value || weightInput.dataset.value) : '';
+      const done = row.querySelector('.log-check') ? row.querySelector('.log-check').classList.contains('done') : false;
       if (reps || weight || done) {
-        sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done, tag });
+        sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
       }
     });
     const noteEl = container.querySelector('.log-note');
