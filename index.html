@@ -862,70 +862,23 @@
   text-transform: uppercase;
 }
 
-/* SET TABLE */
+/* SET ROWS */
 .log-sets-container { margin-top: 0; }
-.set-table-header {
-  display: grid;
-  grid-template-columns: 36px 1fr 1fr 1fr 36px;
-  gap: 6px;
-  padding: 0 0 6px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 2px;
-}
-.set-table-header span {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  text-align: center;
-}
-.set-table-header span:first-child { text-align: left; }
 .log-set-row {
-  display: grid;
-  grid-template-columns: 36px 1fr 1fr 1fr 36px;
-  gap: 6px;
+  display: flex;
   align-items: center;
-  min-height: 44px;
+  gap: 8px;
+  min-height: 48px;
   padding: 4px 0;
   border-bottom: 1px solid rgba(255,255,255,0.04);
-  position: relative;
 }
-.log-set-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--muted);
-}
-.log-prev {
-  font-size: 12px;
-  color: #555;
-  text-align: center;
-}
-.log-cell-input {
-  background: var(--card2);
-  border: none;
-  border-radius: 6px;
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 6px;
-  text-align: center;
-  outline: none;
-  width: 100%;
-  min-height: 36px;
-}
-.log-cell-input:focus { box-shadow: 0 0 0 1.5px var(--accent); }
-.log-cell-input::placeholder { color: #444; }
 .log-check {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  background: transparent;
-  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: var(--card2);
+  color: #555;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -934,9 +887,166 @@
   flex-shrink: 0;
 }
 .log-check.done {
+  background: #ffffff;
+  color: #000;
+}
+.log-pill {
+  flex: 1;
+  min-height: 44px;
+  background: var(--card2);
+  border: none;
+  border-radius: 999px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+  gap: 4px;
+}
+.log-pill .pill-unit {
+  font-size: 11px;
+  color: var(--muted);
+}
+.log-pill.empty { color: #555; }
+.log-menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* NUMBER PICKER SHEET */
+.picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 500;
+  display: none;
+}
+.picker-overlay.visible { display: block; }
+.picker-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1c1c1e;
+  border-radius: 16px 16px 0 0;
+  z-index: 501;
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 12px 16px 24px;
+}
+.picker-sheet.open { transform: translateY(0); }
+.picker-handle {
+  width: 36px;
+  height: 4px;
+  background: #555;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.picker-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.picker-drum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.picker-adj {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--card2);
+  border: none;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.picker-adj:active { background: var(--card); }
+.picker-values {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.picker-val-adj {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #444;
+}
+.picker-val-main {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+.picker-val-unit {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.picker-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.picker-direct-input {
+  flex: 1;
+  background: var(--card2);
+  border: none;
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: center;
+  outline: none;
+}
+.picker-direct-input:focus { box-shadow: 0 0 0 1.5px var(--accent); }
+.picker-done-btn {
   background: var(--accent);
-  border-color: var(--accent);
+  border: none;
+  border-radius: 10px;
   color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 24px;
+  cursor: pointer;
 }
 .log-add-set {
   display: flex;
@@ -1763,6 +1873,27 @@
 
 </div>
 
+<!-- NUMBER PICKER SHEET -->
+<div class="picker-overlay" id="pickerOverlay" onclick="closePicker()"></div>
+<div class="picker-sheet" id="pickerSheet">
+  <div class="picker-handle"></div>
+  <div class="picker-label" id="pickerLabel">WEIGHT (KG)</div>
+  <div class="picker-drum">
+    <button class="picker-adj" onclick="pickerAdjust(-1)">−</button>
+    <div class="picker-values">
+      <div class="picker-val-adj" id="pickerPrev">—</div>
+      <div class="picker-val-main" id="pickerMain">0</div>
+      <div class="picker-val-adj" id="pickerNext">—</div>
+      <div class="picker-val-unit" id="pickerUnit">kg</div>
+    </div>
+    <button class="picker-adj" onclick="pickerAdjust(1)">+</button>
+  </div>
+  <div class="picker-input-row">
+    <input class="picker-direct-input" id="pickerInput" type="number" inputmode="decimal" placeholder="Type value" />
+    <button class="picker-done-btn" onclick="confirmPicker()">Done</button>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="nav-btn active" onclick="showBottom('overview', this)">
@@ -2260,12 +2391,6 @@ function setupAccordions() {
     container.dataset.logExercise = exName;
     container.onclick = (e) => e.stopPropagation();
 
-    // Column headers
-    const tableHeader = document.createElement('div');
-    tableHeader.className = 'set-table-header';
-    tableHeader.innerHTML = '<span>SET</span><span>PREVIOUS</span><span>KG</span><span>REPS</span><span></span>';
-    container.appendChild(tableHeader);
-
     for (let s = 0; s < numSets; s++) {
       const prevSet = prevData && prevData[s] ? prevData[s] : null;
       container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet));
@@ -2410,54 +2535,17 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   const row = document.createElement('div');
   row.className = 'log-set-row';
 
-  // Set number
-  const num = document.createElement('span');
-  num.className = 'log-set-num';
-  num.textContent = String(setNum || '?').padStart(2, '0');
-  row.appendChild(num);
-
-  // Previous
-  const prev = document.createElement('span');
-  prev.className = 'log-prev';
-  prev.textContent = prevSet ? `${prevSet.weight} × ${prevSet.reps}` : '—';
-  row.appendChild(prev);
-
-  // Weight input
-  const weightInput = document.createElement('input');
-  weightInput.className = 'log-cell-input';
-  weightInput.type = 'number';
-  weightInput.inputMode = 'decimal';
-  weightInput.placeholder = prevSet ? String(prevSet.weight) : '0';
-  weightInput.dataset.field = 'weight';
-  weightInput.dataset.value = defaultWeight || '';
-  if (defaultWeight) weightInput.value = defaultWeight;
-  weightInput.onclick = (e) => e.stopPropagation();
-  weightInput.onchange = () => { weightInput.dataset.value = weightInput.value; };
-  row.appendChild(weightInput);
-
-  // Reps input
-  const repsInput = document.createElement('input');
-  repsInput.className = 'log-cell-input';
-  repsInput.type = 'text';
-  repsInput.inputMode = 'numeric';
-  repsInput.placeholder = defaultReps ? String(defaultReps) : '0';
-  repsInput.dataset.field = 'reps';
-  repsInput.dataset.value = '';
-  repsInput.onclick = (e) => e.stopPropagation();
-  repsInput.onchange = () => { repsInput.dataset.value = repsInput.value; };
-  row.appendChild(repsInput);
-
-  // Done checkbox
+  // Checkbox
   const check = document.createElement('button');
   check.className = 'log-check';
   check.textContent = '✓';
   check.onclick = (e) => {
     e.stopPropagation();
     check.classList.toggle('done');
-    // Auto-fill from placeholder if empty
     if (check.classList.contains('done')) {
-      if (!weightInput.value && weightInput.placeholder !== '0') { weightInput.value = weightInput.placeholder; weightInput.dataset.value = weightInput.placeholder; }
-      if (!repsInput.value && repsInput.placeholder !== '0') { repsInput.value = repsInput.placeholder; repsInput.dataset.value = repsInput.placeholder; }
+      // Auto-fill from prev if empty
+      if (!weightPill.dataset.value && prevSet) { weightPill.dataset.value = String(prevSet.weight); renderPill(weightPill); }
+      if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
       startRestTimer();
     }
     const w = wrap || row.closest('.exercise-wrap');
@@ -2465,7 +2553,104 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   };
   row.appendChild(check);
 
+  // Weight pill
+  const weightPill = document.createElement('div');
+  weightPill.className = 'log-pill';
+  weightPill.dataset.field = 'weight';
+  weightPill.dataset.value = defaultWeight ? String(defaultWeight) : '';
+  weightPill.dataset.step = '0.5';
+  weightPill.dataset.unit = 'kg';
+  weightPill.dataset.label = 'Weight (kg)';
+  renderPill(weightPill);
+  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
+  row.appendChild(weightPill);
+
+  // Reps pill
+  const repsPill = document.createElement('div');
+  repsPill.className = 'log-pill';
+  repsPill.dataset.field = 'reps';
+  repsPill.dataset.value = '';
+  repsPill.dataset.step = '1';
+  repsPill.dataset.unit = 'reps';
+  repsPill.dataset.label = 'Reps';
+  repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+  renderPill(repsPill);
+  repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
+  row.appendChild(repsPill);
+
+  // Menu button
+  const menuBtn = document.createElement('button');
+  menuBtn.className = 'log-menu-btn';
+  menuBtn.textContent = '⋯';
+  menuBtn.onclick = (e) => e.stopPropagation();
+  row.appendChild(menuBtn);
+
   return row;
+}
+
+function renderPill(pill) {
+  const val = pill.dataset.value;
+  const unit = pill.dataset.unit;
+  if (val) {
+    pill.innerHTML = `${val} <span class="pill-unit">${unit}</span>`;
+    pill.classList.remove('empty');
+  } else {
+    const ph = pill.dataset.placeholder || '—';
+    pill.innerHTML = `${ph} <span class="pill-unit">${unit}</span>`;
+    pill.classList.add('empty');
+  }
+}
+
+// ─── NUMBER PICKER SHEET ──────────────────────────────────────────
+
+let activePill = null;
+let pickerValue = 0;
+let pickerStep = 1;
+
+function openPicker(pill) {
+  activePill = pill;
+  pickerStep = parseFloat(pill.dataset.step) || 1;
+  pickerValue = parseFloat(pill.dataset.value) || parseFloat(pill.dataset.placeholder) || 0;
+  const unit = pill.dataset.unit;
+
+  document.getElementById('pickerLabel').textContent = pill.dataset.label.toUpperCase();
+  document.getElementById('pickerUnit').textContent = unit;
+  document.getElementById('pickerInput').value = pickerValue || '';
+  document.getElementById('pickerInput').inputMode = pickerStep < 1 ? 'decimal' : 'numeric';
+  updatePickerDrum();
+
+  document.getElementById('pickerOverlay').classList.add('visible');
+  document.getElementById('pickerSheet').classList.add('open');
+}
+
+function updatePickerDrum() {
+  const fmt = (v) => pickerStep < 1 ? v.toFixed(1) : String(Math.round(v));
+  document.getElementById('pickerMain').textContent = fmt(pickerValue);
+  document.getElementById('pickerPrev').textContent = pickerValue - pickerStep >= 0 ? fmt(pickerValue - pickerStep) : '—';
+  document.getElementById('pickerNext').textContent = fmt(pickerValue + pickerStep);
+  document.getElementById('pickerInput').value = pickerValue || '';
+}
+
+function pickerAdjust(dir) {
+  pickerValue = Math.max(0, pickerValue + dir * pickerStep);
+  pickerValue = Math.round(pickerValue * 10) / 10;
+  updatePickerDrum();
+}
+
+function confirmPicker() {
+  const typed = document.getElementById('pickerInput').value;
+  if (typed !== '') pickerValue = parseFloat(typed) || 0;
+  if (activePill) {
+    activePill.dataset.value = pickerValue > 0 ? String(pickerValue) : '';
+    renderPill(activePill);
+  }
+  closePicker();
+}
+
+function closePicker() {
+  document.getElementById('pickerOverlay').classList.remove('visible');
+  document.getElementById('pickerSheet').classList.remove('open');
+  activePill = null;
 }
 
 
@@ -2476,8 +2661,8 @@ function addSetToContainer(container, defaultReps, wrap) {
     const lastRow = rows[rows.length - 1];
     const wp = lastRow.querySelector('[data-field="weight"]');
     const rp = lastRow.querySelector('[data-field="reps"]');
-    if (wp) w = wp.value || wp.dataset.value || '';
-    if (rp) r = rp.value || rp.dataset.value || '';
+    if (wp && wp.dataset.value) w = wp.dataset.value;
+    if (rp && rp.dataset.value) r = rp.dataset.value;
   }
   const setNum = rows.length + 1;
   const newRow = createSetRow(r, w, wrap, setNum, null);
@@ -2494,10 +2679,10 @@ function saveSession() {
     const exName = container.dataset.logExercise;
     const sets = [];
     container.querySelectorAll('.log-set-row').forEach(row => {
-      const repsInput = row.querySelector('[data-field="reps"]');
-      const weightInput = row.querySelector('[data-field="weight"]');
-      const reps = repsInput ? (repsInput.value || repsInput.dataset.value) : '';
-      const weight = weightInput ? (weightInput.value || weightInput.dataset.value) : '';
+      const repsPill = row.querySelector('[data-field="reps"]');
+      const weightPill = row.querySelector('[data-field="weight"]');
+      const reps = repsPill ? repsPill.dataset.value : '';
+      const weight = weightPill ? weightPill.dataset.value : '';
       const done = row.querySelector('.log-check') ? row.querySelector('.log-check').classList.contains('done') : false;
       if (reps || weight || done) {
         sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
