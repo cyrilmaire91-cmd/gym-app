@@ -887,8 +887,8 @@
   flex-shrink: 0;
 }
 .log-check.done {
-  background: #ffffff;
-  color: #000;
+  background: var(--accent);
+  color: white;
 }
 .log-pill {
   flex: 1;
@@ -913,20 +913,22 @@
   color: var(--muted);
 }
 .log-pill.empty { color: #555; }
-.log-menu-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+.log-delete-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   border: none;
-  background: transparent;
-  color: var(--muted);
-  font-size: 20px;
+  background: var(--card2);
+  color: #555;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
+.log-delete-btn:active { color: #ff4444; }
+.log-delete-btn.hidden { visibility: hidden; }
 
 /* NUMBER PICKER SHEET */
 .picker-overlay {
@@ -2588,14 +2590,31 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
   row.appendChild(repsPill);
 
-  // Menu button
-  const menuBtn = document.createElement('button');
-  menuBtn.className = 'log-menu-btn';
-  menuBtn.textContent = '⋯';
-  menuBtn.onclick = (e) => e.stopPropagation();
-  row.appendChild(menuBtn);
+  // Delete button
+  const delBtn = document.createElement('button');
+  delBtn.className = 'log-delete-btn';
+  delBtn.textContent = '×';
+  delBtn.onclick = (e) => {
+    e.stopPropagation();
+    const container = row.closest('.log-sets-container');
+    const rows = container.querySelectorAll('.log-set-row');
+    if (rows.length <= 1) return;
+    row.remove();
+    updateDeleteVisibility(container);
+    const w = wrap || container.closest('.exercise-wrap');
+    if (w) updateDoneState(w);
+  };
+  row.appendChild(delBtn);
 
   return row;
+}
+
+function updateDeleteVisibility(container) {
+  const rows = container.querySelectorAll('.log-set-row');
+  rows.forEach(r => {
+    const btn = r.querySelector('.log-delete-btn');
+    if (btn) btn.classList.toggle('hidden', rows.length <= 1);
+  });
 }
 
 function renderPill(pill) {
@@ -2678,6 +2697,7 @@ function addSetToContainer(container, defaultReps, wrap) {
   const newRow = createSetRow(r, w, wrap, setNum, null);
   const addBtn = container.querySelector('.log-add-set');
   container.insertBefore(newRow, addBtn);
+  updateDeleteVisibility(container);
 }
 
 function saveSession() {
