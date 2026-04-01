@@ -565,22 +565,21 @@
 
 /* AI ADAPT BUTTON */
 .adapt-inline-btn {
-  width: 100%;
-  height: 48px;
   background: #0E0E0F;
   border: 1px solid #ffffff;
-  border-radius: 10px;
+  border-radius: 6px;
   color: var(--muted);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
-  margin-bottom: 14px;
+  padding: 5px 12px;
   display: none;
+  white-space: nowrap;
 }
-.adapt-inline-btn.visible { display: block; }
+.adapt-inline-btn.visible { display: inline-block; }
 .adapt-inline-btn:active { background: var(--card); }
 
 /* ADAPT DRAWER */
@@ -2032,11 +2031,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!session) return;
     const sessionHeader = session.querySelector('.session-header');
     if (!sessionHeader) return;
+    // Add a flex row at the bottom of the session header for the button
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:flex-end;margin-top:10px;';
     const btn = document.createElement('button');
     btn.className = 'adapt-inline-btn visible';
-    btn.textContent = '⚡ Adapt Session';
-    btn.onclick = () => openAdaptDrawer();
-    sessionHeader.after(btn);
+    btn.textContent = '⚡ Adapt';
+    btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
+    row.appendChild(btn);
+    sessionHeader.appendChild(row);
   });
 });
 
