@@ -2371,7 +2371,10 @@ function goToNextExercise(currentWrap) {
     currentWrap.classList.remove('expanded');
     nextWrap.classList.add('expanded');
     currentExpandedWrap = nextWrap;
-    setTimeout(() => nextWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    setTimeout(() => {
+      const top = nextWrap.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top - 16, behavior: 'smooth' });
+    }, 260);
   } else {
     // Last exercise — finish workout
     currentWrap.classList.remove('expanded');
