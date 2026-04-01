@@ -911,9 +911,12 @@
   inset: 0;
   background: rgba(0,0,0,0.5);
   z-index: 500;
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
 }
-.picker-overlay.visible { display: block; }
+.picker-overlay.visible { opacity: 1; pointer-events: auto; }
+.picker-overlay.closing { opacity: 0; transition: opacity 240ms ease; }
 .picker-sheet {
   position: fixed;
   bottom: 0;
@@ -923,12 +926,13 @@
   border-radius: 16px 16px 0 0;
   z-index: 501;
   transform: translateY(100%);
-  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), bottom 0.15s ease;
+  transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1), bottom 0.15s ease;
   max-width: 600px;
   margin: 0 auto;
-  padding: 10px 16px 14px;
+  padding: 10px 16px 10px;
 }
 .picker-sheet.open { transform: translateY(0); }
+.picker-sheet.closing { transform: translateY(100%); transition: transform 240ms cubic-bezier(0.32, 0, 0.67, 0), bottom 0.15s ease; }
 .picker-handle {
   width: 36px;
   height: 4px;
@@ -999,21 +1003,6 @@
   opacity: 0;
   width: 1px;
   height: 1px;
-}
-.picker-done-btn {
-  background: var(--accent);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 12px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 8px;
 }
 .log-add-set {
   display: flex;
@@ -2104,7 +2093,6 @@
     <button class="picker-adj" onclick="pickerAdjust(1)" style="touch-action:manipulation">+</button>
   </div>
   <input class="picker-hidden-input" id="pickerInput" type="text" inputmode="decimal" />
-  <button class="picker-done-btn" onclick="confirmPicker()">Done</button>
 </div>
 
 
@@ -2984,12 +2972,26 @@ function confirmPicker() {
 
 function closePicker() {
   const input = document.getElementById('pickerInput');
+  const sheet = document.getElementById('pickerSheet');
+  const overlay = document.getElementById('pickerOverlay');
   input.blur();
-  document.getElementById('pickerOverlay').classList.remove('visible');
-  document.getElementById('pickerSheet').classList.remove('open');
-  document.getElementById('pickerSheet').style.bottom = '0';
+
+  // Animate out
+  sheet.classList.add('closing');
+  sheet.classList.remove('open');
+  overlay.classList.add('closing');
+  overlay.classList.remove('visible');
+
+  const onDone = () => {
+    sheet.removeEventListener('transitionend', onDone);
+    sheet.classList.remove('closing');
+    overlay.classList.remove('closing');
+    sheet.style.bottom = '0';
+    pickerClosing = false;
+  };
+  sheet.addEventListener('transitionend', onDone, { once: true });
+
   activePill = null;
-  setTimeout(() => { pickerClosing = false; }, 100);
 }
 
 // Enter key and blur on the picker input both confirm
