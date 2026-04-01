@@ -235,7 +235,50 @@
     transition: border-color 0.2s;
   }
 
+  .exercise { cursor: pointer; }
   .exercise:active { border-color: var(--accent); }
+
+  /* ACCORDION EXERCISE */
+  .exercise-wrap { margin-bottom: 8px; }
+  .exercise-wrap .exercise { margin-bottom: 0; border-radius: 10px 10px 10px 10px; }
+  .exercise-wrap.expanded .exercise { border-radius: 10px 10px 0 0; border-bottom-color: transparent; }
+  .ex-chevron {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+    transition: transform 0.2s ease;
+  }
+  .exercise-wrap.expanded .ex-chevron { transform: rotate(180deg); }
+  .ex-accordion {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+  .exercise-wrap.expanded .ex-accordion { max-height: 800px; }
+  .ex-accordion-inner { padding: 10px 14px 14px; }
+  .ex-done-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    display: none;
+  }
+  .exercise-wrap.has-done .ex-done-dot { display: block; }
+  .ex-set-summary {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
 
   .ex-icon {
     width: 38px;
@@ -775,30 +818,22 @@
 }
 
 /* WORKOUT LOGGER */
-.log-fab {
-  position: fixed;
-  bottom: 80px;
-  left: 16px;
+.save-session-btn {
   background: var(--green);
   color: #000;
   border: none;
-  border-radius: 24px;
-  padding: 10px 18px;
+  border-radius: 8px;
+  padding: 8px 16px;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
-  letter-spacing: 1px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(0,230,118,0.3);
-  z-index: 200;
-  display: none;
-  align-items: center;
-  gap: 6px;
+  margin-top: 12px;
+  width: 100%;
 }
-.log-fab:active { transform: scale(0.96); }
-.log-fab.visible { display: flex; }
-.log-fab.logging { background: var(--yellow); color: #000; box-shadow: 0 4px 20px rgba(255,215,64,0.3); }
+.save-session-btn:active { transform: scale(0.98); }
 
 /* LOG SET ROW */
 .log-sets-container { margin-top: 8px; }
@@ -971,47 +1006,6 @@
 }
 .log-note:focus { border-color: var(--accent); }
 .log-note::placeholder { color: #555; }
-.log-save-bar {
-  position: fixed;
-  bottom: 60px;
-  left: 0;
-  right: 0;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  padding: 10px 16px;
-  display: none;
-  gap: 8px;
-  z-index: 150;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.log-save-bar.visible { display: flex; }
-.log-save-btn {
-  flex: 1;
-  background: var(--green);
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-}
-.log-cancel-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-}
 
 /* HISTORY NAV TAB */
 .nav-btn.history-active { color: var(--green); }
@@ -1770,15 +1764,6 @@
 
 </div>
 
-<!-- LOG FAB -->
-<button class="log-fab" id="logFab" onclick="toggleLogging()">📝 Log</button>
-
-<!-- LOG SAVE BAR -->
-<div class="log-save-bar" id="logSaveBar">
-  <button class="log-cancel-btn" onclick="cancelLogging()">Cancel</button>
-  <button class="log-save-btn" onclick="saveSession()">✓ Save Session</button>
-</div>
-
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="nav-btn active" onclick="showBottom('overview', this)">
@@ -2180,93 +2165,145 @@ function stopTimer() {
   playBtn.classList.remove('running');
 }
 
-// Inject rest timer buttons into every exercise card
-document.addEventListener('DOMContentLoaded', () => {
+// ─── ACCORDION EXERCISE SETUP ─────────────────────────────────────
+
+let currentExpandedWrap = null;
+
+function setupAccordions() {
   document.querySelectorAll('.session .exercise').forEach(ex => {
     if (ex.closest('.prehab-box')) return;
+    if (ex.closest('.exercise-wrap')) return; // already wrapped
+
+    const parent = ex.parentNode;
+    const wrap = document.createElement('div');
+    wrap.className = 'exercise-wrap';
+    parent.insertBefore(wrap, ex);
+    wrap.appendChild(ex);
+
+    // Remove YT button, timer button — replace with chevron + done dot
     const ytBtn = ex.querySelector('.yt-btn');
-    if (!ytBtn) return;
-    const restBtn = document.createElement('button');
-    restBtn.className = 'timer-start-btn';
-    restBtn.textContent = '⏱ Rest';
-    restBtn.onclick = (e) => { e.stopPropagation(); startRestTimer(); };
-    ytBtn.parentNode.insertBefore(restBtn, ytBtn);
-  });
-});
+    if (ytBtn) ytBtn.remove();
+    const timerBtn = ex.querySelector('.timer-start-btn');
+    if (timerBtn) timerBtn.remove();
 
-// ─── WORKOUT LOGGER ───────────────────────────────────────────────
+    // Add done dot
+    const dot = document.createElement('div');
+    dot.className = 'ex-done-dot';
+    ex.appendChild(dot);
 
-let isLogging = false;
-const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B' };
+    // Add chevron
+    const chevron = document.createElement('div');
+    chevron.className = 'ex-chevron';
+    chevron.textContent = '▾';
+    ex.appendChild(chevron);
 
-function getExercisesForSession(sessionId) {
-  const session = document.getElementById('session-' + sessionId);
-  if (!session) return [];
-  const exercises = [];
-  session.querySelectorAll('.exercise').forEach(ex => {
-    if (ex.closest('.prehab-box')) return;
-    const name = ex.querySelector('.ex-name');
-    const sets = ex.querySelector('.ex-sets');
-    if (!name) return;
-    const setsMatch = sets ? sets.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
+    // Create accordion body
+    const accordion = document.createElement('div');
+    accordion.className = 'ex-accordion';
+    const inner = document.createElement('div');
+    inner.className = 'ex-accordion-inner';
+    accordion.appendChild(inner);
+    wrap.appendChild(accordion);
+
+    // Parse exercise info
+    const nameEl = ex.querySelector('.ex-name');
+    const setsEl = ex.querySelector('.ex-sets');
+    const setsMatch = setsEl ? setsEl.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
     const numSets = setsMatch ? parseInt(setsMatch[1]) : 3;
     const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
-    exercises.push({ name: name.textContent, numSets, targetReps, element: ex });
-  });
-  return exercises;
-}
+    const exName = nameEl ? nameEl.textContent : 'Exercise';
 
-function toggleLogging() {
-  if (isLogging) return;
-  const sessionId = getCurrentSessionId();
-  if (!sessionId || sessionId === 'overview' || sessionId === 'history') return;
-  startLogging(sessionId);
-}
-
-function startLogging(sessionId) {
-  isLogging = true;
-  const fab = document.getElementById('logFab');
-  fab.classList.add('logging');
-  fab.textContent = '🔴 Logging...';
-  document.getElementById('logSaveBar').classList.add('visible');
-
-  const exercises = getExercisesForSession(sessionId);
-  exercises.forEach((ex) => {
+    // Build set rows inside accordion
     const container = document.createElement('div');
     container.className = 'log-sets-container';
-    container.dataset.logExercise = ex.name;
+    container.dataset.logExercise = exName;
     container.style.position = 'relative';
 
-    for (let s = 0; s < ex.numSets; s++) {
-      container.appendChild(createSetRow(ex.targetReps, 0));
+    for (let s = 0; s < numSets; s++) {
+      container.appendChild(createSetRow(targetReps, 0, wrap));
     }
 
     // Add set button
     const addRow = document.createElement('div');
     addRow.className = 'log-add-set';
     addRow.innerHTML = '<span class="add-icon">+</span> Add set';
-    addRow.onclick = () => addSetToContainer(container, ex.targetReps);
+    addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
     container.appendChild(addRow);
 
-    // Prescription info
+    // Prescription
     const prescription = document.createElement('div');
     prescription.className = 'log-prescription';
-    const setsEl = ex.element.querySelector('.ex-sets');
     prescription.innerHTML = `<strong>Rx:</strong> ${setsEl ? setsEl.textContent : ''}`;
     container.appendChild(prescription);
 
     // Note
     const noteInput = document.createElement('textarea');
     noteInput.className = 'log-note';
-    noteInput.placeholder = 'Session note (optional)…';
-    noteInput.dataset.logNote = ex.name;
+    noteInput.placeholder = 'Note (optional)…';
+    noteInput.dataset.logNote = exName;
+    noteInput.onclick = (e) => e.stopPropagation();
     container.appendChild(noteInput);
 
-    ex.element.querySelector('.ex-body').appendChild(container);
+    inner.appendChild(container);
+
+    // Click to toggle
+    ex.onclick = (e) => {
+      if (e.target.closest('.log-context-menu')) return;
+      toggleAccordion(wrap);
+    };
   });
 }
 
-function createSetRow(defaultReps, defaultWeight) {
+function toggleAccordion(wrap) {
+  if (currentExpandedWrap && currentExpandedWrap !== wrap) {
+    currentExpandedWrap.classList.remove('expanded');
+  }
+  wrap.classList.toggle('expanded');
+  currentExpandedWrap = wrap.classList.contains('expanded') ? wrap : null;
+}
+
+function updateDoneState(wrap) {
+  const checks = wrap.querySelectorAll('.log-check.done');
+  const total = wrap.querySelectorAll('.log-set-row').length;
+  if (checks.length > 0) {
+    wrap.classList.add('has-done');
+  } else {
+    wrap.classList.remove('has-done');
+  }
+  // Update summary on the exercise row
+  let summary = wrap.querySelector('.ex-set-summary');
+  if (checks.length > 0) {
+    if (!summary) {
+      summary = document.createElement('span');
+      summary.className = 'ex-set-summary';
+      const setsEl = wrap.querySelector('.ex-sets');
+      if (setsEl) setsEl.appendChild(summary);
+    }
+    summary.textContent = ` · ${checks.length}/${total} done`;
+  } else if (summary) {
+    summary.remove();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupAccordions();
+  // Add save button at the bottom of each session (not overview, not history)
+  ['upperA','lowerA','upperB','lowerB'].forEach(id => {
+    const session = document.getElementById('session-' + id);
+    if (!session) return;
+    const btn = document.createElement('button');
+    btn.className = 'save-session-btn';
+    btn.textContent = '✓ Save Session to History';
+    btn.onclick = () => { saveSession(); btn.textContent = '✓ Saved!'; setTimeout(() => btn.textContent = '✓ Save Session to History', 2000); };
+    session.appendChild(btn);
+  });
+});
+
+// ─── WORKOUT LOGGER ───────────────────────────────────────────────
+
+const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B' };
+
+function createSetRow(defaultReps, defaultWeight, wrap) {
   const row = document.createElement('div');
   row.className = 'log-set-row';
 
@@ -2274,9 +2311,12 @@ function createSetRow(defaultReps, defaultWeight) {
   const check = document.createElement('button');
   check.className = 'log-check';
   check.textContent = '✓';
-  check.onclick = () => {
+  check.onclick = (e) => {
+    e.stopPropagation();
     check.classList.toggle('done');
     if (check.classList.contains('done')) startRestTimer();
+    const w = wrap || row.closest('.exercise-wrap');
+    if (w) updateDoneState(w);
   };
   row.appendChild(check);
 
@@ -2304,7 +2344,7 @@ function createPill(value, unit, field) {
   pill.dataset.field = field;
   pill.dataset.value = value || '';
   renderPillDisplay(pill, unit);
-  pill.onclick = () => editPill(pill, unit);
+  pill.onclick = (e) => { e.stopPropagation(); editPill(pill, unit); };
   return pill;
 }
 
@@ -2415,7 +2455,7 @@ function deleteSet(row, container) {
   row.remove();
 }
 
-function addSetToContainer(container, defaultReps) {
+function addSetToContainer(container, defaultReps, wrap) {
   const rows = container.querySelectorAll('.log-set-row');
   let w = '', r = defaultReps || '';
   if (rows.length > 0) {
@@ -2425,17 +2465,9 @@ function addSetToContainer(container, defaultReps) {
     if (wp && wp.dataset.value) w = wp.dataset.value;
     if (rp && rp.dataset.value) r = rp.dataset.value;
   }
-  const newRow = createSetRow(r, w);
+  const newRow = createSetRow(r, w, wrap);
   const addBtn = container.querySelector('.log-add-set');
   container.insertBefore(newRow, addBtn);
-}
-
-function cancelLogging() {
-  isLogging = false;
-  document.getElementById('logFab').classList.remove('logging');
-  document.getElementById('logFab').textContent = '📝 Log';
-  document.getElementById('logSaveBar').classList.remove('visible');
-  document.querySelectorAll('.log-sets-container').forEach(c => c.remove());
 }
 
 function saveSession() {
@@ -2465,7 +2497,7 @@ function saveSession() {
     }
   });
 
-  if (exercises.length === 0) { cancelLogging(); return; }
+  if (exercises.length === 0) return;
 
   const entry = {
     id: Date.now(),
@@ -2479,7 +2511,6 @@ function saveSession() {
   history.unshift(entry);
   localStorage.setItem('gym_history', JSON.stringify(history));
 
-  cancelLogging();
   renderHistory();
 }
 
@@ -2512,28 +2543,16 @@ function renderHistory() {
   }).join('');
 }
 
-// Update FAB visibility for log button
-function updateLogFabVisibility(tabId) {
-  const fab = document.getElementById('logFab');
-  if (tabId && tabId !== 'overview' && tabId !== 'history' && !isLogging) {
-    fab.classList.add('visible');
-  } else if (!isLogging) {
-    fab.classList.remove('visible');
-  }
-}
-
-// Patch showTab again to also handle log fab + history
+// Patch showTab to handle history tab
 const _showTabWithAdapt = showTab;
 showTab = function(tabId, btn) {
   _showTabWithAdapt(tabId, btn);
-  updateLogFabVisibility(tabId);
   if (tabId === 'history') renderHistory();
 };
 
 const _showBottomOrig = showBottom;
 showBottom = function(id, btn) {
   _showBottomOrig(id, btn);
-  updateLogFabVisibility(id);
   if (id === 'history') renderHistory();
 };
 
