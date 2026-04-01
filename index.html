@@ -654,90 +654,109 @@
 }
 .drawer-overlay.visible { display: block; }
 
-/* REST TIMER */
-.timer-overlay {
+/* REST TIMER BAR */
+.timer-bar {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 400;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 8px 12px;
   display: none;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  z-index: 180;
+  max-width: 600px;
+  margin: 0 auto;
+  height: 52px;
 }
-.timer-overlay.visible { display: flex; }
-.timer-ring {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
-.timer-ring svg {
-  transform: rotate(-90deg);
-  width: 200px;
-  height: 200px;
-}
-.timer-ring circle {
-  fill: none;
-  stroke-width: 8;
-  cx: 100;
-  cy: 100;
-  r: 90;
-}
-.timer-ring .track { stroke: var(--border); }
-.timer-ring .progress { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.3s; }
-.timer-time {
-  position: absolute;
-  inset: 0;
+.timer-bar.visible { display: flex; }
+.timer-bar.idle { opacity: 0.7; }
+.timer-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+.timer-play-btn.running { background: var(--accent); color: white; }
+.timer-bar-time {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 52px;
+  font-size: 22px;
   font-weight: 900;
   color: var(--text);
+  min-width: 48px;
+  text-align: center;
+  flex-shrink: 0;
 }
-.timer-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+.timer-bar-time.done { color: var(--green); }
+.timer-progress-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.timer-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.3s linear;
+}
+.timer-progress-fill.done { background: var(--green); }
+.timer-stop-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
   color: var(--muted);
-}
-.timer-presets {
+  font-size: 14px;
+  cursor: pointer;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
+.timer-presets-row {
+  position: fixed;
+  bottom: 112px;
+  left: 0;
+  right: 0;
+  display: none;
+  justify-content: center;
+  gap: 6px;
+  z-index: 181;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+.timer-presets-row.visible { display: flex; }
 .timer-preset {
   background: var(--card);
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
   cursor: pointer;
 }
 .timer-preset.active {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
-}
-.timer-dismiss {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 10px 28px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
 }
 .timer-start-btn {
   background: var(--card);
@@ -1934,53 +1953,94 @@ showTab = function(tabId, btn) {
   updateFabVisibility(tabId);
 };
 
-// ─── REST TIMER ───────────────────────────────────────────────────
+// ─── REST TIMER (BOTTOM BAR) ──────────────────────────────────────
 
 let timerDuration = 90;
 let timerRemaining = 0;
 let timerInterval = null;
-const circumference = 2 * Math.PI * 90;
+let timerPaused = false;
 
-function initTimerRing() {
-  const prog = document.getElementById('timerProgress');
-  prog.style.strokeDasharray = circumference;
-  prog.style.strokeDashoffset = 0;
+function showTimerBar() {
+  document.getElementById('timerBar').classList.add('visible');
+  document.getElementById('timerBar').classList.remove('idle');
+}
+
+function updateTimerBarDisplay() {
+  const min = Math.floor(timerRemaining / 60);
+  const sec = timerRemaining % 60;
+  const timeEl = document.getElementById('timerBarTime');
+  const fillEl = document.getElementById('timerProgressFill');
+  timeEl.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+  timeEl.classList.remove('done');
+  fillEl.classList.remove('done');
+  const pct = ((timerDuration - timerRemaining) / timerDuration) * 100;
+  fillEl.style.width = pct + '%';
 }
 
 function setTimerDuration(sec) {
   timerDuration = sec;
   document.querySelectorAll('.timer-preset').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-  if (!timerInterval) {
+  document.getElementById('timerPresetsRow').classList.remove('visible');
+  if (!timerInterval && !timerPaused) {
     timerRemaining = sec;
-    updateTimerDisplay();
+    updateTimerBarDisplay();
   }
 }
 
-function updateTimerDisplay() {
-  const min = Math.floor(timerRemaining / 60);
-  const sec = timerRemaining % 60;
-  document.getElementById('timerTime').textContent = `${min}:${sec.toString().padStart(2, '0')}`;
-  const prog = document.getElementById('timerProgress');
-  const fraction = timerRemaining / timerDuration;
-  prog.style.strokeDashoffset = circumference * (1 - fraction);
+function toggleTimerPresets() {
+  document.getElementById('timerPresetsRow').classList.toggle('visible');
 }
 
 function startRestTimer() {
   timerRemaining = timerDuration;
-  updateTimerDisplay();
-  document.getElementById('timerOverlay').classList.add('visible');
+  timerPaused = false;
+  showTimerBar();
+  updateTimerBarDisplay();
+  const playBtn = document.getElementById('timerPlayBtn');
+  playBtn.textContent = '⏸';
+  playBtn.classList.add('running');
 
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     timerRemaining--;
-    updateTimerDisplay();
+    updateTimerBarDisplay();
     if (timerRemaining <= 0) {
       clearInterval(timerInterval);
       timerInterval = null;
       timerDone();
     }
   }, 1000);
+}
+
+function toggleTimerPlayPause() {
+  if (timerInterval) {
+    // Pause
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerPaused = true;
+    const playBtn = document.getElementById('timerPlayBtn');
+    playBtn.textContent = '▶';
+    playBtn.classList.remove('running');
+  } else if (timerPaused && timerRemaining > 0) {
+    // Resume
+    timerPaused = false;
+    const playBtn = document.getElementById('timerPlayBtn');
+    playBtn.textContent = '⏸';
+    playBtn.classList.add('running');
+    timerInterval = setInterval(() => {
+      timerRemaining--;
+      updateTimerBarDisplay();
+      if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerDone();
+      }
+    }, 1000);
+  } else {
+    // Start fresh
+    startRestTimer();
+  }
 }
 
 function timerDone() {
@@ -1996,18 +2056,30 @@ function timerDone() {
     osc.start();
     osc.stop(ctx.currentTime + 0.3);
   } catch(e) {}
-  document.getElementById('timerTime').textContent = 'GO!';
-  document.getElementById('timerProgress').style.strokeDashoffset = circumference;
+  const timeEl = document.getElementById('timerBarTime');
+  const fillEl = document.getElementById('timerProgressFill');
+  timeEl.textContent = 'GO!';
+  timeEl.classList.add('done');
+  fillEl.style.width = '100%';
+  fillEl.classList.add('done');
+  const playBtn = document.getElementById('timerPlayBtn');
+  playBtn.textContent = '▶';
+  playBtn.classList.remove('running');
+  timerPaused = false;
 }
 
-function dismissTimer() {
+function stopTimer() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  document.getElementById('timerOverlay').classList.remove('visible');
+  timerPaused = false;
+  document.getElementById('timerBar').classList.remove('visible');
+  document.getElementById('timerPresetsRow').classList.remove('visible');
+  const playBtn = document.getElementById('timerPlayBtn');
+  playBtn.textContent = '▶';
+  playBtn.classList.remove('running');
 }
 
 // Inject rest timer buttons into every exercise card
 document.addEventListener('DOMContentLoaded', () => {
-  initTimerRing();
   document.querySelectorAll('.session .exercise').forEach(ex => {
     if (ex.closest('.prehab-box')) return;
     const ytBtn = ex.querySelector('.yt-btn');
@@ -2305,23 +2377,20 @@ renderHistory = function() {
 </script>
 
 
-<!-- REST TIMER OVERLAY -->
-<div class="timer-overlay" id="timerOverlay">
-  <div class="timer-label">REST TIMER</div>
-  <div class="timer-ring">
-    <svg viewBox="0 0 200 200">
-      <circle class="track" />
-      <circle class="progress" id="timerProgress" />
-    </svg>
-    <div class="timer-time" id="timerTime">1:30</div>
+<!-- REST TIMER BAR -->
+<div class="timer-bar" id="timerBar">
+  <button class="timer-play-btn" id="timerPlayBtn" onclick="toggleTimerPlayPause()">▶</button>
+  <div class="timer-bar-time" id="timerBarTime">1:30</div>
+  <div class="timer-progress-wrap" onclick="toggleTimerPresets()">
+    <div class="timer-progress-fill" id="timerProgressFill"></div>
   </div>
-  <div class="timer-presets">
-    <button class="timer-preset" onclick="setTimerDuration(60)">60s</button>
-    <button class="timer-preset active" onclick="setTimerDuration(90)">90s</button>
-    <button class="timer-preset" onclick="setTimerDuration(120)">120s</button>
-    <button class="timer-preset" onclick="setTimerDuration(180)">180s</button>
-  </div>
-  <button class="timer-dismiss" onclick="dismissTimer()">Dismiss</button>
+  <button class="timer-stop-btn" onclick="stopTimer()">✕</button>
+</div>
+<div class="timer-presets-row" id="timerPresetsRow">
+  <button class="timer-preset" onclick="setTimerDuration(60)">60s</button>
+  <button class="timer-preset active" onclick="setTimerDuration(90)">90s</button>
+  <button class="timer-preset" onclick="setTimerDuration(120)">120s</button>
+  <button class="timer-preset" onclick="setTimerDuration(180)">180s</button>
 </div>
 
 <!-- AI ADAPT FAB -->
