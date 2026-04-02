@@ -1317,6 +1317,244 @@
   cursor: pointer;
 }
 
+/* INJURIES PAGE */
+.injuries-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.injuries-page.visible { display: flex; }
+.injuries-page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 1;
+}
+.injuries-back {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.injuries-page-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.injuries-page-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.injuries-list { padding: 16px; flex: 1; }
+.zone-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.zone-card:active { border-color: var(--accent); }
+.zone-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.zone-info { flex: 1; min-width: 0; }
+.zone-name { font-size: 14px; font-weight: 600; }
+.zone-area { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.zone-score-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: white;
+  flex-shrink: 0;
+}
+.zone-trend { font-size: 14px; color: var(--muted); flex-shrink: 0; min-width: 16px; text-align: center; }
+.zone-chevron { color: var(--muted); font-size: 14px; flex-shrink: 0; }
+.add-zone-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+/* ZONE DETAIL */
+.zone-detail-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 502;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.zone-detail-page.visible { display: flex; }
+.zone-detail-content { padding: 16px; flex: 1; }
+.zone-detail-chart { height: 200px; margin-bottom: 16px; }
+.zone-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.zone-entry-row:last-child { border-bottom: none; }
+.zone-entry-date { color: var(--muted); }
+.zone-entry-score { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16px; }
+.zone-log-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* ADD ZONE SHEET */
+.addzone-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1c1c1e;
+  border-radius: 16px 16px 0 0;
+  z-index: 510;
+  transform: translateY(100%);
+  transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px 16px 28px;
+}
+.addzone-sheet.open { transform: translateY(0); }
+.addzone-input {
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  margin-bottom: 10px;
+}
+.addzone-input:focus { border-color: var(--accent); }
+.addzone-btns { display: flex; gap: 8px; }
+.addzone-save {
+  flex: 1;
+  padding: 12px;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.addzone-cancel {
+  padding: 12px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* UPDATE STATUS BTN in overview card */
+.injury-update-btn {
+  width: 100%;
+  padding: 10px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* SESSION IMPACT */
+.session-volume-warning {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ef4444;
+}
+.session-volume-warning .dismiss-x {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+.ex-injury-badge {
+  font-size: 10px;
+  margin-left: 6px;
+}
+.ex-planb-hint {
+  font-size: 11px;
+  color: #f97316;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: rgba(249,115,22,0.08);
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
 /* HISTORY VIEW */
 .history-card {
   background: var(--card);
@@ -1441,6 +1679,53 @@
   <div class="panel-item" data-block="recovery" onclick="selectBlock('recovery')">
     <div class="panel-item-label">Recovery</div>
     <div class="panel-item-sub">2-Week Deload Block</div>
+  </div>
+  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+    <div class="panel-item" onclick="openInjuriesPage(); closePanel();" style="border-bottom:none;">
+      <div class="panel-item-label">⚠️ Injuries</div>
+      <div class="panel-item-sub">Manage tracked zones</div>
+    </div>
+  </div>
+</div>
+
+<!-- INJURIES PAGE -->
+<div class="injuries-page" id="injuriesPage">
+  <div class="injuries-page-header">
+    <button class="injuries-back" onclick="closeInjuriesPage()">←</button>
+    <div>
+      <div class="injuries-page-title">Injuries</div>
+      <div class="injuries-page-sub">Manage your tracked zones</div>
+    </div>
+  </div>
+  <div class="injuries-list" id="injuriesList"></div>
+</div>
+
+<!-- ZONE DETAIL PAGE -->
+<div class="zone-detail-page" id="zoneDetailPage">
+  <div class="injuries-page-header">
+    <button class="injuries-back" onclick="closeZoneDetail()">←</button>
+    <div>
+      <div class="injuries-page-title" id="zoneDetailTitle"></div>
+      <div class="injuries-page-sub" id="zoneDetailSub"></div>
+    </div>
+  </div>
+  <div class="zone-detail-content">
+    <div class="zone-detail-chart"><canvas id="zoneChart"></canvas></div>
+    <div id="zoneEntries"></div>
+    <button class="zone-log-btn" id="zoneLogBtn" onclick="logSingleZone()">Log score now</button>
+  </div>
+</div>
+
+<!-- ADD ZONE SHEET -->
+<div class="picker-overlay" id="addZoneOverlay" onclick="closeAddZone()"></div>
+<div class="addzone-sheet" id="addZoneSheet">
+  <div class="picker-handle"></div>
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;margin-bottom:12px;">Add injury zone</div>
+  <input class="addzone-input" id="addZoneName" placeholder="Zone name (e.g. Lower back)" />
+  <input class="addzone-input" id="addZoneArea" placeholder="Body area (e.g. Lumbar region)" />
+  <div class="addzone-btns">
+    <button class="addzone-cancel" onclick="closeAddZone()">Cancel</button>
+    <button class="addzone-save" onclick="saveNewZone()">Add</button>
   </div>
 </div>
 
@@ -2494,7 +2779,8 @@ function buildInjuryBanner(scores) {
   if (!scores) return '<span style="color:var(--muted)">No check-in yet — scores will appear after your first session</span>';
   let html = '';
   let allClear = true;
-  INJURY_ZONES.forEach(z => {
+  const allZones = typeof getZones === 'function' ? getZones() : INJURY_ZONES;
+  allZones.forEach(z => {
     const s = scores[z.key] ?? 0;
     if (s >= 5) {
       html += `<div class="inj-warn" style="color:#ef4444">🛑 ${z.name} flaring — consider skipping or consulting Ambrose</div>`;
@@ -2541,7 +2827,8 @@ function renderInjuryDashboard() {
   const el = document.getElementById('injuryDashboard');
   if (!el) return;
 
-  const listRows = INJURY_ZONES.map(z => {
+  const allZones = typeof getZones === 'function' ? getZones() : INJURY_ZONES;
+  const listRows = allZones.map(z => {
     const s = scores ? (scores[z.key] ?? 0) : null;
     const color = s !== null ? scoreColor(s) : 'var(--muted)';
     const trend = s !== null ? getTrend(z.key) : '→';
@@ -2560,6 +2847,7 @@ function renderInjuryDashboard() {
       <div class="injury-list">${listRows}</div>
     </div>
     <div class="injury-banner">${buildInjuryBanner(scores)}</div>
+    <button class="injury-update-btn" onclick="showCheckin(null, null)">Update injury status</button>
   `;
 }
 
@@ -2582,12 +2870,13 @@ function showCheckin(tabId, btn) {
   const scores = getLatestScores() || { wrist: 0, shoulder: 0, elbow: 0, knee: 0 };
   const container = document.getElementById('checkinSliders');
 
-  container.innerHTML = INJURY_ZONES.map(z => {
+  const zones = getZones();
+  container.innerHTML = zones.map(z => {
     const val = scores[z.key] ?? 0;
     return `<div class="checkin-slider-row">
       <div class="checkin-zone">${z.name}</div>
       <input class="checkin-range" type="range" min="0" max="10" step="1" value="${val}" data-zone="${z.key}"
-        oninput="updateCheckinSlider(this)" />
+        oninput="updateCheckinSlider(this)" style="accent-color:${scoreColor(val)}" />
       <div class="checkin-val" id="checkin-val-${z.key}" style="color:${scoreColor(val)}">${val}</div>
     </div>`;
   }).join('');
@@ -2655,6 +2944,197 @@ function skipCheckin() {
 function closeCheckin() {
   document.getElementById('checkinOverlay').classList.remove('visible');
   document.getElementById('checkinSheet').classList.remove('open');
+}
+
+// ─── INJURIES PAGE ────────────────────────────────────────────────
+
+const DEFAULT_ZONES = [
+  { key: 'wrist', name: 'R. Wrist (TFCC)', area: 'Right forearm / wrist', isDefault: true },
+  { key: 'shoulder', name: 'L. Shoulder', area: 'Left shoulder / rotator cuff', isDefault: true },
+  { key: 'elbow', name: 'R. Elbow (golfer\'s)', area: 'Right medial elbow', isDefault: true },
+  { key: 'knee', name: 'L. Knee (patellar)', area: 'Left knee / patellar tendon', isDefault: true },
+];
+
+function getZones() {
+  const custom = JSON.parse(localStorage.getItem('gymapp_custom_zones') || '[]');
+  return [...DEFAULT_ZONES, ...custom];
+}
+
+function getZoneScore(key) {
+  const scores = getLatestScores();
+  return scores ? (scores[key] ?? 0) : null;
+}
+
+function getZoneTrend(key) {
+  const log = getInjuryLog();
+  if (log.length < 2) return '→';
+  const cur = log[log.length - 1][key] ?? 0;
+  const prev = log[log.length - 2][key] ?? 0;
+  if (cur > prev) return '↑';
+  if (cur < prev) return '↓';
+  return '→';
+}
+
+function openInjuriesPage() {
+  renderInjuriesList();
+  document.getElementById('injuriesPage').classList.add('visible');
+}
+
+function closeInjuriesPage() {
+  document.getElementById('injuriesPage').classList.remove('visible');
+}
+
+function renderInjuriesList() {
+  const zones = getZones();
+  const list = document.getElementById('injuriesList');
+  list.innerHTML = zones.map(z => {
+    const s = getZoneScore(z.key);
+    const color = s !== null ? scoreColor(s) : 'var(--muted)';
+    const trend = s !== null ? getZoneTrend(z.key) : '→';
+    return `<div class="zone-card" onclick="openZoneDetail('${z.key}')" data-zone-key="${z.key}">
+      <div class="zone-dot" style="background:${color}"></div>
+      <div class="zone-info">
+        <div class="zone-name">${z.name}</div>
+        <div class="zone-area">${z.area}</div>
+      </div>
+      <div class="zone-score-badge" style="background:${color}">${s !== null ? s : '—'}</div>
+      <div class="zone-trend">${trend}</div>
+      <div class="zone-chevron">›</div>
+    </div>`;
+  }).join('') + '<button class="add-zone-btn" onclick="openAddZone()">+ Add injury zone</button>';
+}
+
+// Zone detail
+let currentDetailZone = null;
+let zoneDetailChart = null;
+
+function openZoneDetail(key) {
+  currentDetailZone = key;
+  const zones = getZones();
+  const z = zones.find(zz => zz.key === key);
+  if (!z) return;
+  document.getElementById('zoneDetailTitle').textContent = z.name;
+  document.getElementById('zoneDetailSub').textContent = z.area;
+
+  const log = getInjuryLog();
+  const entries = log.filter(e => e[key] !== undefined).slice(-10);
+
+  // Chart
+  const ctx = document.getElementById('zoneChart').getContext('2d');
+  if (zoneDetailChart) zoneDetailChart.destroy();
+  const color = entries.length ? scoreColor(entries[entries.length - 1][key]) : '#888';
+  zoneDetailChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: entries.map(e => e.date.slice(5)),
+      datasets: [{
+        label: z.name,
+        data: entries.map(e => e[key]),
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 4,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, max: 10, ticks: { color: '#888', stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { ticks: { color: '#888', font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // Entries list
+  const last5 = entries.slice(-5).reverse();
+  document.getElementById('zoneEntries').innerHTML = last5.map(e => `
+    <div class="zone-entry-row">
+      <span class="zone-entry-date">${e.date} · ${e.sessionId || 'manual'}</span>
+      <span class="zone-entry-score" style="color:${scoreColor(e[key])}">${e[key]}/10</span>
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No entries yet</div>';
+
+  document.getElementById('zoneDetailPage').classList.add('visible');
+}
+
+function closeZoneDetail() {
+  document.getElementById('zoneDetailPage').classList.remove('visible');
+  currentDetailZone = null;
+}
+
+function logSingleZone() {
+  closeZoneDetail();
+  closeInjuriesPage();
+  showCheckin(null, null);
+}
+
+// Add / remove zones
+function openAddZone() {
+  document.getElementById('addZoneName').value = '';
+  document.getElementById('addZoneArea').value = '';
+  document.getElementById('addZoneOverlay').classList.add('visible');
+  document.getElementById('addZoneSheet').classList.add('open');
+}
+
+function closeAddZone() {
+  document.getElementById('addZoneOverlay').classList.remove('visible');
+  document.getElementById('addZoneSheet').classList.remove('open');
+}
+
+function saveNewZone() {
+  const name = document.getElementById('addZoneName').value.trim();
+  const area = document.getElementById('addZoneArea').value.trim();
+  if (!name) return;
+  const key = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const custom = JSON.parse(localStorage.getItem('gymapp_custom_zones') || '[]');
+  if (custom.find(z => z.key === key) || DEFAULT_ZONES.find(z => z.key === key)) return;
+  custom.push({ key, name, area: area || name, isDefault: false });
+  localStorage.setItem('gymapp_custom_zones', JSON.stringify(custom));
+  closeAddZone();
+  renderInjuriesList();
+}
+
+// ─── SESSION IMPACT ───────────────────────────────────────────────
+
+const INJURY_EXERCISE_MAP = {
+  wrist: ['press', 'curl', 'incline', 'bench', 'overhead', 'extension', 'hammer'],
+  shoulder: ['press', 'incline', 'bench', 'pulldown', 'overhead', 'landmine', 'y-raise'],
+  elbow: ['row', 'pull', 'curl', 'deadlift', 'rdl', 'face pull', 'cable'],
+  knee: ['squat', 'hack', 'leg press', 'split', 'lunge', 'extension', 'leg ext'],
+};
+
+const PLAN_B_MAP = {
+  wrist: 'neutral grip pressing, wrist brace recommended',
+  shoulder: 'DB press only, avoid fixed-path machines',
+  elbow: 'neutral grip pulling only, no supinated curls',
+  knee: 'belt squat or hack squat, controlled tempo',
+};
+
+function applySessionImpact() {
+  const scores = getLatestScores();
+  if (!scores) return;
+
+  // Volume warning for 5+ zones
+  document.querySelectorAll('.session-volume-warning').forEach(el => el.remove());
+  INJURY_ZONES.forEach(z => {
+    const s = scores[z.key] ?? 0;
+    if (s >= 5) {
+      ['upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(sid => {
+        const session = document.getElementById('session-' + sid);
+        if (!session) return;
+        const header = session.querySelector('.session-header');
+        if (!header) return;
+        if (session.querySelector('.session-volume-warning')) return;
+        const banner = document.createElement('div');
+        banner.className = 'session-volume-warning';
+        banner.innerHTML = `🛑 ${z.name} is flaring. Consider reducing volume or skipping affected exercises. <button class="dismiss-x" onclick="this.parentElement.remove()">×</button>`;
+        header.after(banner);
+      });
+    }
+  });
 }
 
 // ─── DYNAMIC OVERVIEW ─────────────────────────────────────────────
@@ -3639,6 +4119,7 @@ showTab = function(tabId, btn) {
   }
   _showTabWithAdapt(tabId, btn);
   if (tabId === 'history') renderHistory();
+  if (SESSION_TABS.includes(tabId)) applySessionImpact();
 };
 
 // ─── PROGRESS CHARTS ──────────────────────────────────────────────
