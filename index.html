@@ -16,19 +16,20 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0e0e0f;
-    --card: #1a1a1c;
-    --card2: #222224;
-    --accent: #f4511e;
-    --accent2: #ff7043;
-    --green: #00e676;
-    --yellow: #ffd740;
-    --blue: #40c4ff;
-    --purple: #b388ff;
-    --accent-olive: #c8d46a;
-    --text: #f0f0f0;
-    --muted: #888;
-    --border: #2a2a2d;
+    --bg: #0A0A0A;
+    --card: #1C1C1E;
+    --card2: #2C2C2E;
+    --accent: #E2F16B;
+    --accent2: #E2F16B;
+    --green: #30D158;
+    --yellow: #FFD60A;
+    --blue: #64D2FF;
+    --purple: #BF5AF2;
+    --accent-olive: #E2F16B;
+    --text: #FFFFFF;
+    --muted: #8E8E93;
+    --border: #38383A;
+    --danger: #FF453A;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
@@ -215,7 +216,7 @@
   .tab.active {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(244,81,30,0.1);
+    background: rgba(226,241,107,0.1);
   }
 
   /* MAIN CONTENT */
@@ -275,9 +276,9 @@
     text-transform: uppercase;
   }
 
-  .badge-time { background: rgba(64,196,255,0.15); color: var(--blue); }
-  .badge-intensity { background: rgba(255,215,64,0.15); color: var(--yellow); }
-  .badge-focus { background: rgba(179,136,255,0.15); color: var(--purple); }
+  .badge-time { background: rgba(100,210,255,0.15); color: var(--blue); }
+  .badge-intensity { background: rgba(255,214,10,0.15); color: var(--yellow); }
+  .badge-focus { background: rgba(191,90,242,0.15); color: var(--purple); }
 
   /* SECTIONS */
   .section {
@@ -310,8 +311,8 @@
   /* EXERCISE CARDS */
   .exercise {
     background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    border: none;
+    border-radius: 16px;
     padding: 14px 16px;
     margin-bottom: 8px;
     display: flex;
@@ -324,10 +325,9 @@
 
   /* ACCORDION EXERCISE */
   .exercise-wrap { margin-bottom: 8px; }
-  .exercise-wrap .exercise { margin-bottom: 0; border-radius: 12px; }
+  .exercise-wrap .exercise { margin-bottom: 0; border-radius: 16px; }
   .exercise-wrap.expanded .exercise {
-    border-radius: 12px 12px 0 0;
-    border-bottom-color: transparent;
+    border-radius: 16px 16px 0 0;
   }
 
   /* Indicator dot (inactive = gray, active = yellow check) */
@@ -347,7 +347,7 @@
   .exercise-wrap.expanded .ex-indicator-dot {
     width: 16px;
     height: 16px;
-    background: var(--accent-olive);
+    background: var(--accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -402,14 +402,14 @@
     transition: color 0.2s;
   }
   .exercise-wrap.expanded .ex-name {
-    color: var(--accent-olive);
+    color: var(--accent);
   }
 
   .ex-accordion {
     background: var(--card);
-    border: 1px solid var(--border);
+    border: none;
     border-top: none;
-    border-radius: 0 0 12px 12px;
+    border-radius: 0 0 16px 16px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
@@ -1013,7 +1013,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: 3px solid var(--accent-olive);
+  border-left: 3px solid var(--accent);
   padding-left: 8px;
   align-self: stretch;
 }
@@ -1034,10 +1034,10 @@
 }
 .log-check:active { opacity: 0.7; }
 .log-check.done {
-  background: var(--accent-olive);
-  color: #1a1a1c;
+  background: var(--accent);
+  color: #0A0A0A;
 }
-.log-check.done svg { stroke: #1a1a1c; }
+.log-check.done svg { stroke: #0A0A0A; }
 .log-check svg {
   width: 20px;
   height: 20px;
@@ -1206,7 +1206,7 @@
   height: 52px;
   border: none;
   border-radius: 26px;
-  background: #5c6b3a;
+  background: var(--accent);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1218,7 +1218,7 @@
 .picker-confirm svg {
   width: 28px;
   height: 28px;
-  stroke: #fff;
+  stroke: #0A0A0A;
   stroke-width: 2.5;
   fill: none;
 }
@@ -4547,10 +4547,6 @@ function renderHistory() {
 const _showTabWithAdapt = showTab;
 const SESSION_TABS = ['upperA','lowerA','upperB','lowerB','recA','recB','recC'];
 showTab = function(tabId, btn) {
-  if (SESSION_TABS.includes(tabId) && !checkedInToday()) {
-    showCheckin(tabId, btn);
-    return;
-  }
   _showTabWithAdapt(tabId, btn);
   if (tabId === 'history') renderHistory();
   if (SESSION_TABS.includes(tabId)) applySessionImpact();
