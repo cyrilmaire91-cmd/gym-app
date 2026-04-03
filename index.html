@@ -1362,6 +1362,41 @@
   color: var(--muted);
   margin-top: 2px;
 }
+
+/* LUMBAGO ROUTINE PAGE */
+.lumbago-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 80px;
+}
+.lumbago-page.visible { display: flex; }
+.lumbago-section-tag {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+.lumbago-section-tag.mobility { background: rgba(64,196,255,0.15); color: var(--blue); }
+.lumbago-section-tag.stability { background: rgba(255,152,0,0.15); color: #ff9800; }
+.lumbago-section-tag.relax { background: rgba(0,230,118,0.15); color: var(--green); }
+.lumbago-note {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  padding: 4px 16px 8px;
+  line-height: 1.4;
+}
+
 .injuries-list { padding: 16px; flex: 1; }
 .zone-card {
   background: var(--card);
@@ -1686,6 +1721,12 @@
       <div class="panel-item-sub">Manage tracked zones</div>
     </div>
   </div>
+  <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px;">
+    <div class="panel-item" onclick="openLumbagoPage(); closePanel();" style="border-bottom:none;">
+      <div class="panel-item-label">🧘 Lumbago Routine</div>
+      <div class="panel-item-sub">Evening low-back rehab · 10–12 min</div>
+    </div>
+  </div>
 </div>
 
 <!-- INJURIES PAGE -->
@@ -1713,6 +1754,107 @@
     <div class="zone-detail-chart"><canvas id="zoneChart"></canvas></div>
     <div id="zoneEntries"></div>
     <button class="zone-log-btn" id="zoneLogBtn" onclick="logSingleZone()">Log score now</button>
+  </div>
+</div>
+
+<!-- LUMBAGO ROUTINE PAGE -->
+<div class="lumbago-page" id="lumbagoPage">
+  <div class="injuries-page-header">
+    <button class="injuries-back" onclick="closeLumbagoPage()">←</button>
+    <div>
+      <div class="injuries-page-title">Lumbago Routine</div>
+      <div class="injuries-page-sub">Routine soir — Lombalgie / Bas du dos · 10–12 min</div>
+    </div>
+  </div>
+
+  <div style="padding:16px;">
+    <div class="session-meta" style="margin-bottom:16px;">
+      <span class="badge badge-time">⏱ 10–12 min</span>
+      <span class="badge badge-focus">🧘 Au sol, pas d'équipement</span>
+      <span class="badge badge-intensity">🌙 Soir ou post-vélo</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span><span class="lumbago-section-tag mobility">🔵 Mobilité</span> Relâcher les tensions</span></div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🦵</div>
+        <div class="ex-body">
+          <div class="ex-name">Knees to Chest</div>
+          <div class="ex-sets"><strong>1 × 60</strong> · Genoux ramenés, bascule douce D/G</div>
+          <div class="ex-note">Allongé sur le dos, ramène les deux genoux vers la poitrine, mains derrière les cuisses. Très doux, aucune douleur.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=knees+to+chest+stretch+low+back" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🐱</div>
+        <div class="ex-body">
+          <div class="ex-name">Cat-Cow</div>
+          <div class="ex-sets"><strong>1 × 10</strong> · Lentes, inspiration dos creux, expiration dos rond</div>
+          <div class="ex-note">À quatre pattes. Inspiration → dos creux (cow). Expiration → dos rond (cat). Lent et contrôlé.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=cat+cow+stretch+low+back+pain" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🌀</div>
+        <div class="ex-body">
+          <div class="ex-name">Thread the Needle</div>
+          <div class="ex-sets"><strong>2 × 8</strong> · Rotation thoracique, 8 reps chaque côté</div>
+          <div class="ex-note">À quatre pattes, glisse un bras sous l'autre jusqu'au sol. Contrepoids au vélo qui fige la thoracique en flexion.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=thread+the+needle+thoracic+rotation+stretch" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🧘</div>
+        <div class="ex-body">
+          <div class="ex-name">90/90 Hip Stretch</div>
+          <div class="ex-sets"><strong>2 × 45</strong> · 45 sec chaque côté</div>
+          <div class="ex-note">Assis au sol, jambes en 90/90. Penche-toi vers la jambe avant. Utile aussi pour la mobilité de hanche Muay Thai.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=90+90+hip+stretch+mobility" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span><span class="lumbago-section-tag stability">🟠 Stabilisation</span> Activer sans charger</span></div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🪲</div>
+        <div class="ex-body">
+          <div class="ex-name">Dead Bug</div>
+          <div class="ex-sets"><strong>2 × 8</strong> · 8 reps chaque côté, lent et contrôlé</div>
+          <div class="ex-note">Allongé sur le dos, lombaires collées au sol. Bras tendus, genoux à 90°. Bras droit + jambe gauche simultanément, sans creuser le bas du dos.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=dead+bug+exercise+core+low+back" target="_blank">▶</a>
+      </div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🐦</div>
+        <div class="ex-body">
+          <div class="ex-name">Bird Dog</div>
+          <div class="ex-sets"><strong>2 × 8</strong> · 8 reps chaque côté, tiens 2 sec</div>
+          <div class="ex-note">À quatre pattes, dos plat. Bras droit + jambe gauche, tiens 2 sec, reviens sans rotation du bassin.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=bird+dog+exercise+core+stability" target="_blank">▶</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span><span class="lumbago-section-tag relax">🟢 Détente finale</span></span></div>
+
+      <div class="exercise" data-lumbago="1">
+        <div class="ex-icon">🙏</div>
+        <div class="ex-body">
+          <div class="ex-name">Child's Pose</div>
+          <div class="ex-sets"><strong>1 × 90</strong> · 60–90 sec tenu, respiration abdominale</div>
+          <div class="ex-note">Genoux écartés, bras tendus devant, front au sol. Respiration abdominale profonde.</div>
+        </div>
+        <a class="yt-btn" href="https://www.youtube.com/results?search_query=child+pose+stretch+relaxation+low+back" target="_blank">▶</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2982,6 +3124,113 @@ function openInjuriesPage() {
 
 function closeInjuriesPage() {
   document.getElementById('injuriesPage').classList.remove('visible');
+}
+
+function openLumbagoPage() {
+  document.getElementById('lumbagoPage').classList.add('visible');
+  setupLumbagoAccordions();
+}
+
+function closeLumbagoPage() {
+  document.getElementById('lumbagoPage').classList.remove('visible');
+}
+
+function setupLumbagoAccordions() {
+  document.querySelectorAll('#lumbagoPage .exercise').forEach(ex => {
+    if (ex.closest('.exercise-wrap')) return;
+
+    const parent = ex.parentNode;
+    const wrap = document.createElement('div');
+    wrap.className = 'exercise-wrap';
+    parent.insertBefore(wrap, ex);
+    wrap.appendChild(ex);
+
+    const origYtBtn = ex.querySelector('.yt-btn');
+    if (origYtBtn) { ex.dataset.ytHref = origYtBtn.href; origYtBtn.remove(); }
+
+    const dot = document.createElement('div');
+    dot.className = 'ex-done-dot';
+    ex.appendChild(dot);
+
+    const chevron = document.createElement('div');
+    chevron.className = 'ex-chevron';
+    chevron.textContent = '▾';
+    ex.appendChild(chevron);
+
+    const accordion = document.createElement('div');
+    accordion.className = 'ex-accordion';
+    const inner = document.createElement('div');
+    inner.className = 'ex-accordion-inner';
+    accordion.appendChild(inner);
+    wrap.appendChild(accordion);
+
+    const nameEl = ex.querySelector('.ex-name');
+    const setsEl = ex.querySelector('.ex-sets');
+    const setsMatch = setsEl ? setsEl.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
+    const numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
+    const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
+    const exName = nameEl ? nameEl.textContent : 'Exercise';
+
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'ex-expand-header';
+    headerDiv.onclick = (e) => e.stopPropagation();
+
+    const hName = document.createElement('div');
+    hName.className = 'ex-expand-name';
+    hName.textContent = exName;
+    headerDiv.appendChild(hName);
+
+    const badgesDiv = document.createElement('div');
+    badgesDiv.className = 'ex-expand-badges';
+    // For timed exercises, show duration badge
+    const isTimedEx = setsEl && (setsEl.textContent.includes('sec') || setsEl.textContent.includes('tenu'));
+    if (isTimedEx) {
+      badgesDiv.innerHTML += `<span class="ex-expand-badge badge-rest">TIMED</span>`;
+    }
+    headerDiv.appendChild(badgesDiv);
+
+    const ytHref = ex.dataset.ytHref;
+    if (ytHref) {
+      const vidLink = document.createElement('a');
+      vidLink.className = 'ex-video-link';
+      vidLink.href = ytHref;
+      vidLink.target = '_blank';
+      vidLink.textContent = '▶ Video guide';
+      vidLink.onclick = (e) => e.stopPropagation();
+      badgesDiv.appendChild(vidLink);
+    }
+
+    inner.appendChild(headerDiv);
+
+    const container = document.createElement('div');
+    container.className = 'log-sets-container';
+    container.dataset.logExercise = 'lumbago_' + exName;
+    container.onclick = (e) => e.stopPropagation();
+
+    for (let s = 0; s < numSets; s++) {
+      container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null));
+    }
+
+    const addRow = document.createElement('div');
+    addRow.className = 'log-add-set';
+    addRow.innerHTML = '<span class="add-icon">+</span> Add set';
+    addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
+    container.appendChild(addRow);
+
+    const noteInput = document.createElement('textarea');
+    noteInput.className = 'log-note';
+    noteInput.placeholder = 'Add a note…';
+    noteInput.dataset.logNote = 'lumbago_' + exName;
+    noteInput.onclick = (e) => e.stopPropagation();
+    container.appendChild(noteInput);
+
+    inner.appendChild(container);
+
+    ex.onclick = (e) => {
+      if (e.target.closest('.log-context-menu')) return;
+      toggleAccordion(wrap);
+    };
+  });
 }
 
 function renderInjuriesList() {
