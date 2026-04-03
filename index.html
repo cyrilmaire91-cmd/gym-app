@@ -25,6 +25,7 @@
     --yellow: #ffd740;
     --blue: #40c4ff;
     --purple: #b388ff;
+    --accent-olive: #c8d46a;
     --text: #f0f0f0;
     --muted: #888;
     --border: #2a2a2d;
@@ -229,11 +230,7 @@
 
   /* SESSION HEADER */
   .session-header {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
-    border-radius: 10px;
-    padding: 14px 16px;
+    padding: 24px; 0px;
     margin-bottom: 14px;
     position: relative;
   }
@@ -246,7 +243,7 @@
 
   .session-header h2 {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 22px;
+    font-size: 32px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -314,59 +311,115 @@
   .exercise {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
+    border-radius: 12px;
+    padding: 14px 16px;
     margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
   }
-
-  .exercise { cursor: pointer; }
   .exercise:active { border-color: var(--accent); }
 
   /* ACCORDION EXERCISE */
   .exercise-wrap { margin-bottom: 8px; }
-  .exercise-wrap .exercise { margin-bottom: 0; border-radius: 10px 10px 10px 10px; }
-  .exercise-wrap.expanded .exercise { border-radius: 10px 10px 0 0; border-bottom-color: transparent; }
-  .ex-chevron {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+  .exercise-wrap .exercise { margin-bottom: 0; border-radius: 12px; }
+  .exercise-wrap.expanded .exercise {
+    border-radius: 12px 12px 0 0;
+    border-bottom-color: transparent;
+  }
+
+  /* Indicator dot (inactive = gray, active = yellow check) */
+  .ex-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+  }
+  .ex-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #555;
+    transition: background 0.2s;
+  }
+  .exercise-wrap.expanded .ex-indicator-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--accent-olive);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    color: var(--muted);
-    transition: transform 0.2s ease;
   }
-  .exercise-wrap.expanded .ex-chevron { transform: rotate(180deg); }
+  .ex-indicator-dot svg {
+    display: none;
+    width: 10px;
+    height: 10px;
+    stroke: #fff;
+    stroke-width: 2.5;
+    fill: none;
+  }
+  .exercise-wrap.expanded .ex-indicator-dot svg { display: block; }
+
+  /* Done state overrides */
+  .exercise-wrap.has-done .ex-indicator-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .exercise-wrap.has-done .ex-indicator-dot svg { display: block; }
+
+  .ex-set-summary {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Ellipsis menu */
+  .ex-more-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    letter-spacing: 2px;
+  }
+  .ex-more-btn:active { background: var(--card2); }
+
+  /* Title color transitions */
+  .exercise-wrap .ex-name {
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .exercise-wrap.expanded .ex-name {
+    color: var(--accent-olive);
+  }
+
   .ex-accordion {
     background: var(--card);
     border: 1px solid var(--border);
     border-top: none;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 12px 12px;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.25s ease;
+    transition: max-height 0.3s ease;
   }
   .exercise-wrap.expanded .ex-accordion { max-height: 800px; }
   .ex-accordion-inner { padding: 10px 14px 14px; }
-  .ex-done-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-    display: none;
-  }
-  .exercise-wrap.has-done .ex-done-dot { display: block; }
-  .ex-set-summary {
-    font-size: 11px;
-    color: var(--muted);
-    margin-left: 4px;
-  }
+
+  /* Legacy compat — hide old elements if still in DOM */
+  .ex-done-dot { display: none; }
+  .ex-chevron { display: none; }
 
   .ex-icon {
     width: 38px;
@@ -383,7 +436,7 @@
   .ex-body { flex: 1; min-width: 0; }
 
   .ex-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
@@ -919,43 +972,98 @@
 
 /* SET ROWS */
 .log-sets-container { margin-top: 0; }
+
+/* Column headers */
+.log-set-headers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0 6px;
+  margin-bottom: 2px;
+}
+.log-set-headers .header-spacer { width: 60px; flex-shrink: 0; }
+.log-set-headers .header-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+.log-set-headers .header-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .log-set-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: 48px;
+  min-height: 52px;
   padding: 4px 0;
   border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Check button — prominent with accent-olive border */
+.log-check-wrap {
+  width: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 3px solid var(--accent-olive);
+  padding-left: 8px;
+  align-self: stretch;
 }
 .log-check {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: none;
   background: var(--card2);
   color: #555;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
 }
+.log-check:active { opacity: 0.7; }
 .log-check.done {
-  background: var(--accent);
-  color: white;
+  background: var(--accent-olive);
+  color: #1a1a1c;
 }
-.log-pill {
+.log-check.done svg { stroke: #1a1a1c; }
+.log-check svg {
+  width: 20px;
+  height: 20px;
+  stroke: #555;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+/* Input grid — 3 columns */
+.log-input-grid {
   flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.log-pill {
   min-height: 44px;
   background: var(--card2);
   border: none;
-  border-radius: 999px;
+  border-radius: 10px;
   color: var(--text);
   font-family: 'Barlow', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  padding: 0 16px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -963,6 +1071,7 @@
   white-space: nowrap;
   gap: 4px;
 }
+.log-pill:active { opacity: 0.6; }
 .log-pill .pill-unit {
   font-size: 11px;
   color: var(--muted);
@@ -986,6 +1095,7 @@
 .log-delete-btn.hidden { visibility: hidden; }
 
 /* NUMBER PICKER SHEET */
+/* PICKER OVERLAY */
 .picker-overlay {
   position: fixed;
   inset: 0;
@@ -997,92 +1107,120 @@
 }
 .picker-overlay.visible { opacity: 1; pointer-events: auto; }
 .picker-overlay.closing { opacity: 0; transition: opacity 240ms ease; }
+
+/* PICKER SHEET — keypad style */
 .picker-sheet {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #1c1c1e;
+  background: #171717;
   border-radius: 16px 16px 0 0;
   z-index: 501;
   transform: translateY(100%);
-  transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1), bottom 0.15s ease;
+  transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
   max-width: 600px;
   margin: 0 auto;
-  padding: 10px 16px 10px;
+  padding: 10px 20px 24px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .picker-sheet.open { transform: translateY(0); }
-.picker-sheet.closing { transform: translateY(100%); transition: transform 240ms cubic-bezier(0.32, 0, 0.67, 0), bottom 0.15s ease; }
+.picker-sheet.closing { transform: translateY(100%); transition: transform 240ms cubic-bezier(0.32, 0, 0.67, 0); }
+
 .picker-handle {
   width: 36px;
   height: 4px;
   background: #555;
   border-radius: 2px;
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
 }
+
 .picker-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #a3a3a3;
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
-.picker-drum {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 8px;
-}
-.picker-adj {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--card2);
-  border: none;
+
+.picker-display {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px;
+  font-weight: 600;
   color: var(--text);
-  font-size: 24px;
-  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  min-height: 64px;
+  margin-bottom: 16px;
+}
+.picker-display.empty { color: #444; }
+
+/* 3×4 keypad grid */
+.picker-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 16px;
+}
+.picker-key {
+  height: 58px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 80ms ease;
 }
-.picker-adj:active { background: var(--card); }
-.picker-values {
+.picker-key:active { opacity: 0.4; }
+.picker-key.empty-key {
+  pointer-events: none;
+  visibility: hidden;
+}
+.picker-key svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--text);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Confirm button */
+.picker-confirm {
+  width: 100%;
+  max-width: 320px;
+  height: 52px;
+  border: none;
+  border-radius: 26px;
+  background: #5c6b3a;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  transition: opacity 150ms ease;
 }
-.picker-val-adj {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #444;
-}
-.picker-val-main {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 40px;
-  font-weight: 900;
-  color: var(--text);
-  line-height: 1;
-}
-.picker-val-unit {
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 600;
-  margin-top: 2px;
-}
-.picker-hidden-input {
-  position: absolute;
-  left: -9999px;
-  opacity: 0;
-  width: 1px;
-  height: 1px;
+.picker-confirm:active:not(:disabled) { opacity: 0.7; }
+.picker-confirm:disabled { opacity: 0.3; cursor: not-allowed; }
+.picker-confirm svg {
+  width: 28px;
+  height: 28px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
 }
 .log-add-set {
   display: flex;
@@ -2778,20 +2916,30 @@
 
 <!-- NUMBER PICKER SHEET -->
 <div class="picker-overlay" id="pickerOverlay" onclick="closePicker()"></div>
-<div class="picker-sheet" id="pickerSheet">
+<div class="picker-sheet" id="pickerSheet" role="dialog" aria-label="Number input">
   <div class="picker-handle"></div>
-  <div class="picker-label" id="pickerLabel">WEIGHT (KG)</div>
-  <div class="picker-drum">
-    <button class="picker-adj" onclick="pickerAdjust(-1)" style="touch-action:manipulation">−</button>
-    <div class="picker-values">
-      <div class="picker-val-adj" id="pickerPrev">—</div>
-      <div class="picker-val-main" id="pickerMain">0</div>
-      <div class="picker-val-adj" id="pickerNext">—</div>
-      <div class="picker-val-unit" id="pickerUnit">kg</div>
-    </div>
-    <button class="picker-adj" onclick="pickerAdjust(1)" style="touch-action:manipulation">+</button>
+  <div class="picker-label" id="pickerLabel">Weight (kg)</div>
+  <div class="picker-display" id="pickerDisplay" aria-live="polite">0</div>
+  <div class="picker-keypad" role="group" aria-label="Keypad">
+    <button class="picker-key" onclick="pickerKeyTap('1')" aria-label="1" style="touch-action:manipulation">1</button>
+    <button class="picker-key" onclick="pickerKeyTap('2')" aria-label="2" style="touch-action:manipulation">2</button>
+    <button class="picker-key" onclick="pickerKeyTap('3')" aria-label="3" style="touch-action:manipulation">3</button>
+    <button class="picker-key" onclick="pickerKeyTap('4')" aria-label="4" style="touch-action:manipulation">4</button>
+    <button class="picker-key" onclick="pickerKeyTap('5')" aria-label="5" style="touch-action:manipulation">5</button>
+    <button class="picker-key" onclick="pickerKeyTap('6')" aria-label="6" style="touch-action:manipulation">6</button>
+    <button class="picker-key" onclick="pickerKeyTap('7')" aria-label="7" style="touch-action:manipulation">7</button>
+    <button class="picker-key" onclick="pickerKeyTap('8')" aria-label="8" style="touch-action:manipulation">8</button>
+    <button class="picker-key" onclick="pickerKeyTap('9')" aria-label="9" style="touch-action:manipulation">9</button>
+    <button class="picker-key" onclick="pickerKeyTap('.')" aria-label="Decimal point" id="pickerDotKey" style="touch-action:manipulation;display:none">.</button>
+    <button class="picker-key empty-key" id="pickerDotPlaceholder" aria-hidden="true"></button>
+    <button class="picker-key" onclick="pickerKeyTap('0')" aria-label="0" style="touch-action:manipulation">0</button>
+    <button class="picker-key" onclick="pickerKeyTap('back')" aria-label="Backspace" style="touch-action:manipulation">
+      <svg viewBox="0 0 24 24"><path d="M9 18l-6-6 6-6"/><path d="M3 12h18"/></svg>
+    </button>
   </div>
-  <input class="picker-hidden-input" id="pickerInput" type="text" inputmode="decimal" />
+  <button class="picker-confirm" id="pickerConfirm" onclick="confirmPicker()" aria-label="Confirm value" disabled style="touch-action:manipulation">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </button>
 </div>
 
 
@@ -3148,14 +3296,27 @@ function setupLumbagoAccordions() {
     const origYtBtn = ex.querySelector('.yt-btn');
     if (origYtBtn) { ex.dataset.ytHref = origYtBtn.href; origYtBtn.remove(); }
 
-    const dot = document.createElement('div');
-    dot.className = 'ex-done-dot';
-    ex.appendChild(dot);
+    // Add indicator
+    const lexBody = ex.querySelector('.ex-body');
+    if (lexBody) {
+      const indicator = document.createElement('div');
+      indicator.className = 'ex-indicator';
+      const indicatorDot = document.createElement('div');
+      indicatorDot.className = 'ex-indicator-dot';
+      indicatorDot.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      indicator.appendChild(indicatorDot);
+      const summary = document.createElement('span');
+      summary.className = 'ex-set-summary';
+      indicator.appendChild(summary);
+      lexBody.appendChild(indicator);
+    }
 
-    const chevron = document.createElement('div');
-    chevron.className = 'ex-chevron';
-    chevron.textContent = '▾';
-    ex.appendChild(chevron);
+    // Add ellipsis
+    const lMoreBtn = document.createElement('button');
+    lMoreBtn.className = 'ex-more-btn';
+    lMoreBtn.innerHTML = '⋯';
+    lMoreBtn.onclick = (e) => e.stopPropagation();
+    ex.appendChild(lMoreBtn);
 
     const accordion = document.createElement('div');
     accordion.className = 'ex-accordion';
@@ -3206,6 +3367,12 @@ function setupLumbagoAccordions() {
     container.className = 'log-sets-container';
     container.dataset.logExercise = 'lumbago_' + exName;
     container.onclick = (e) => e.stopPropagation();
+
+    // Column headers
+    const lHeaders = document.createElement('div');
+    lHeaders.className = 'log-set-headers';
+    lHeaders.innerHTML = '<div class="header-spacer"></div><div class="header-grid"><span class="header-label">Time</span><span class="header-label">Reps</span><span class="header-label">Weight</span></div>';
+    container.appendChild(lHeaders);
 
     for (let s = 0; s < numSets; s++) {
       container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null));
@@ -3819,22 +3986,33 @@ function setupAccordions() {
     parent.insertBefore(wrap, ex);
     wrap.appendChild(ex);
 
-    // Save YT href before removing, then replace with chevron + done dot
+    // Save YT href before removing
     const origYtBtn = ex.querySelector('.yt-btn');
     if (origYtBtn) { ex.dataset.ytHref = origYtBtn.href; origYtBtn.remove(); }
     const timerBtn = ex.querySelector('.timer-start-btn');
     if (timerBtn) timerBtn.remove();
 
-    // Add done dot
-    const dot = document.createElement('div');
-    dot.className = 'ex-done-dot';
-    ex.appendChild(dot);
+    // Add indicator (dot + summary) below the exercise name
+    const exBody = ex.querySelector('.ex-body');
+    if (exBody) {
+      const indicator = document.createElement('div');
+      indicator.className = 'ex-indicator';
+      const indicatorDot = document.createElement('div');
+      indicatorDot.className = 'ex-indicator-dot';
+      indicatorDot.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      indicator.appendChild(indicatorDot);
+      const summary = document.createElement('span');
+      summary.className = 'ex-set-summary';
+      indicator.appendChild(summary);
+      exBody.appendChild(indicator);
+    }
 
-    // Add chevron
-    const chevron = document.createElement('div');
-    chevron.className = 'ex-chevron';
-    chevron.textContent = '▾';
-    ex.appendChild(chevron);
+    // Add ellipsis menu button
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'ex-more-btn';
+    moreBtn.innerHTML = '⋯';
+    moreBtn.onclick = (e) => e.stopPropagation();
+    ex.appendChild(moreBtn);
 
     // Create accordion body
     const accordion = document.createElement('div');
@@ -3900,6 +4078,12 @@ function setupAccordions() {
     container.dataset.logExercise = exName;
     container.onclick = (e) => e.stopPropagation();
 
+    // Column headers
+    const headers = document.createElement('div');
+    headers.className = 'log-set-headers';
+    headers.innerHTML = '<div class="header-spacer"></div><div class="header-grid"><span class="header-label">Time</span><span class="header-label">Reps</span><span class="header-label">Weight</span></div>';
+    container.appendChild(headers);
+
     for (let s = 0; s < numSets; s++) {
       const prevSet = prevData && prevData[s] ? prevData[s] : null;
       container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet));
@@ -3952,18 +4136,10 @@ function updateDoneState(wrap) {
   } else {
     wrap.classList.remove('has-done');
   }
-  // Update summary on the exercise row
-  let summary = wrap.querySelector('.ex-set-summary');
-  if (checks.length > 0) {
-    if (!summary) {
-      summary = document.createElement('span');
-      summary.className = 'ex-set-summary';
-      const setsEl = wrap.querySelector('.ex-sets');
-      if (setsEl) setsEl.appendChild(summary);
-    }
-    summary.textContent = ` · ${checks.length}/${total} done`;
-  } else if (summary) {
-    summary.remove();
+  // Update summary in the indicator area
+  const summary = wrap.querySelector('.ex-set-summary');
+  if (summary) {
+    summary.textContent = checks.length > 0 ? `${checks.length}/${total}` : '';
   }
 
   // Show/hide Next button
@@ -4044,15 +4220,18 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   const row = document.createElement('div');
   row.className = 'log-set-row';
 
-  // Checkbox
+  // Check button wrap (with accent border)
+  const checkWrap = document.createElement('div');
+  checkWrap.className = 'log-check-wrap';
   const check = document.createElement('button');
   check.className = 'log-check';
-  check.textContent = '✓';
+  check.setAttribute('aria-label', 'Complete set ' + setNum);
+  check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
   check.onclick = (e) => {
     e.stopPropagation();
+    haptic();
     check.classList.toggle('done');
     if (check.classList.contains('done')) {
-      // Auto-fill from prev if empty
       if (!weightPill.dataset.value && prevSet) { weightPill.dataset.value = String(prevSet.weight); renderPill(weightPill); }
       if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
       startRestTimer();
@@ -4060,19 +4239,20 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
     const w = wrap || row.closest('.exercise-wrap');
     if (w) updateDoneState(w);
   };
-  row.appendChild(check);
+  checkWrap.appendChild(check);
+  row.appendChild(checkWrap);
 
-  // Weight pill
-  const weightPill = document.createElement('div');
-  weightPill.className = 'log-pill';
-  weightPill.dataset.field = 'weight';
-  weightPill.dataset.value = defaultWeight ? String(defaultWeight) : '';
-  weightPill.dataset.step = '0.5';
-  weightPill.dataset.unit = 'kg';
-  weightPill.dataset.label = 'Weight (kg)';
-  renderPill(weightPill);
-  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
-  row.appendChild(weightPill);
+  // Input grid (3 columns: Time, Reps, Weight)
+  const grid = document.createElement('div');
+  grid.className = 'log-input-grid';
+
+  // Time pill (placeholder for now — shows rest time)
+  const timePill = document.createElement('div');
+  timePill.className = 'log-pill empty';
+  timePill.dataset.field = 'time';
+  timePill.innerHTML = '<span style="color:#555">–</span>';
+  timePill.onclick = (e) => e.stopPropagation();
+  grid.appendChild(timePill);
 
   // Reps pill
   const repsPill = document.createElement('div');
@@ -4085,11 +4265,26 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
   repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
   renderPill(repsPill);
   repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
-  row.appendChild(repsPill);
+  grid.appendChild(repsPill);
+
+  // Weight pill
+  const weightPill = document.createElement('div');
+  weightPill.className = 'log-pill';
+  weightPill.dataset.field = 'weight';
+  weightPill.dataset.value = defaultWeight ? String(defaultWeight) : '';
+  weightPill.dataset.step = '0.5';
+  weightPill.dataset.unit = 'kg';
+  weightPill.dataset.label = 'Weight (kg)';
+  renderPill(weightPill);
+  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
+  grid.appendChild(weightPill);
+
+  row.appendChild(grid);
 
   // Delete button
   const delBtn = document.createElement('button');
   delBtn.className = 'log-delete-btn';
+  delBtn.setAttribute('aria-label', 'Delete set');
   delBtn.textContent = '×';
   delBtn.onclick = (e) => {
     e.stopPropagation();
@@ -4130,84 +4325,107 @@ function renderPill(pill) {
 // ─── NUMBER PICKER SHEET ──────────────────────────────────────────
 
 let activePill = null;
-let pickerValue = 0;
 let pickerStep = 1;
+let pickerRaw = '';       // string buffer for keypad input
+let pickerClosing = false;
+const PICKER_MAX_LEN = 5; // max chars (e.g. "120.5")
+const PICKER_MAX_INT = 3; // max digits before decimal
+
+function haptic() {
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+
+function pickerUpdateDisplay() {
+  const display = document.getElementById('pickerDisplay');
+  const confirm = document.getElementById('pickerConfirm');
+  if (pickerRaw === '') {
+    display.textContent = '0';
+    display.classList.add('empty');
+    confirm.disabled = true;
+  } else {
+    display.textContent = pickerRaw;
+    display.classList.remove('empty');
+    const val = parseFloat(pickerRaw);
+    confirm.disabled = isNaN(val) || val <= 0;
+  }
+}
+
+function pickerKeyTap(key) {
+  haptic();
+  if (key === 'back') {
+    pickerRaw = pickerRaw.slice(0, -1);
+  } else if (key === '.') {
+    if (pickerRaw.includes('.')) return;
+    if (pickerRaw === '') pickerRaw = '0';
+    pickerRaw += '.';
+  } else {
+    // digit 0-9
+    const dotIdx = pickerRaw.indexOf('.');
+    if (dotIdx !== -1) {
+      // already have decimal — allow max 1 digit after dot
+      const afterDot = pickerRaw.length - dotIdx - 1;
+      if (afterDot >= 1) return;
+    } else {
+      // integer part — enforce max digits
+      if (pickerRaw.length >= PICKER_MAX_INT) return;
+    }
+    if (pickerRaw.length >= PICKER_MAX_LEN) return;
+    pickerRaw += key;
+    // strip leading zeros: "05" → "5"
+    if (!pickerRaw.includes('.')) {
+      pickerRaw = String(parseInt(pickerRaw, 10));
+    }
+  }
+  pickerUpdateDisplay();
+}
 
 function openPicker(pill) {
   activePill = pill;
   pickerStep = parseFloat(pill.dataset.step) || 1;
-  pickerValue = parseFloat(pill.dataset.value) || parseFloat(pill.dataset.placeholder) || 0;
-  const unit = pill.dataset.unit;
-  const input = document.getElementById('pickerInput');
+  const existing = parseFloat(pill.dataset.value) || parseFloat(pill.dataset.placeholder) || 0;
+
+  // Set initial raw value from existing
+  if (existing > 0) {
+    pickerRaw = pickerStep < 1 ? String(parseFloat(existing.toFixed(1))) : String(Math.round(existing));
+  } else {
+    pickerRaw = '';
+  }
 
   document.getElementById('pickerLabel').textContent = pill.dataset.label.toUpperCase();
-  document.getElementById('pickerUnit').textContent = unit;
-  input.value = pickerValue || '';
-  // decimal for KG (includes "."), numeric for reps (integers only)
-  input.inputMode = pickerStep < 1 ? 'decimal' : 'numeric';
-  input.pattern = pickerStep < 1 ? '[0-9]*\\.?[0-9]*' : '[0-9]*';
-  updatePickerDrum();
 
+  // Show/hide decimal key
+  const dotKey = document.getElementById('pickerDotKey');
+  const dotPlaceholder = document.getElementById('pickerDotPlaceholder');
+  if (pickerStep < 1) {
+    dotKey.style.display = 'flex';
+    dotPlaceholder.style.display = 'none';
+  } else {
+    dotKey.style.display = 'none';
+    dotPlaceholder.style.display = '';
+  }
+
+  pickerUpdateDisplay();
   document.getElementById('pickerOverlay').classList.add('visible');
   document.getElementById('pickerSheet').classList.add('open');
-
-  // Focus synchronously inside the user gesture to trigger keyboard on iOS
-  input.focus();
 }
-
-// Sync keyboard typing to the drum display in real time
-document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('pickerInput');
-  if (input) {
-    input.addEventListener('input', () => {
-      const val = parseFloat(input.value);
-      if (!isNaN(val) && val >= 0) {
-        pickerValue = val;
-        const fmt = (v) => pickerStep < 1 ? v.toFixed(1) : String(Math.round(v));
-        document.getElementById('pickerMain').textContent = fmt(pickerValue);
-        document.getElementById('pickerPrev').textContent = pickerValue - pickerStep >= 0 ? fmt(pickerValue - pickerStep) : '—';
-        document.getElementById('pickerNext').textContent = fmt(pickerValue + pickerStep);
-      }
-    });
-  }
-});
-
-function updatePickerDrum() {
-  const fmt = (v) => pickerStep < 1 ? v.toFixed(1) : String(Math.round(v));
-  document.getElementById('pickerMain').textContent = fmt(pickerValue);
-  document.getElementById('pickerPrev').textContent = pickerValue - pickerStep >= 0 ? fmt(pickerValue - pickerStep) : '—';
-  document.getElementById('pickerNext').textContent = fmt(pickerValue + pickerStep);
-  document.getElementById('pickerInput').value = pickerValue || '';
-}
-
-function pickerAdjust(dir) {
-  pickerValue = Math.max(0, pickerValue + dir * pickerStep);
-  pickerValue = Math.round(pickerValue * 10) / 10;
-  updatePickerDrum();
-  document.getElementById('pickerInput').focus();
-}
-
-let pickerClosing = false;
 
 function confirmPicker() {
   if (pickerClosing) return;
+  const val = parseFloat(pickerRaw) || 0;
+  if (val <= 0) return;
   pickerClosing = true;
-  const typed = document.getElementById('pickerInput').value;
-  if (typed !== '') pickerValue = parseFloat(typed) || 0;
+  haptic();
   if (activePill) {
-    activePill.dataset.value = pickerValue > 0 ? String(pickerValue) : '';
+    activePill.dataset.value = val > 0 ? String(val) : '';
     renderPill(activePill);
   }
   closePicker();
 }
 
 function closePicker() {
-  const input = document.getElementById('pickerInput');
   const sheet = document.getElementById('pickerSheet');
   const overlay = document.getElementById('pickerOverlay');
-  input.blur();
 
-  // Animate out
   sheet.classList.add('closing');
   sheet.classList.remove('open');
   overlay.classList.add('closing');
@@ -4217,45 +4435,12 @@ function closePicker() {
     sheet.removeEventListener('transitionend', onDone);
     sheet.classList.remove('closing');
     overlay.classList.remove('closing');
-    sheet.style.bottom = '0';
     pickerClosing = false;
   };
   sheet.addEventListener('transitionend', onDone, { once: true });
 
   activePill = null;
-}
-
-// Enter key and blur on the picker input both confirm
-document.addEventListener('DOMContentLoaded', () => {
-  const pi = document.getElementById('pickerInput');
-  if (!pi) return;
-  pi.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-      e.preventDefault();
-      confirmPicker();
-    }
-  });
-  pi.addEventListener('blur', () => {
-    if (document.getElementById('pickerSheet').classList.contains('open')) {
-      confirmPicker();
-    }
-  });
-});
-
-// Reposition sheet above keyboard using visualViewport
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
-    const sheet = document.getElementById('pickerSheet');
-    if (!sheet.classList.contains('open')) return;
-    const kbHeight = window.innerHeight - window.visualViewport.height;
-    sheet.style.bottom = kbHeight + 'px';
-  });
-  window.visualViewport.addEventListener('scroll', () => {
-    const sheet = document.getElementById('pickerSheet');
-    if (!sheet.classList.contains('open')) return;
-    const kbHeight = window.innerHeight - window.visualViewport.height;
-    sheet.style.bottom = kbHeight + 'px';
-  });
+  pickerRaw = '';
 }
 
 
