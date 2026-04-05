@@ -11,8 +11,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Coach">
   <link rel="apple-touch-icon" href="/icon-192.png">
-  <meta name="theme-color" content="#f4511e">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0A0A0A">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -610,15 +610,70 @@
   }
 
   .overview-card h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 17px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 16px;
     color: var(--accent);
   }
 
+  /* Weekly Structure — Bento Grid */
+  .weekly-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .weekly-grid-row {
+    display: flex;
+    gap: 8px;
+  }
+  .weekly-grid-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    height: 135px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .weekly-grid-card.half { width: calc(50% - 4px); flex-shrink: 0; }
+  .weekly-grid-card.full { width: 100%; }
+  .weekly-grid-day {
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+  }
+  .weekly-grid-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    overflow: hidden;
+  }
+  .weekly-grid-name {
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+  }
+  .weekly-grid-detail {
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+  }
+
+  /* Legacy day-row (kept for recovery block) */
   .day-row {
     display: flex;
     gap: 10px;
@@ -3559,13 +3614,21 @@ const OVERVIEW_DATA = {
   main: {
     accent: 'var(--accent)',
     cards: [
-      { title: '📅 Weekly Structure', type: 'days', items: [
-        { label: 'D1', name: 'Upper A — Push emphasis', detail: 'Chest · Shoulders · Triceps · Back' },
-        { label: 'D2', name: 'Lower A — Quad/Glute', detail: 'Belt squat · RDL · Split squat · Hip prehab' },
-        { label: 'D3', name: 'Rest / Shadowboxing at home', detail: '10–15 min technique, footwork — no power' },
-        { label: 'D4', name: 'Upper B — Pull emphasis', detail: 'Back · Biceps · Rear delt · Chest accessory' },
-        { label: 'D5', name: 'Lower B — Posterior chain', detail: 'Hip thrust · Hinge · Abduction · Conditioning' },
-        { label: 'D6–7', name: 'Rest · Shadowboxing · Mobility', detail: 'Hip mobility block 3–5×/week at home' },
+      { title: 'Weekly Structure', type: 'weekly-grid', rows: [
+        { cards: [
+          { day: 'Day 1', name: 'Upper A', detail: 'Chest · Shoulders · Triceps · Back', size: 'half' },
+          { day: 'Day 2', name: 'Lower A', detail: 'Belt squat · RDL · Split squat · Hip prehab', size: 'half' },
+        ]},
+        { cards: [
+          { day: 'Day 3', name: 'Rest / Shadowboxing at home', detail: '10–15 min technique, footwork — no power', size: 'full' },
+        ]},
+        { cards: [
+          { day: 'Day 4', name: 'Upper B', detail: 'Back · Biceps · Rear delt · Chest accessory', size: 'half' },
+          { day: 'Day 5', name: 'Lower B', detail: 'Hip thrust · Hinge · Abduction · Conditioning', size: 'half' },
+        ]},
+        { cards: [
+          { day: 'Day 6-7', name: 'Rest / Shadowboxing / Mobility', detail: 'Hip mobility block 3–5x/week at home', size: 'full' },
+        ]},
       ]},
       { title: '📈 Progression', type: 'prog', items: [
         { weeks: 'WK 1–2', desc: 'Establish movements. 4 sets main lifts. 2–3 RIR. Learn the sessions.' },
@@ -3607,7 +3670,19 @@ function renderOverview(block) {
     const titleStyle = `color:${accentColor}`;
     let content = '';
 
-    if (card.type === 'days') {
+    if (card.type === 'weekly-grid') {
+      content = `<div class="weekly-grid">${card.rows.map(row => `
+        <div class="weekly-grid-row">${row.cards.map(c => `
+          <div class="weekly-grid-card ${c.size}">
+            <div class="weekly-grid-day">${c.day}</div>
+            <div class="weekly-grid-info">
+              <div class="weekly-grid-name">${c.name}</div>
+              <div class="weekly-grid-detail">${c.detail}</div>
+            </div>
+          </div>`).join('')}
+        </div>`).join('')}
+      </div>`;
+    } else if (card.type === 'days') {
       content = card.items.map(d => `
         <div class="day-row">
           <div class="day-label">${d.label}</div>
@@ -3632,6 +3707,9 @@ function renderOverview(block) {
         card.items.map(li => `<li>${li}</li>`).join('') + '</ul>';
     }
 
+    if (card.type === 'weekly-grid') {
+      return `<div style="margin-bottom:12px;"><h3 style="font-family:'Inter','Barlow',sans-serif;font-size:18px;font-weight:600;color:${accentColor};letter-spacing:-0.5px;line-height:1.1;margin-bottom:16px;">${card.title}</h3>${content}</div>`;
+    }
     return `<div class="overview-card"><h3 style="${titleStyle}">${card.title}</h3>${content}</div>`;
   }).join('');
 
