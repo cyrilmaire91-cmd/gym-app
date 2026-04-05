@@ -231,10 +231,11 @@
 
   /* SESSION HEADER */
   .session-header {
-    padding: 24px; 0px;
-    margin-bottom: 14px;
+    padding: 16px 0;
+    margin-bottom: 12px;
     position: relative;
   }
+
   .session-header-top {
     display: flex;
     justify-content: space-between;
@@ -243,42 +244,64 @@
   }
 
   .session-header h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .session-header h2 .session-title-label {
+    display: block;
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+  }
+
+  .session-header h2 span {
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: -0.2px;
     line-height: 1;
   }
 
-  .session-header h2 span { color: var(--accent); }
-
   .session-goal {
-    font-size: 13px;
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--muted);
-    margin-top: 5px;
+    margin-top: 7px;
     line-height: 1.4;
+    letter-spacing: -0.5px;
   }
 
   .session-meta {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 5px;
+    margin-top: 12px;
     flex-wrap: wrap;
   }
 
   .badge {
-    font-size: 11px;
+    font-family: 'Inter', 'Barlow', sans-serif;
+    font-size: 10px;
     font-weight: 600;
     padding: 3px 8px;
     border-radius: 4px;
-    letter-spacing: 0.5px;
+    letter-spacing: -0.3px;
     text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--text);
+    line-height: 1.4;
   }
 
-  .badge-time { background: rgba(100,210,255,0.15); color: var(--blue); }
-  .badge-intensity { background: rgba(255,214,10,0.15); color: var(--yellow); }
-  .badge-focus { background: rgba(191,90,242,0.15); color: var(--purple); }
+  .badge-time { background: transparent; color: var(--text); }
+  .badge-intensity { background: transparent; color: var(--text); }
+  .badge-focus { background: transparent; color: var(--text); }
 
   /* SECTIONS */
   .section {
@@ -727,23 +750,30 @@
 
 /* AI ADAPT BUTTON */
 .adapt-inline-btn {
-  background: #ffffff;
-  border: none;
-  border-radius: 6px;
-  color: #000000;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  background: var(--card);
+  border: 0.5px solid rgba(248,250,252,0.4);
+  border-radius: 50px;
+  color: #eff6ff;
+  font-family: 'Inter', 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
   cursor: pointer;
-  padding: 6px 14px;
+  padding: 7px 10px;
   display: none;
   white-space: nowrap;
   flex-shrink: 0;
+  line-height: 1.4;
+  gap: 4px;
+  align-items: center;
 }
-.adapt-inline-btn.visible { display: inline-block; }
-.adapt-inline-btn:active { background: var(--card); }
+.adapt-inline-btn.visible { display: flex; }
+.adapt-inline-btn:active { opacity: 0.7; }
+.adapt-inline-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
 
 /* ADAPT DRAWER */
 .adapt-drawer {
@@ -1962,7 +1992,7 @@
 
   <div style="padding:16px;">
     <div class="session-meta" style="margin-bottom:16px;">
-      <span class="badge badge-time">⏱ 10–12 min</span>
+      <span class="badge badge-time">10–12 min</span>
       <span class="badge badge-focus">🧘 Au sol, pas d'équipement</span>
       <span class="badge badge-intensity">🌙 Soir ou post-vélo</span>
     </div>
@@ -2084,12 +2114,12 @@
   <div class="session" id="session-upperA">
 
     <div class="session-header">
-      <h2>Upper A — <span>Push Focus</span></h2>
+      <h2><span class="session-title-label">Upper A</span><span>Push Focus</span></h2>
       <div class="session-goal">Build chest & shoulder volume. Protect left shoulder and right wrist.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 55–65 min</span>
-        <span class="badge badge-intensity" id="upperA-intensity">★ 2–3 RIR</span>
-        <span class="badge badge-focus">🎯 Chest · Shoulder · Back</span>
+        <span class="badge badge-time">55–65 min</span>
+        <span class="badge badge-intensity" id="upperA-intensity">2–3 RIR</span>
+        <span class="badge badge-focus">Chest · Shoulder · Back</span>
       </div>
     </div>
 
@@ -2234,12 +2264,12 @@
   <div class="session" id="session-lowerA">
 
     <div class="session-header">
-      <h2>Lower A — <span>Quad / Glute</span></h2>
+      <h2><span class="session-title-label">Lower A</span><span>Quad / Glute</span></h2>
       <div class="session-goal">Build quad and glute volume with controlled tempo. Protect knee with volume management.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 55–65 min</span>
-        <span class="badge badge-intensity" id="lowerA-intensity">★ 2–3 RIR</span>
-        <span class="badge badge-focus">🎯 Quad · Glute · Hamstring</span>
+        <span class="badge badge-time">55–65 min</span>
+        <span class="badge badge-intensity" id="lowerA-intensity">2–3 RIR</span>
+        <span class="badge badge-focus">Quad · Glute · Hamstring</span>
       </div>
     </div>
 
@@ -2352,12 +2382,12 @@
   <div class="session" id="session-upperB">
 
     <div class="session-header">
-      <h2>Upper B — <span>Pull Focus</span></h2>
+      <h2><span class="session-title-label">Upper B</span><span>Pull Focus</span></h2>
       <div class="session-goal">Back and bicep volume. Shoulder health work. Chest accessory.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 55–65 min</span>
-        <span class="badge badge-intensity" id="upperB-intensity">★ 2–3 RIR</span>
-        <span class="badge badge-focus">🎯 Back · Biceps · Rear Delt</span>
+        <span class="badge badge-time">55–65 min</span>
+        <span class="badge badge-intensity" id="upperB-intensity">2–3 RIR</span>
+        <span class="badge badge-focus">Back · Biceps · Rear Delt</span>
       </div>
     </div>
 
@@ -2495,12 +2525,12 @@
   <div class="session" id="session-lowerB">
 
     <div class="session-header">
-      <h2>Lower B — <span>Posterior Chain</span></h2>
+      <h2><span class="session-title-label">Lower B</span><span>Posterior Chain</span></h2>
       <div class="session-goal">Hip thrust and hinge focus. Belt squat for quad work. Hip abduction for Muay Thai. Optional light conditioning.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 55–65 min</span>
-        <span class="badge badge-intensity" id="lowerB-intensity">★ 2–3 RIR</span>
-        <span class="badge badge-focus">🎯 Glute · Hinge · Hip Abduction</span>
+        <span class="badge badge-time">55–65 min</span>
+        <span class="badge badge-intensity" id="lowerB-intensity">2–3 RIR</span>
+        <span class="badge badge-focus">Glute · Hinge · Hip Abduction</span>
       </div>
     </div>
 
@@ -2610,12 +2640,12 @@
   <div class="session" id="session-recA">
 
     <div class="session-header">
-      <h2>Recovery A — <span>Push Emphasis</span></h2>
+      <h2><span class="session-title-label">Recovery A</span><span>Push Emphasis</span></h2>
       <div class="session-goal">Full body deload. Lower volume, higher RIR. Focus on movement quality.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 50–60 min</span>
-        <span class="badge badge-intensity">★ RIR 3</span>
-        <span class="badge badge-focus">🎯 Full Body · Push</span>
+        <span class="badge badge-time">50–60 min</span>
+        <span class="badge badge-intensity">RIR 3</span>
+        <span class="badge badge-focus">Full Body · Push</span>
       </div>
     </div>
 
@@ -2725,12 +2755,12 @@
   <div class="session" id="session-recB">
 
     <div class="session-header">
-      <h2>Recovery B — <span>Pull Emphasis</span></h2>
+      <h2><span class="session-title-label">Recovery B</span><span>Pull Emphasis</span></h2>
       <div class="session-goal">Full body deload. Focus on back and posterior chain. Keep RIR high.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 50–60 min</span>
-        <span class="badge badge-intensity">★ RIR 3</span>
-        <span class="badge badge-focus">🎯 Full Body · Pull</span>
+        <span class="badge badge-time">50–60 min</span>
+        <span class="badge badge-intensity">RIR 3</span>
+        <span class="badge badge-focus">Full Body · Pull</span>
       </div>
     </div>
 
@@ -2840,12 +2870,12 @@
   <div class="session" id="session-recC">
 
     <div class="session-header">
-      <h2>Recovery C — <span>Legs Emphasis</span></h2>
+      <h2><span class="session-title-label">Recovery C</span><span>Legs Emphasis</span></h2>
       <div class="session-goal">Full body deload. Extra lower body volume. Controlled tempo throughout.</div>
       <div class="session-meta">
-        <span class="badge badge-time">⏱ 50–60 min</span>
-        <span class="badge badge-intensity">★ RIR 3</span>
-        <span class="badge badge-focus">🎯 Full Body · Legs</span>
+        <span class="badge badge-time">50–60 min</span>
+        <span class="badge badge-intensity">RIR 3</span>
+        <span class="badge badge-focus">Full Body · Legs</span>
       </div>
     </div>
 
@@ -2948,7 +2978,7 @@
   <!-- ===== HISTORY ===== -->
   <div class="session" id="session-history">
     <div class="session-header">
-      <h2>Workout <span>History</span></h2>
+      <h2><span class="session-title-label">Workout</span><span>History</span></h2>
       <div class="session-goal">Your logged sessions and progress.</div>
     </div>
 
@@ -3026,7 +3056,7 @@
     // Apply week-specific changes for main blocks
     if (block === 'main' || block === 'main34') {
       const isWk34 = block === 'main34';
-      const rirText = isWk34 ? '★ 1–2 RIR' : '★ 2–3 RIR';
+      const rirText = isWk34 ? '1–2 RIR' : '2–3 RIR';
       const sets = isWk34 ? '5' : '4';
       ['upperA','lowerA','upperB','lowerB'].forEach(s => {
         const el = document.getElementById(s + '-intensity');
@@ -3641,7 +3671,7 @@ const OVERVIEW_DATA = {
     cards: [
       { title: '🔄 Recovery Block — 2 Weeks', type: 'text',
         text: 'Full Body · 3 sessions/week · 55 min max' },
-      { title: '🎯 Goal', type: 'text',
+      { title: 'Goal', type: 'text',
         text: "Active recovery block triggered by golfer's elbow flare and accumulated fatigue. The goal is NOT to progress — it's to let tendons recover while maintaining the muscle stimulus. Volume is reduced by ~30%, intensity stays moderate (RIR 3+)." },
       { title: '⚠️ Key Rules', type: 'list', items: [
         'No biceps isolation for 2 weeks',
@@ -3913,7 +3943,7 @@ document.addEventListener('DOMContentLoaded', () => {
     topRow.appendChild(h2);
     const btn = document.createElement('button');
     btn.className = 'adapt-inline-btn visible';
-    btn.textContent = '⚡ Adapt';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L20 12l-6.1 3.3L12 21l-1.9-5.7L4 12l6.1-3.3z"/></svg>Change';
     btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
     topRow.appendChild(btn);
   });
