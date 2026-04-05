@@ -4570,13 +4570,13 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  const delBtn = document.createElement('div');
  delBtn.className = 'log-set-delete';
  delBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
- delBtn.addEventListener('click', (e) => {
+ function deleteRow(e) {
    e.stopPropagation();
    e.preventDefault();
-   haptic();
    const container = swipeWrap.closest('.log-sets-container');
    const wraps = container.querySelectorAll('.log-set-wrap');
    if (wraps.length <= 1) return;
+   haptic();
    swipeWrap.style.maxHeight = swipeWrap.offsetHeight + 'px';
    swipeWrap.style.transition = 'max-height 0.2s ease, opacity 0.2s ease';
    requestAnimationFrame(() => {
@@ -4588,8 +4588,9 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
      const w = wrap || container.closest('.exercise-wrap');
      if (w) updateDoneState(w);
    }, 220);
- });
- delBtn.addEventListener('touchend', (e) => { e.stopPropagation(); });
+ }
+ delBtn.addEventListener('touchstart', deleteRow, { passive: false });
+ delBtn.addEventListener('click', deleteRow);
  swipeWrap.insertBefore(delBtn, row);
 
  // Swipe-to-delete touch handling
