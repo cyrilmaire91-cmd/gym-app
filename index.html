@@ -4383,7 +4383,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  const repsPill = document.createElement('div');
  repsPill.className = 'log-pill';
  repsPill.dataset.field = 'reps';
- repsPill.dataset.value = '';
+ repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
  repsPill.dataset.step = '1';
  repsPill.dataset.unit = 'reps';
  repsPill.dataset.label = 'Reps';
@@ -4393,10 +4393,11 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  row.appendChild(repsPill);
 
  // Weight pill
+ const prevWeight = prevSet && prevSet.weight ? prevSet.weight : defaultWeight;
  const weightPill = document.createElement('div');
  weightPill.className = 'log-pill';
  weightPill.dataset.field = 'weight';
- weightPill.dataset.value = defaultWeight ? String(defaultWeight) : '';
+ weightPill.dataset.value = prevWeight ? String(prevWeight) : '';
  weightPill.dataset.step = '0.5';
  weightPill.dataset.unit = 'kg';
  weightPill.dataset.label = 'Weight (kg)';
