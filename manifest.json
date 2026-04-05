@@ -1,11 +1,11 @@
 {
-  "name": "Cyril — Training Program",
-  "short_name": "Coach",
+  "name": "Ares Program",
+  "short_name": "AP",
   "description": "4-Week Hypertrophy Block",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0e0e0f",
-  "theme_color": "#f4511e",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
   "orientation": "portrait",
   "icons": [
     {
