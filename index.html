@@ -1129,12 +1129,14 @@
  justify-content: center;
  border-radius: 8px 0 0 8px;
  cursor: pointer;
- z-index: 0;
+ z-index: 2;
  opacity: 0;
+ pointer-events: none;
  transition: opacity 0.2s ease;
 }
-.log-set-row.swiped ~ .log-set-delete {
+.log-set-wrap.reveal-delete .log-set-delete {
  opacity: 1;
+ pointer-events: auto;
 }
 .log-set-delete svg {
  width: 18px;
@@ -4438,12 +4440,13 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
 
  swipeWrap.appendChild(row);
 
- // Delete button (behind the row)
+ // Delete button (revealed on swipe)
  const delBtn = document.createElement('div');
  delBtn.className = 'log-set-delete';
  delBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
- delBtn.onclick = (e) => {
+ delBtn.addEventListener('click', (e) => {
    e.stopPropagation();
+   e.preventDefault();
    haptic();
    const container = swipeWrap.closest('.log-sets-container');
    const wraps = container.querySelectorAll('.log-set-wrap');
@@ -4459,8 +4462,9 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
      const w = wrap || container.closest('.exercise-wrap');
      if (w) updateDoneState(w);
    }, 220);
- };
- swipeWrap.appendChild(delBtn);
+ });
+ delBtn.addEventListener('touchend', (e) => { e.stopPropagation(); });
+ swipeWrap.insertBefore(delBtn, row);
 
  // Swipe-to-delete touch handling
  let startX = 0, currentX = 0, isSwiping = false;
@@ -4478,23 +4482,22 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
    if (isSwiping) {
      const clamped = Math.min(Math.max(dx, 0), 56);
      row.style.transform = `translateX(${clamped}px)`;
-     const del = swipeWrap.querySelector('.log-set-delete');
-     if (del) del.style.opacity = Math.min(dx / 40, 1);
+     delBtn.style.opacity = Math.min(dx / 40, 1);
    }
  }, { passive: true });
 
  row.addEventListener('touchend', () => {
    row.style.transition = 'transform 0.25s ease';
-   const del = swipeWrap.querySelector('.log-set-delete');
    const dx = currentX - startX;
    if (dx > 30) {
      row.classList.add('swiped');
      row.style.transform = '';
-     if (del) del.style.opacity = '';
+     swipeWrap.classList.add('reveal-delete');
    } else {
      row.classList.remove('swiped');
      row.style.transform = '';
-     if (del) { del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0'; }
+     swipeWrap.classList.remove('reveal-delete');
+     delBtn.style.opacity = '0';
    }
  });
 
@@ -4502,8 +4505,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  row.addEventListener('click', () => {
    if (row.classList.contains('swiped')) {
      row.classList.remove('swiped');
-     const del = swipeWrap.querySelector('.log-set-delete');
-     if (del) { del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0'; }
+     swipeWrap.classList.remove('reveal-delete');
    }
  });
 
