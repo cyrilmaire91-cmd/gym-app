@@ -1017,16 +1017,16 @@
 
 /* WORKOUT LOGGER */
 .save-session-btn {
- background: var(--green);
- color: #000;
+ background: var(--card2);
+ color: var(--muted);
  border: none;
  border-radius: 8px;
- padding: 8px 16px;
+ height: 44px;
  font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 800;
- text-transform: uppercase;
- letter-spacing: 0.5px;
+ font-size: 12px;
+ font-weight: 600;
+ text-transform: none;
+ letter-spacing: -0.3px;
  cursor: pointer;
  margin-top: 12px;
  width: 100%;
@@ -1382,16 +1382,16 @@
 /* NEXT EXERCISE BUTTON */
 .next-exercise-btn {
  width: 100%;
- height: 52px;
- background: var(--accent);
- color: white;
+ height: 44px;
+ background: var(--card2);
+ color: var(--muted);
  border: none;
- border-radius: 10px;
+ border-radius: 8px;
  font-family: 'Inter', sans-serif;
- font-size: 16px;
- font-weight: 900;
- text-transform: uppercase;
- letter-spacing: 1px;
+ font-size: 12px;
+ font-weight: 600;
+ text-transform: none;
+ letter-spacing: -0.3px;
  cursor: pointer;
  margin-top: 10px;
  opacity: 0;
@@ -3012,7 +3012,8 @@
  <div class="session-goal">Your logged sessions and progress.</div>
  </div>
 
- <div class="chart-card">
+ <!-- chart-card hidden for now -->
+ <div class="chart-card" style="display:none">
  <h3> Progress</h3>
  <select class="chart-select" id="chartExerciseSelect" onchange="updateChart()">
  <option value="">Select exercise…</option>
@@ -4273,7 +4274,7 @@ function updateDoneState(wrap) {
  const allDone = checks.length === total && total > 0;
  if (allDone) {
  const isLast = !getNextExerciseWrap(wrap);
- nextBtn.textContent = isLast ? 'FINISH WORKOUT ' : 'NEXT EXERCISE →';
+ nextBtn.textContent = isLast ? 'Finish workout' : 'Next exercise';
  // Trigger reflow for animation
  nextBtn.style.display = 'block';
  requestAnimationFrame(() => nextBtn.classList.add('visible'));
@@ -4310,7 +4311,7 @@ function goToNextExercise(currentWrap) {
  saveSession();
  const sessionId = getCurrentSessionId();
  const saveBtn = document.querySelector('#session-' + sessionId + ' .save-session-btn');
- if (saveBtn) { saveBtn.textContent = ' Saved!'; setTimeout(() => saveBtn.textContent = ' Save Session to History', 2000); }
+ if (saveBtn) { saveBtn.textContent = ' Saved'; setTimeout(() => saveBtn.textContent = ' Save session to history', 2000); }
  }
 }
 
@@ -4322,8 +4323,8 @@ document.addEventListener('DOMContentLoaded', () => {
  if (!session) return;
  const btn = document.createElement('button');
  btn.className = 'save-session-btn';
- btn.textContent = ' Save Session to History';
- btn.onclick = () => { saveSession(); btn.textContent = ' Saved!'; setTimeout(() => btn.textContent = ' Save Session to History', 2000); };
+ btn.textContent = ' Save session to history';
+ btn.onclick = () => { saveSession(); btn.textContent = ' Saved'; setTimeout(() => btn.textContent = ' Save session to history', 2000); };
  session.appendChild(btn);
  });
 });
