@@ -205,7 +205,7 @@
  border: 1.5px solid var(--border);
  color: var(--muted);
  font-family: 'Inter', sans-serif;
- font-size: 13px;
+ font-size: 10px;
  font-weight: 700;
  padding: 7px 14px;
  border-radius: 20px;
@@ -332,14 +332,14 @@
  /* EXERCISE CARDS */
  .exercise {
  background: var(--card);
- border: none;
+ border: 1px solid var(--border);
  border-radius: 12px;
  padding: 14px 16px;
  margin-bottom: 8px;
  display: flex;
  flex-direction: column;
  gap: 4px;
- transition: background 0.2s;
+ transition: border-color 0.2s;
  cursor: pointer;
  overflow: hidden;
  }
@@ -355,10 +355,16 @@
  .ex-top-row .ex-body { flex: 1; min-width: 0; }
 
  /* ACCORDION EXERCISE */
- .exercise-wrap { margin-bottom: 8px; }
- .exercise-wrap .exercise { margin-bottom: 0; border-radius: 12px; }
- .exercise-wrap.expanded .exercise {
- border-radius: 12px 12px 0 0;
+ .exercise-wrap {
+ margin-bottom: 8px;
+ border: 1px solid var(--border);
+ border-radius: 12px;
+ overflow: hidden;
+ transition: border-color 0.2s;
+ }
+ .exercise-wrap .exercise { margin-bottom: 0; border-radius: 0; border: none; }
+ .exercise-wrap.expanded {
+ border-color: var(--accent);
  }
 
  /* Hide indicator/ellipsis in collapsed — show in expanded */
@@ -387,7 +393,7 @@
  .ex-accordion {
  background: var(--card);
  border: none;
- border-radius: 0 0 12px 12px;
+ border-radius: 0;
  max-height: 0;
  overflow: hidden;
  transition: max-height 0.3s ease;
@@ -895,14 +901,22 @@
  border: 2px solid var(--accent);
  background: transparent;
  color: var(--accent);
- font-size: 16px;
  cursor: pointer;
  display: flex;
  align-items: center;
  justify-content: center;
  flex-shrink: 0;
+ padding: 0;
 }
-.timer-play-btn.running { background: var(--accent); color: white; }
+.timer-play-btn svg {
+ width: 16px;
+ height: 16px;
+}
+.timer-play-btn.running { background: var(--accent); color: #0A0A0A; }
+.timer-play-btn.running .timer-icon-play { display: none; }
+.timer-play-btn.running .timer-icon-pause { display: block !important; }
+.timer-play-btn:not(.running) .timer-icon-play { display: block; }
+.timer-play-btn:not(.running) .timer-icon-pause { display: none; }
 .timer-bar-time {
  font-family: 'Inter', sans-serif;
  font-size: 22px;
@@ -929,6 +943,18 @@
  transition: width 0.3s linear;
 }
 .timer-progress-fill.done { background: var(--green); }
+
+/* Timer done pulse */
+@keyframes timerPulse {
+ 0%, 100% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
+ 20% { box-shadow: 0 0 12px 2px rgba(226,241,107,0.5); }
+ 40% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
+ 60% { box-shadow: 0 0 12px 2px rgba(226,241,107,0.5); }
+ 80% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
+}
+.timer-pulse {
+ animation: timerPulse 1.5s ease-out;
+}
 .timer-stop-btn {
  width: 36px;
  height: 36px;
@@ -3438,7 +3464,7 @@ function setupLumbagoAccordions() {
  vidLink.className = 'ex-video-link';
  vidLink.href = ytHref;
  vidLink.target = '_blank';
- vidLink.textContent = '▶ Video guide';
+ vidLink.textContent = 'Video guide';
  vidLink.onclick = (e) => e.stopPropagation();
  badgesDiv.appendChild(vidLink);
  }
@@ -3995,7 +4021,6 @@ function startRestTimer() {
  showTimerBar();
  updateTimerBarDisplay();
  const playBtn = document.getElementById('timerPlayBtn');
- playBtn.textContent = '⏸';
  playBtn.classList.add('running');
 
  if (timerInterval) clearInterval(timerInterval);
@@ -4017,13 +4042,11 @@ function toggleTimerPlayPause() {
  timerInterval = null;
  timerPaused = true;
  const playBtn = document.getElementById('timerPlayBtn');
- playBtn.textContent = '▶';
  playBtn.classList.remove('running');
  } else if (timerPaused && timerRemaining > 0) {
  // Resume
  timerPaused = false;
  const playBtn = document.getElementById('timerPlayBtn');
- playBtn.textContent = '⏸';
  playBtn.classList.add('running');
  timerInterval = setInterval(() => {
  timerRemaining--;
@@ -4041,7 +4064,8 @@ function toggleTimerPlayPause() {
 }
 
 function timerDone() {
- try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e) {}
+ // Strong haptic burst pattern
+ try { navigator.vibrate && navigator.vibrate([100, 50, 100, 50, 200, 100, 300]); } catch(e) {}
  try {
  const ctx = new (window.AudioContext || window.webkitAudioContext)();
  const osc = ctx.createOscillator();
@@ -4055,12 +4079,17 @@ function timerDone() {
  } catch(e) {}
  const timeEl = document.getElementById('timerBarTime');
  const fillEl = document.getElementById('timerProgressFill');
+ const bar = document.getElementById('timerBar');
  timeEl.textContent = 'GO!';
  timeEl.classList.add('done');
  fillEl.style.width = '100%';
  fillEl.classList.add('done');
+ // Pulse animation on the timer bar
+ if (bar) {
+   bar.classList.add('timer-pulse');
+   setTimeout(() => bar.classList.remove('timer-pulse'), 2000);
+ }
  const playBtn = document.getElementById('timerPlayBtn');
- playBtn.textContent = '▶';
  playBtn.classList.remove('running');
  timerPaused = false;
 }
@@ -4071,7 +4100,6 @@ function stopTimer() {
  document.getElementById('timerBar').classList.remove('visible');
  document.getElementById('timerPresetsRow').classList.remove('visible');
  const playBtn = document.getElementById('timerPlayBtn');
- playBtn.textContent = '▶';
  playBtn.classList.remove('running');
 }
 
@@ -4162,7 +4190,7 @@ function setupAccordions() {
  vidLink.className = 'ex-video-link';
  vidLink.href = ytHref;
  vidLink.target = '_blank';
- vidLink.textContent = '▶ Video guide';
+ vidLink.textContent = 'Video guide';
  vidLink.onclick = (e) => e.stopPropagation();
  badgesDiv.appendChild(vidLink);
  }
@@ -4807,7 +4835,7 @@ renderHistory = function() {
 
 <!-- REST TIMER BAR -->
 <div class="timer-bar" id="timerBar">
- <button class="timer-play-btn" id="timerPlayBtn" onclick="toggleTimerPlayPause()">▶</button>
+ <button class="timer-play-btn" id="timerPlayBtn" onclick="toggleTimerPlayPause()"><svg class="timer-icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg><svg class="timer-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg></button>
  <div class="timer-bar-time" id="timerBarTime">1:30</div>
  <div class="timer-progress-wrap" onclick="toggleTimerPresets()">
  <div class="timer-progress-fill" id="timerProgressFill"></div>
