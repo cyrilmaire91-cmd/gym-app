@@ -626,14 +626,95 @@
  }
 
  .overview-card h3 {
- font-family: 'Inter', 'Inter', sans-serif;
+ font-family: 'Inter', sans-serif;
  font-size: 18px;
  font-weight: 600;
  letter-spacing: -0.5px;
  line-height: 1.1;
  margin-bottom: 16px;
- color: var(--accent);
+ color: var(--text);
  }
+
+ /* ── NEW OVERVIEW SECTIONS ── */
+
+ /* Current Block Pill */
+ .ov-block-pill {
+   background: var(--card); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+   display: flex; justify-content: space-between; align-items: center;
+ }
+ .ov-block-left .ov-block-label { font-size: 12px; font-weight: 500; color: #6b6b6b; }
+ .ov-block-left .ov-block-value { font-size: 16px; font-weight: 600; color: var(--text); margin-top: 2px; }
+ .ov-block-right { text-align: right; min-width: 80px; }
+ .ov-block-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+ .ov-block-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+ .ov-block-pct { font-size: 11px; font-weight: 600; color: var(--accent); }
+
+ /* Weekly Strip */
+ .ov-section-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 10px; margin-top: 16px; font-family: 'Inter', sans-serif; }
+ .ov-week-strip {
+   background: var(--card); border-radius: 10px; padding: 14px 12px; margin-bottom: 16px;
+   display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;
+ }
+ .ov-day-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+ .ov-day-letter { font-size: 10px; font-weight: 500; color: #6b6b6b; }
+ .ov-day-box {
+   width: 100%; aspect-ratio: 1; border-radius: 7px; display: flex;
+   align-items: center; justify-content: center; position: relative;
+ }
+ .ov-day-box.done { background: #1a2a14; border: 1px solid #2d4a20; }
+ .ov-day-box.next { background: #12160a; border: 1.5px solid var(--accent); }
+ .ov-day-box.rest { background: #111; border: 1px solid var(--border); }
+ /* CSS checkmark */
+ .ov-check { width: 8px; height: 13px; border-right: 2px solid #7ecf5a; border-bottom: 2px solid #7ecf5a; transform: rotate(45deg); margin-top: -3px; }
+ .ov-day-box.next .ov-arrow { font-size: 11px; font-weight: 600; color: var(--accent); }
+ .ov-day-box.rest .ov-dash { font-size: 12px; color: #6b6b6b; }
+ .ov-day-tag { font-size: 9px; font-weight: 500; min-height: 12px; }
+ .ov-day-tag.done { color: #2d4a20; }
+ .ov-day-tag.next { color: var(--accent); font-weight: 600; }
+ .ov-day-tag.rest { color: #6b6b6b; }
+
+ /* Next Session */
+ .ov-next-session {
+   background: var(--card); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+   display: flex; align-items: center; gap: 12px; cursor: pointer;
+ }
+ .ov-next-badge {
+   width: 44px; height: 44px; border-radius: 8px; background: #12160a; border: 1px solid var(--accent);
+   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+   font-size: 10px; font-weight: 600; color: var(--accent); text-align: center; line-height: 1.2;
+ }
+ .ov-next-info { flex: 1; min-width: 0; }
+ .ov-next-title { font-size: 16px; font-weight: 600; color: var(--text); }
+ .ov-next-sub { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 1px; }
+ .ov-next-chevron { font-size: 20px; color: #38383a; flex-shrink: 0; }
+
+ /* Injury Tiles */
+ .ov-injury-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+ .ov-injury-tile { border-radius: 10px; padding: 12px 14px; border: 1px solid; }
+ .ov-injury-tile.green { background: #1a2a14; border-color: #2d4a20; }
+ .ov-injury-tile.amber { background: #271e00; border-color: #3d2e00; }
+ .ov-injury-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+ .ov-injury-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
+ .ov-injury-score { font-size: 26px; font-weight: 600; letter-spacing: -1px; line-height: 1; }
+ .ov-injury-tile.green .ov-injury-score { color: #7ecf5a; }
+ .ov-injury-tile.amber .ov-injury-score { color: #d4a230; }
+ .ov-injury-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; margin-bottom: 8px; }
+ .ov-injury-bar-fill { height: 100%; border-radius: 1px; }
+ .ov-injury-tile.green .ov-injury-bar-fill { background: #7ecf5a; }
+ .ov-injury-tile.amber .ov-injury-bar-fill { background: #d4a230; }
+ .ov-injury-bottom { display: flex; justify-content: space-between; align-items: center; }
+ .ov-injury-status { font-size: 12px; font-weight: 600; }
+ .ov-injury-tile.green .ov-injury-status { color: #7ecf5a; }
+ .ov-injury-tile.amber .ov-injury-status { color: #d4a230; }
+ .ov-injury-trend { font-size: 10px; font-weight: 500; display: flex; align-items: center; gap: 3px; }
+ .ov-trend-up { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid #7ecf5a; display: inline-block; }
+ .ov-trend-neutral { width: 7px; height: 2px; background: #6b6b6b; display: inline-block; border-radius: 1px; }
+ .ov-update-injuries-btn {
+   width: 100%; padding: 12px; border-radius: 10px; background: transparent;
+   border: 1px solid var(--border); color: var(--muted); font-size: 14px; font-weight: 500;
+   font-family: 'Inter', sans-serif; cursor: pointer; margin-bottom: 12px; transition: background 0.15s;
+ }
+ .ov-update-injuries-btn:active { background: var(--card); }
 
  /* Weekly Structure — Bento Grid */
  .weekly-grid {
@@ -3760,60 +3841,104 @@ const OVERVIEW_DATA = {
 };
 
 function renderOverview(block) {
- const data = block === 'recovery' ? OVERVIEW_DATA.recovery : OVERVIEW_DATA.main;
  const el = document.getElementById('session-overview');
- const accentColor = data.accent;
 
- el.innerHTML = data.cards.map(card => {
- const titleStyle = `color:${accentColor}`;
- let content = '';
-
- if (card.type === 'weekly-grid') {
- content = `<div class="weekly-grid">${card.rows.map(row => `
- <div class="weekly-grid-row">${row.cards.map(c => `
- <div class="weekly-grid-card ${c.size}">
- <div class="weekly-grid-day">${c.day}</div>
- <div class="weekly-grid-info">
- <div class="weekly-grid-name">${c.name}</div>
- <div class="weekly-grid-detail">${c.detail}</div>
- </div>
- </div>`).join('')}
- </div>`).join('')}
- </div>`;
- } else if (card.type === 'days') {
- content = card.items.map(d => `
- <div class="day-row">
- <div class="day-label">${d.label}</div>
- <div><div class="day-name">${d.name}</div><div class="day-detail">${d.detail}</div></div>
- </div>`).join('');
- } else if (card.type === 'prog') {
- content = card.items.map(p => `
- <div class="prog-item">
- <div class="prog-weeks" style="color:${accentColor}">${p.weeks}</div>
- <div class="prog-desc">${p.desc}</div>
- </div>`).join('');
- } else if (card.type === 'injuries') {
- content = card.items.map(i => `
- <div class="injury-row">
- <div class="injury-name">${i.name}</div>
- <div><span class="injury-status ${i.cls}">${i.status}</span></div>
- </div>`).join('');
- } else if (card.type === 'text') {
- content = `<div style="font-size:13px;color:#bbb;line-height:1.6;">${card.text}</div>`;
- } else if (card.type === 'list') {
- content = `<ul style="margin:0;padding-left:18px;font-size:13px;color:#bbb;line-height:1.8;">` +
- card.items.map(li => `<li>${li}</li>`).join('') + '</ul>';
+ if (block === 'recovery') {
+   const data = OVERVIEW_DATA.recovery;
+   const accentColor = data.accent;
+   el.innerHTML = data.cards.map(card => {
+     let content = '';
+     if (card.type === 'days') {
+       content = card.items.map(d => `<div class="day-row"><div class="day-label">${d.label}</div><div><div class="day-name">${d.name}</div><div class="day-detail">${d.detail}</div></div></div>`).join('');
+     } else if (card.type === 'text') {
+       content = `<div style="font-size:13px;color:#bbb;line-height:1.6;">${card.text}</div>`;
+     } else if (card.type === 'list') {
+       content = `<ul style="margin:0;padding-left:18px;font-size:13px;color:#bbb;line-height:1.8;">${card.items.map(li => `<li>${li}</li>`).join('')}</ul>`;
+     }
+     return `<div class="overview-card"><h3 style="color:${accentColor}">${card.title}</h3>${content}</div>`;
+   }).join('');
+   return;
  }
 
- if (card.type === 'weekly-grid') {
- return `<div style="margin-bottom:12px;"><h3 style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:${accentColor};letter-spacing:-0.5px;line-height:1.1;margin-bottom:16px;">${card.title}</h3>${content}</div>`;
- }
- return `<div class="overview-card"><h3 style="${titleStyle}">${card.title}</h3>${content}</div>`;
+ // ── MAIN OVERVIEW ──
+ const weekDays = [
+   { letter: 'M', state: 'next', tag: 'UA' },
+   { letter: 'T', state: 'rest', tag: 'LA' },
+   { letter: 'W', state: 'rest', tag: 'UB' },
+   { letter: 'T', state: 'rest', tag: 'LB' },
+   { letter: 'F', state: 'rest', tag: '' },
+   { letter: 'S', state: 'rest', tag: '' },
+   { letter: 'S', state: 'rest', tag: '' },
+ ];
+
+ const injuries = [
+   { name: 'R. Wrist / TFCC', score: 8, pct: 80, status: 'Stable', trend: 'up', trendVal: '+1', variant: 'green' },
+   { name: 'R. Elbow / Epicondyle', score: 5, pct: 50, status: 'Monitor', trend: 'neutral', trendVal: '0', variant: 'amber' },
+   { name: 'L. Knee / Patella', score: 6, pct: 60, status: 'Monitor', trend: 'up', trendVal: '+1', variant: 'amber' },
+   { name: 'L. Shoulder / Press', score: 7, pct: 70, status: 'Stable', trend: 'neutral', trendVal: '0', variant: 'green' },
+ ];
+
+ const weekStrip = weekDays.map(d => {
+   let boxContent = '';
+   if (d.state === 'done') boxContent = '<div class="ov-check"></div>';
+   else if (d.state === 'next') boxContent = '<span class="ov-arrow">&#8594;</span>';
+   else boxContent = '<span class="ov-dash">&#8212;</span>';
+   const tagText = d.state === 'rest' ? '&#8212;' : d.tag;
+   return `<div class="ov-day-col">
+     <div class="ov-day-letter">${d.letter}</div>
+     <div class="ov-day-box ${d.state}">${boxContent}</div>
+     <div class="ov-day-tag ${d.state}">${tagText}</div>
+   </div>`;
  }).join('');
 
- // Append injury dashboard
- el.innerHTML += '<div class="injury-section" id="injuryDashboard"></div>';
- renderInjuryDashboard();
+ const injuryTiles = injuries.map(i => {
+   const trendIcon = i.trend === 'up' ? '<span class="ov-trend-up"></span>' : '<span class="ov-trend-neutral"></span>';
+   const trendColor = i.trend === 'up' ? '#7ecf5a' : '#6b6b6b';
+   return `<div class="ov-injury-tile ${i.variant}">
+     <div class="ov-injury-top">
+       <div class="ov-injury-name">${i.name}</div>
+       <div class="ov-injury-score">${i.score}</div>
+     </div>
+     <div class="ov-injury-bar"><div class="ov-injury-bar-fill" style="width:${i.pct}%"></div></div>
+     <div class="ov-injury-bottom">
+       <div class="ov-injury-status">${i.status}</div>
+       <div class="ov-injury-trend" style="color:${trendColor}">${trendIcon} ${i.trendVal}</div>
+     </div>
+   </div>`;
+ }).join('');
+
+ el.innerHTML = `
+   <!-- Current Block -->
+   <div class="ov-section-label" style="margin-top:0">Current block</div>
+   <div class="ov-block-pill">
+     <div class="ov-block-left">
+       <div class="ov-block-value">Hypertrophy · Wk 1/4</div>
+     </div>
+     <div class="ov-block-right">
+       <div class="ov-block-bar"><div class="ov-block-bar-fill" style="width:0%"></div></div>
+       <div class="ov-block-pct">0%</div>
+     </div>
+   </div>
+
+   <!-- This Week -->
+   <div class="ov-section-label">This week</div>
+   <div class="ov-week-strip">${weekStrip}</div>
+
+   <!-- Next Session -->
+   <div class="ov-next-session" onclick="showTab('upperA', document.querySelector('.tab[onclick*=upperA]'))">
+     <div class="ov-next-badge">UA<br>Mon</div>
+     <div class="ov-next-info">
+       <div class="ov-next-title">Upper A</div>
+       <div class="ov-next-sub">Chest · Shoulders · Triceps · Back</div>
+     </div>
+     <div class="ov-next-chevron">&#8250;</div>
+   </div>
+
+   <!-- Injury Status -->
+   <div class="ov-section-label">Injury status</div>
+   <div class="ov-injury-grid">${injuryTiles}</div>
+   <button class="ov-update-injuries-btn" onclick="showCheckin(null, null)">Update injuries</button>
+ `;
 }
 
 // Render on load
