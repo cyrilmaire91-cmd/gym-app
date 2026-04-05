@@ -644,10 +644,10 @@
  }
  .ov-block-left .ov-block-label { font-size: 12px; font-weight: 500; color: #6b6b6b; }
  .ov-block-left .ov-block-value { font-size: 16px; font-weight: 600; color: var(--text); margin-top: 2px; }
- .ov-block-right { text-align: right; min-width: 80px; }
- .ov-block-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+ .ov-block-right { display: flex; align-items: center; gap: 12px; min-width: 80px; }
+ .ov-block-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
  .ov-block-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
- .ov-block-pct { font-size: 11px; font-weight: 600; color: var(--accent); }
+ .ov-block-pct { font-size: 11px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
 
  /* Weekly Strip */
  .ov-section-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 10px; margin-top: 16px; font-family: 'Inter', sans-serif; }
