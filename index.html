@@ -332,18 +332,18 @@
  /* EXERCISE CARDS */
  .exercise {
  background: var(--card);
- border: 1px solid var(--border);
+ border: none;
  border-radius: 12px;
  padding: 14px 16px;
  margin-bottom: 8px;
  display: flex;
  flex-direction: column;
  gap: 4px;
- transition: border-color 0.2s, background 0.2s;
+ transition: background 0.2s;
  cursor: pointer;
  overflow: hidden;
  }
- .exercise:active { border-color: var(--accent); }
+ .exercise:active { opacity: 0.8; }
 
  /* Top row: title+sets left, yt-btn right */
  .ex-top-row {
@@ -386,8 +386,7 @@
 
  .ex-accordion {
  background: var(--card);
- border: 1px solid var(--border);
- border-top: none;
+ border: none;
  border-radius: 0 0 12px 12px;
  max-height: 0;
  overflow: hidden;
@@ -466,7 +465,7 @@
  /* SUPERSET */
  .superset-group {
  background: var(--card);
- border: 1px solid var(--border);
+ border: none;
  border-radius: 12px;
  overflow: hidden;
  margin-bottom: 8px;
@@ -488,10 +487,17 @@
  border: none;
  border-radius: 0;
  margin-bottom: 0;
+ }
+
+ .superset-group .exercise-wrap {
+ margin-bottom: 0;
+ }
+
+ .superset-group .exercise-wrap .exercise {
  border-bottom: 1px solid var(--border);
  }
 
- .superset-group .exercise:last-child {
+ .superset-group .exercise-wrap:last-of-type .exercise {
  border-bottom: none;
  }
 
@@ -525,7 +531,7 @@
  /* PREHAB BOX */
  .prehab-box {
  background: var(--card);
- border: 1px solid var(--border);
+ border: none;
  border-radius: 12px;
  padding: 14px 16px;
  margin-bottom: 8px;
@@ -546,7 +552,18 @@
  border: none;
  border-radius: 0;
  margin-bottom: 0;
+ }
+
+ .prehab-box .exercise-wrap {
+ margin-bottom: 0;
+ }
+
+ .prehab-box .exercise-wrap .exercise {
  border-bottom: 1px solid var(--border);
+ }
+
+ .prehab-box .exercise-wrap:last-of-type .exercise {
+ border-bottom: none;
  }
 
  .prehab-box .exercise:last-child {
@@ -624,16 +641,15 @@
  }
  .weekly-grid-card {
  background: var(--card);
- border: 1px solid var(--border);
- border-radius: 10px;
+ border: none;
+ border-radius: 12px;
  padding: 14px 16px;
- height: 135px;
+ height: 102px;
  display: flex;
  flex-direction: column;
  justify-content: space-between;
  overflow: hidden;
  }
- .weekly-grid-card.half { width: calc(50% - 4px); flex-shrink: 0; }
  .weekly-grid-card.full { width: 100%; }
  .weekly-grid-day {
  font-family: 'Inter', 'Inter', sans-serif;
@@ -1070,30 +1086,39 @@
  position: relative;
  transition: transform 0.25s ease;
  z-index: 1;
+ background: var(--card);
 }
 .log-set-row.swiped {
- transform: translateX(-60px);
+ transform: translateX(-52px);
 }
 .log-set-delete {
  position: absolute;
  right: 0;
  top: 0;
  bottom: 0;
- width: 60px;
- background: var(--danger);
+ width: 52px;
+ background: var(--text);
  display: flex;
  align-items: center;
  justify-content: center;
  border-radius: 0 8px 8px 0;
  cursor: pointer;
  z-index: 0;
+ opacity: 0;
+ transition: opacity 0.2s ease;
+}
+.log-set-row.swiped ~ .log-set-delete {
+ opacity: 1;
 }
 .log-set-delete svg {
- width: 20px;
- height: 20px;
- stroke: #fff;
+ width: 18px;
+ height: 18px;
+ stroke: #3a3a3c;
  stroke-width: 2;
  fill: none;
+}
+.log-set-delete:active {
+ opacity: 0.7;
 }
 
 /* Input field */
@@ -3618,15 +3643,19 @@ const OVERVIEW_DATA = {
  cards: [
  { title: 'Weekly Structure', type: 'weekly-grid', rows: [
  { cards: [
- { day: 'Day 1', name: 'Upper A', detail: 'Chest · Shoulders · Triceps · Back', size: 'half' },
- { day: 'Day 2', name: 'Lower A', detail: 'Belt squat · RDL · Split squat · Hip prehab', size: 'half' },
+ { day: 'Day 1', name: 'Upper A', detail: 'Chest · Shoulders · Triceps · Back', size: 'full' },
+ ]},
+ { cards: [
+ { day: 'Day 2', name: 'Lower A', detail: 'Belt squat · RDL · Split squat · Hip prehab', size: 'full' },
  ]},
  { cards: [
  { day: 'Day 3', name: 'Rest / Shadowboxing at home', detail: '10–15 min technique, footwork — no power', size: 'full' },
  ]},
  { cards: [
- { day: 'Day 4', name: 'Upper B', detail: 'Back · Biceps · Rear delt · Chest accessory', size: 'half' },
- { day: 'Day 5', name: 'Lower B', detail: 'Hip thrust · Hinge · Abduction · Conditioning', size: 'half' },
+ { day: 'Day 4', name: 'Upper B', detail: 'Back · Biceps · Rear delt · Chest accessory', size: 'full' },
+ ]},
+ { cards: [
+ { day: 'Day 5', name: 'Lower B', detail: 'Hip thrust · Hinge · Abduction · Conditioning', size: 'full' },
  ]},
  { cards: [
  { day: 'Day 6-7', name: 'Rest / Shadowboxing / Mobility', detail: 'Hip mobility block 3–5x/week at home', size: 'full' },
@@ -4376,20 +4405,26 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
    const dx = currentX - startX;
    if (dx < -10) isSwiping = true;
    if (isSwiping) {
-     const clamped = Math.max(Math.min(dx, 0), -70);
+     const clamped = Math.max(Math.min(dx, 0), -56);
      row.style.transform = `translateX(${clamped}px)`;
+     // Show delete button during drag
+     const del = swipeWrap.querySelector('.log-set-delete');
+     if (del) del.style.opacity = Math.min(Math.abs(dx) / 40, 1);
    }
  }, { passive: true });
 
  row.addEventListener('touchend', () => {
    row.style.transition = 'transform 0.25s ease';
+   const del = swipeWrap.querySelector('.log-set-delete');
    const dx = currentX - startX;
-   if (dx < -40) {
+   if (dx < -30) {
      row.classList.add('swiped');
      row.style.transform = '';
+     if (del) del.style.opacity = '';
    } else {
      row.classList.remove('swiped');
      row.style.transform = '';
+     if (del) { del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0'; }
    }
  });
 
@@ -4397,6 +4432,8 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  row.addEventListener('click', () => {
    if (row.classList.contains('swiped')) {
      row.classList.remove('swiped');
+     const del = swipeWrap.querySelector('.log-set-delete');
+     if (del) { del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0'; }
    }
  });
 
