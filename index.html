@@ -1115,11 +1115,11 @@
  background: var(--card);
 }
 .log-set-row.swiped {
- transform: translateX(-52px);
+ transform: translateX(52px);
 }
 .log-set-delete {
  position: absolute;
- right: 0;
+ left: 0;
  top: 0;
  bottom: 0;
  width: 52px;
@@ -1127,7 +1127,7 @@
  display: flex;
  align-items: center;
  justify-content: center;
- border-radius: 0 8px 8px 0;
+ border-radius: 8px 0 0 8px;
  cursor: pointer;
  z-index: 0;
  opacity: 0;
@@ -1844,12 +1844,50 @@
 }
 
 /* HISTORY VIEW */
+/* History swipe-to-delete */
+.history-swipe-wrap {
+ position: relative;
+ overflow: hidden;
+ border-radius: 12px;
+ margin-bottom: 10px;
+}
 .history-card {
  background: var(--card);
- border: 1px solid var(--border);
- border-radius: 10px;
+ border: none;
+ border-radius: 12px;
  padding: 14px 16px;
- margin-bottom: 10px;
+ position: relative;
+ transition: transform 0.25s ease;
+ z-index: 1;
+}
+.history-card.swiped {
+ transform: translateX(52px);
+}
+.history-swipe-delete {
+ position: absolute;
+ left: 0;
+ top: 0;
+ bottom: 0;
+ width: 52px;
+ background: var(--text);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border-radius: 8px 0 0 8px;
+ cursor: pointer;
+ z-index: 0;
+ opacity: 0;
+ transition: opacity 0.2s ease;
+}
+.history-card.swiped ~ .history-swipe-delete {
+ opacity: 1;
+}
+.history-swipe-delete svg {
+ width: 18px;
+ height: 18px;
+ stroke: #3a3a3c;
+ stroke-width: 2;
+ fill: none;
 }
 .history-date {
  font-family: 'Inter', sans-serif;
@@ -4067,17 +4105,6 @@ function toggleTimerPlayPause() {
 function timerDone() {
  // Strong haptic burst pattern
  try { navigator.vibrate && navigator.vibrate([100, 50, 100, 50, 200, 100, 300]); } catch(e) {}
- try {
- const ctx = new (window.AudioContext || window.webkitAudioContext)();
- const osc = ctx.createOscillator();
- const gain = ctx.createGain();
- osc.connect(gain);
- gain.connect(ctx.destination);
- osc.frequency.value = 880;
- gain.gain.value = 0.3;
- osc.start();
- osc.stop(ctx.currentTime + 0.3);
- } catch(e) {}
  const timeEl = document.getElementById('timerBarTime');
  const fillEl = document.getElementById('timerProgressFill');
  const bar = document.getElementById('timerBar');
@@ -4388,6 +4415,21 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
      if (!weightPill.dataset.value && prevSet) { weightPill.dataset.value = String(prevSet.weight); renderPill(weightPill); }
      if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
      startRestTimer();
+     // Superset behavior: switch to partner exercise
+     const w = wrap || swipeWrap.closest('.exercise-wrap');
+     if (w && w.closest('.superset-group')) {
+       const supersetWraps = [...w.closest('.superset-group').querySelectorAll('.exercise-wrap')];
+       const curIdx = supersetWraps.indexOf(w);
+       const partner = supersetWraps[(curIdx + 1) % supersetWraps.length];
+       if (partner && partner !== w) {
+         setTimeout(() => {
+           w.classList.remove('expanded');
+           partner.classList.add('expanded');
+           currentExpandedWrap = partner;
+           partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+         }, 300);
+       }
+     }
    }
    const w = wrap || swipeWrap.closest('.exercise-wrap');
    if (w) updateDoneState(w);
@@ -4432,13 +4474,12 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  row.addEventListener('touchmove', (e) => {
    currentX = e.touches[0].clientX;
    const dx = currentX - startX;
-   if (dx < -10) isSwiping = true;
+   if (dx > 10) isSwiping = true;
    if (isSwiping) {
-     const clamped = Math.max(Math.min(dx, 0), -56);
+     const clamped = Math.min(Math.max(dx, 0), 56);
      row.style.transform = `translateX(${clamped}px)`;
-     // Show delete button during drag
      const del = swipeWrap.querySelector('.log-set-delete');
-     if (del) del.style.opacity = Math.min(Math.abs(dx) / 40, 1);
+     if (del) del.style.opacity = Math.min(dx / 40, 1);
    }
  }, { passive: true });
 
@@ -4446,7 +4487,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
    row.style.transition = 'transform 0.25s ease';
    const del = swipeWrap.querySelector('.log-set-delete');
    const dx = currentX - startX;
-   if (dx < -30) {
+   if (dx > 30) {
      row.classList.add('swiped');
      row.style.transform = '';
      if (del) del.style.opacity = '';
@@ -4686,27 +4727,79 @@ function renderHistory() {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
 
  if (history.length === 0) {
- list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px 0;font-size:14px;">No sessions logged yet.<br>Go to a session and tap Log to start.</div>';
- return;
+   list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px 0;font-size:14px;">No sessions logged yet.<br>Go to a session and tap Log to start.</div>';
+   return;
  }
 
- list.innerHTML = history.slice(0, 20).map(entry => {
- const d = new Date(entry.date);
- const dateStr = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
- const exRows = entry.exercises.map(ex => {
- const bestSet = ex.sets.reduce((best, s) => s.weight > best.weight ? s : best, { weight: 0, reps: 0 });
- const totalVol = ex.sets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
- return `<div class="history-ex-row">
- <span class="history-ex-name">${ex.name}</span>
- <span class="history-ex-detail">${bestSet.weight}kg × ${bestSet.reps} · Vol: ${totalVol}kg</span>
- </div>`;
- }).join('');
- return `<div class="history-card">
- <div class="history-date">${dateStr}</div>
- <div class="history-session-name">${entry.sessionName}</div>
- ${exRows}
- </div>`;
- }).join('');
+ list.innerHTML = '';
+ history.slice(0, 20).forEach((entry, idx) => {
+   const d = new Date(entry.date);
+   const dateStr = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+   const exRows = entry.exercises.map(ex => {
+     const bestSet = ex.sets.reduce((best, s) => s.weight > best.weight ? s : best, { weight: 0, reps: 0 });
+     const totalVol = ex.sets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
+     return `<div class="history-ex-row"><span class="history-ex-name">${ex.name}</span><span class="history-ex-detail">${bestSet.weight}kg × ${bestSet.reps} · Vol: ${totalVol}kg</span></div>`;
+   }).join('');
+
+   const wrap = document.createElement('div');
+   wrap.className = 'history-swipe-wrap';
+
+   const card = document.createElement('div');
+   card.className = 'history-card';
+   card.innerHTML = `<div class="history-date">${dateStr}</div><div class="history-session-name">${entry.sessionName}</div>${exRows}`;
+   wrap.appendChild(card);
+
+   const del = document.createElement('div');
+   del.className = 'history-swipe-delete';
+   del.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
+   del.onclick = () => {
+     haptic();
+     wrap.style.maxHeight = wrap.offsetHeight + 'px';
+     wrap.style.transition = 'max-height 0.2s ease, opacity 0.2s ease';
+     requestAnimationFrame(() => { wrap.style.maxHeight = '0'; wrap.style.opacity = '0'; });
+     setTimeout(() => {
+       const h = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+       h.splice(idx, 1);
+       localStorage.setItem('gymapp_history_v1', JSON.stringify(h));
+       wrap.remove();
+     }, 220);
+   };
+   wrap.appendChild(del);
+
+   // Swipe right to reveal delete on left
+   let startX = 0, currentX = 0, swiping = false;
+   card.addEventListener('touchstart', (e) => {
+     startX = e.touches[0].clientX; currentX = startX; swiping = false;
+     card.style.transition = 'none';
+   }, { passive: true });
+   card.addEventListener('touchmove', (e) => {
+     currentX = e.touches[0].clientX;
+     const dx = currentX - startX;
+     if (dx > 10) swiping = true;
+     if (swiping) {
+       card.style.transform = `translateX(${Math.min(Math.max(dx, 0), 56)}px)`;
+       del.style.opacity = Math.min(dx / 40, 1);
+     }
+   }, { passive: true });
+   card.addEventListener('touchend', () => {
+     card.style.transition = 'transform 0.25s ease';
+     const dx = currentX - startX;
+     if (dx > 30) {
+       card.classList.add('swiped'); card.style.transform = ''; del.style.opacity = '';
+     } else {
+       card.classList.remove('swiped'); card.style.transform = '';
+       del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0';
+     }
+   });
+   card.addEventListener('click', () => {
+     if (card.classList.contains('swiped')) {
+       card.classList.remove('swiped');
+       del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0';
+     }
+   });
+
+   list.appendChild(wrap);
+ });
 }
 
 // Patch showTab to handle history + pre-session check-in
