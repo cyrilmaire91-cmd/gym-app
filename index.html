@@ -470,41 +470,51 @@
 
  /* SUPERSET */
  .superset-group {
- background: var(--card);
- border: none;
+ background: #141415;
+ border: 1px solid var(--border);
  border-radius: 12px;
- overflow: hidden;
+ overflow: visible;
  margin-bottom: 8px;
+ padding: 12px;
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
  }
 
  .superset-label {
- font-family: 'Inter', 'Inter', sans-serif;
- font-size: 10px;
+ font-family: 'Inter', sans-serif;
+ font-size: 12px;
  font-weight: 600;
- letter-spacing: -0.3px;
- text-transform: uppercase;
+ letter-spacing: -0.5px;
  color: var(--accent);
- background: rgba(0,0,0,0.3);
- padding: 10px 16px 10px;
+ background: none;
+ padding: 0;
  }
 
  .superset-group .exercise {
- background: transparent;
- border: none;
- border-radius: 0;
+ background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 12px;
  margin-bottom: 0;
  }
 
  .superset-group .exercise-wrap {
- margin-bottom: 0;
+ margin-bottom: 4px;
+ border: 1px solid var(--border);
+ border-radius: 12px;
  }
 
  .superset-group .exercise-wrap .exercise {
- border-bottom: 1px solid var(--border);
+ border: none;
+ border-bottom: none;
  }
 
- .superset-group .exercise-wrap:last-of-type .exercise {
- border-bottom: none;
+ .superset-group .exercise-wrap:last-of-type {
+ margin-bottom: 0;
+ }
+
+ .superset-group .exercise-wrap.expanded {
+ border-color: var(--accent);
  }
 
  /* IF FLARES */
@@ -4024,6 +4034,7 @@ function renderOverview(block) {
    <div class="ov-section-label">This week</div>
    <div class="ov-week-strip">${weekStrip}</div>
 
+   <div class="ov-section-label">Coming next</div>
    ${nextSessionHtml}
 
    <div class="ov-section-label">Injury status</div>
