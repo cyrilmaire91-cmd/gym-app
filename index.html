@@ -689,32 +689,30 @@
  .ov-next-chevron { font-size: 20px; color: #38383a; flex-shrink: 0; }
 
  /* Injury Tiles */
- .ov-injury-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
- .ov-injury-tile { border-radius: 10px; padding: 12px 14px; border: 1px solid; }
- .ov-injury-tile.green { background: #1a2a14; border-color: #2d4a20; }
- .ov-injury-tile.amber { background: #271e00; border-color: #3d2e00; }
- .ov-injury-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
- .ov-injury-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
- .ov-injury-score { font-size: 26px; font-weight: 600; letter-spacing: -1px; line-height: 1; }
- .ov-injury-tile.green .ov-injury-score { color: #7ecf5a; }
- .ov-injury-tile.amber .ov-injury-score { color: #d4a230; }
- .ov-injury-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; margin-bottom: 8px; }
- .ov-injury-bar-fill { height: 100%; border-radius: 1px; }
- .ov-injury-tile.green .ov-injury-bar-fill { background: #7ecf5a; }
- .ov-injury-tile.amber .ov-injury-bar-fill { background: #d4a230; }
- .ov-injury-bottom { display: flex; justify-content: space-between; align-items: center; }
- .ov-injury-status { font-size: 12px; font-weight: 600; }
- .ov-injury-tile.green .ov-injury-status { color: #7ecf5a; }
- .ov-injury-tile.amber .ov-injury-status { color: #d4a230; }
- .ov-injury-trend { font-size: 10px; font-weight: 500; display: flex; align-items: center; gap: 3px; }
- .ov-trend-up { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid #7ecf5a; display: inline-block; }
- .ov-trend-neutral { width: 7px; height: 2px; background: #6b6b6b; display: inline-block; border-radius: 1px; }
- .ov-update-injuries-btn {
-   width: 100%; padding: 12px; border-radius: 10px; background: transparent;
-   border: 1px solid var(--border); color: var(--muted); font-size: 14px; font-weight: 500;
-   font-family: 'Inter', sans-serif; cursor: pointer; margin-bottom: 12px; transition: background 0.15s;
+ .ov-injury-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+ .ov-injury-tile {
+   background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+   padding: 16px; display: flex; flex-direction: column; justify-content: space-between;
  }
- .ov-update-injuries-btn:active { background: var(--card); }
+ .ov-injury-header { display: flex; justify-content: space-between; align-items: flex-start; }
+ .ov-injury-body-part { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+ .ov-injury-type { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+ .ov-injury-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+ .ov-injury-dot.green { background: #22c55e; }
+ .ov-injury-dot.orange { background: #f97316; }
+ .ov-injury-dot.red { background: #ef4444; }
+ .ov-injury-score { font-family: 'Inter', sans-serif; font-size: 40px; font-weight: 500; color: var(--text); line-height: 1; margin: 12px 0; }
+ .ov-injury-bottom { display: flex; justify-content: space-between; align-items: center; }
+ .ov-injury-status { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: var(--muted); }
+ .ov-injury-trend { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 4px; }
+ .ov-trend-arrow { font-size: 10px; color: var(--text); }
+ .ov-update-injuries-btn {
+   width: 100%; padding: 14px 16px; height: 44px; border-radius: 8px;
+   background: #F8FAFC; border: none;
+   color: #1C1C1E; font-size: 14px; font-weight: 600; letter-spacing: -0.5px;
+   font-family: 'Inter', sans-serif; cursor: pointer; margin-bottom: 12px;
+ }
+ .ov-update-injuries-btn:active { opacity: 0.7; }
 
  /* Weekly Structure — Bento Grid */
  .weekly-grid {
@@ -823,16 +821,16 @@
 
 /* AI ADAPT BUTTON */
 .adapt-inline-btn {
- background: var(--card);
- border: 0.5px solid rgba(248,250,252,0.4);
- border-radius: 50px;
- color: #eff6ff;
- font-family: 'Inter', 'Inter', sans-serif;
+ background: #F8FAFC;
+ border: none;
+ border-radius: 8px;
+ color: #1C1C1E;
+ font-family: 'Inter', sans-serif;
  font-size: 12px;
  font-weight: 600;
  letter-spacing: -0.5px;
  cursor: pointer;
- padding: 7px 10px;
+ padding: 10px 14px;
  display: none;
  white-space: nowrap;
  flex-shrink: 0;
@@ -846,6 +844,7 @@
  width: 16px;
  height: 16px;
  flex-shrink: 0;
+ stroke: #1C1C1E;
 }
 
 /* ADAPT DRAWER */
@@ -1098,16 +1097,15 @@
 
 /* WORKOUT LOGGER */
 .save-session-btn {
- background: var(--card2);
- color: var(--muted);
+ background: var(--accent);
+ color: #030B1A;
  border: none;
  border-radius: 8px;
- height: 44px;
  font-family: 'Inter', sans-serif;
- font-size: 12px;
+ font-size: 14px;
  font-weight: 600;
- text-transform: none;
- letter-spacing: -0.3px;
+ letter-spacing: -0.5px;
+ padding: 12px 8px;
  cursor: pointer;
  margin-top: 12px;
  width: 100%;
@@ -1420,18 +1418,19 @@
  display: flex;
  align-items: center;
  justify-content: center;
- gap: 2px;
+ gap: 4px;
  margin-top: 0;
- padding: 12px;
+ padding: 14px 16px;
+ height: 44px;
  cursor: pointer;
  color: var(--text);
- font-family: 'Inter', 'Inter', sans-serif;
- font-size: 10px;
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
  font-weight: 600;
- text-transform: uppercase;
- letter-spacing: -0.2px;
- background: #212121;
- border: 1px solid #7e7e7e;
+ text-transform: none;
+ letter-spacing: -0.5px;
+ background: var(--card);
+ border: 1px solid #6a6a6a;
  border-radius: 8px;
 }
 .log-add-set .add-icon {
@@ -1466,15 +1465,15 @@
 .next-exercise-btn {
  width: 100%;
  height: 44px;
- background: var(--card2);
- color: var(--muted);
- border: none;
+ background: var(--card);
+ color: var(--text);
+ border: 1px solid #6a6a6a;
  border-radius: 8px;
  font-family: 'Inter', sans-serif;
- font-size: 12px;
+ font-size: 14px;
  font-weight: 600;
  text-transform: none;
- letter-spacing: -0.3px;
+ letter-spacing: -0.5px;
  cursor: pointer;
  margin-top: 10px;
  opacity: 0;
@@ -1598,26 +1597,30 @@
  align-items: center;
  gap: 10px;
  margin-bottom: 14px;
+ padding: 0;
 }
 .checkin-zone {
  font-size: 12px;
  color: var(--muted);
  min-width: 90px;
  flex-shrink: 0;
+ text-align: left;
 }
 .checkin-range {
  flex: 1;
  -webkit-appearance: none;
  appearance: none;
- height: 6px;
+ height: 4px;
  background: var(--border);
- border-radius: 3px;
+ border-radius: 2px;
  outline: none;
+ margin: 0;
+ padding: 0;
 }
 .checkin-range::-webkit-slider-thumb {
  -webkit-appearance: none;
- width: 24px;
- height: 24px;
+ width: 16px;
+ height: 16px;
  border-radius: 50%;
  background: var(--green);
  border: none;
@@ -1640,16 +1643,16 @@
 }
 .checkin-start-btn {
  width: 100%;
- height: 52px;
  background: var(--accent);
- color: white;
+ color: #030B1A;
  border: none;
- border-radius: 10px;
+ border-radius: 8px;
  font-family: 'Inter', sans-serif;
- font-size: 16px;
- font-weight: 900;
- text-transform: uppercase;
- letter-spacing: 1px;
+ font-size: 14px;
+ font-weight: 600;
+ text-transform: none;
+ letter-spacing: -0.5px;
+ padding: 12px 8px;
  cursor: pointer;
 }
 
@@ -1876,16 +1879,17 @@
 /* UPDATE STATUS BTN in overview card */
 .injury-update-btn {
  width: 100%;
- padding: 10px;
- background: var(--card2);
- border: 1px solid var(--border);
+ padding: 14px 16px;
+ height: 44px;
+ background: var(--card);
+ border: 1px solid #6a6a6a;
  border-radius: 8px;
- color: var(--muted);
+ color: var(--text);
  font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 0.5px;
+ font-size: 14px;
+ font-weight: 600;
+ text-transform: none;
+ letter-spacing: -0.5px;
  cursor: pointer;
  margin-top: 12px;
 }
@@ -2253,7 +2257,7 @@
  <div class="checkin-sub">Quick check before you start</div>
  <div id="checkinSliders"></div>
  <div class="checkin-banner" id="checkinBanner"></div>
- <button class="checkin-start-btn" id="checkinStartBtn" onclick="submitCheckin()">Start Session</button>
+ <button class="checkin-start-btn" id="checkinStartBtn" onclick="submitCheckin()">Save</button>
 </div>
 
 <div class="content">
@@ -3146,7 +3150,7 @@
  </div>
 
  <div id="historyList"></div>
- <button onclick="exportHistory()" style="width:100%;margin-top:12px;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;"> Export History as JSON</button>
+ <button onclick="exportHistory()" style="width:100%;margin-top:12px;padding:14px 16px;height:44px;background:var(--card);border:1px solid #6a6a6a;border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:-0.5px;cursor:pointer;">Export history as JSON</button>
  </div>
 
 </div>
@@ -3201,6 +3205,10 @@
  let currentBlock = 'main';
 
  function setBlock(block) {
+ localStorage.setItem('gymapp_current_block', block);
+ if (!localStorage.getItem('gymapp_block_start_' + block)) {
+   localStorage.setItem('gymapp_block_start_' + block, new Date().toISOString().slice(0, 10));
+ }
  currentBlock = block;
  // Update panel active state
  document.querySelectorAll('.panel-item').forEach(i => i.classList.toggle('active', i.dataset.block === block));
@@ -3374,7 +3382,7 @@ function renderInjuryDashboard() {
  <div class="injury-list">${listRows}</div>
  </div>
  <div class="injury-banner">${buildInjuryBanner(scores)}</div>
- <button class="injury-update-btn" onclick="showCheckin(null, null)">Update injury status</button>
+ <button class="injury-update-btn" onclick="showCheckin(null, null)">Update injuries</button>
  `;
 }
 
@@ -3449,6 +3457,8 @@ function submitCheckin() {
 
  closeCheckin();
  renderInjuryDashboard();
+ const cb = localStorage.getItem('gymapp_current_block') || 'main';
+ renderOverview(cb === 'recovery' ? 'recovery' : 'main');
 
  // Now open the session
  if (pendingSessionTab && pendingSessionBtn) {
@@ -3610,7 +3620,7 @@ function setupLumbagoAccordions() {
 
  const addRow = document.createElement('div');
  addRow.className = 'log-add-set';
- addRow.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg> ADD SET';
+ addRow.innerHTML = 'Add set';
  addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
  container.appendChild(addRow);
 
@@ -3860,30 +3870,58 @@ function renderOverview(block) {
    return;
  }
 
- // ── MAIN OVERVIEW ──
- const weekDays = [
-   { letter: 'M', state: 'next', tag: 'UA' },
-   { letter: 'T', state: 'rest', tag: 'LA' },
-   { letter: 'W', state: 'rest', tag: 'UB' },
-   { letter: 'T', state: 'rest', tag: 'LB' },
-   { letter: 'F', state: 'rest', tag: '' },
-   { letter: 'S', state: 'rest', tag: '' },
-   { letter: 'S', state: 'rest', tag: '' },
- ];
+ // ── MAIN OVERVIEW (dynamic) ──
+ const currentBlock = localStorage.getItem('gymapp_current_block') || 'main';
 
- const injuries = [
-   { name: 'R. Wrist / TFCC', score: 8, pct: 80, status: 'Stable', trend: 'up', trendVal: '+1', variant: 'green' },
-   { name: 'R. Elbow / Epicondyle', score: 5, pct: 50, status: 'Monitor', trend: 'neutral', trendVal: '0', variant: 'amber' },
-   { name: 'L. Knee / Patella', score: 6, pct: 60, status: 'Monitor', trend: 'up', trendVal: '+1', variant: 'amber' },
-   { name: 'L. Shoulder / Press', score: 7, pct: 70, status: 'Stable', trend: 'neutral', trendVal: '0', variant: 'green' },
+ // Block pill
+ const blockLabels = { main: 'Hypertrophy · Wk 1–2', main34: 'Hypertrophy · Wk 3–4', recovery: 'Recovery' };
+ const blockLabel = blockLabels[currentBlock] || 'Hypertrophy';
+ const blockStart = localStorage.getItem('gymapp_block_start_' + currentBlock);
+ const today = new Date();
+ const daysSinceStart = blockStart ? Math.max(0, Math.floor((today - new Date(blockStart)) / 86400000)) : 0;
+ const weekNum = Math.min(Math.floor(daysSinceStart / 7) + 1, 4);
+ const blockPct = Math.min(100, Math.max(0, Math.round((daysSinceStart / 28) * 100)));
+
+ // This week strip
+ const dayOfWeek = today.getDay();
+ const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+ const monday = new Date(today);
+ monday.setDate(today.getDate() + mondayOffset);
+ monday.setHours(0,0,0,0);
+
+ const trainingDays = [
+   { offset: 0, id: 'upperA', tag: 'UA', name: 'Upper A', sub: 'Chest · Shoulders · Triceps · Back' },
+   { offset: 1, id: 'lowerA', tag: 'LA', name: 'Lower A', sub: 'Belt squat · RDL · Split squat' },
+   { offset: 2, id: 'upperB', tag: 'UB', name: 'Upper B', sub: 'Back · Biceps · Rear delt' },
+   { offset: 3, id: 'lowerB', tag: 'LB', name: 'Lower B', sub: 'Hip thrust · Hinge · Abduction' },
  ];
+ const dayLetters = ['M','T','W','T','F','S','S'];
+ const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+
+ let foundNext = false;
+ let nextSession = null;
+ const weekDays = dayLetters.map((letter, i) => {
+   const dayDate = new Date(monday);
+   dayDate.setDate(monday.getDate() + i);
+   const dateStr = dayDate.toISOString().slice(0, 10);
+   const training = trainingDays.find(t => t.offset === i);
+   const logged = history.some(e => e.date && e.date.slice(0, 10) === dateStr);
+
+   if (logged && training) return { letter, state: 'done', tag: training.tag };
+   if (!foundNext && training && !logged) {
+     foundNext = true;
+     nextSession = { ...training, dayIndex: i, dayName: letter };
+     return { letter, state: 'next', tag: training.tag };
+   }
+   return { letter, state: 'rest', tag: training ? training.tag : '' };
+ });
 
  const weekStrip = weekDays.map(d => {
    let boxContent = '';
    if (d.state === 'done') boxContent = '<div class="ov-check"></div>';
    else if (d.state === 'next') boxContent = '<span class="ov-arrow">&#8594;</span>';
    else boxContent = '<span class="ov-dash">&#8212;</span>';
-   const tagText = d.state === 'rest' ? '&#8212;' : d.tag;
+   const tagText = d.state === 'rest' && !d.tag ? '&#8212;' : d.tag || '&#8212;';
    return `<div class="ov-day-col">
      <div class="ov-day-letter">${d.letter}</div>
      <div class="ov-day-box ${d.state}">${boxContent}</div>
@@ -3891,58 +3929,108 @@ function renderOverview(block) {
    </div>`;
  }).join('');
 
- const injuryTiles = injuries.map(i => {
-   const trendIcon = i.trend === 'up' ? '<span class="ov-trend-up"></span>' : '<span class="ov-trend-neutral"></span>';
-   const trendColor = i.trend === 'up' ? '#7ecf5a' : '#6b6b6b';
-   return `<div class="ov-injury-tile ${i.variant}">
-     <div class="ov-injury-top">
-       <div class="ov-injury-name">${i.name}</div>
-       <div class="ov-injury-score">${i.score}</div>
+ // Next session card
+ const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+ let nextSessionHtml;
+ if (nextSession) {
+   nextSessionHtml = `<div class="ov-next-session" onclick="showTab('${nextSession.id}', document.querySelector('.tab[onclick*=${nextSession.id}]'))">
+     <div class="ov-next-badge">${nextSession.tag}<br>${dayNames[nextSession.dayIndex]}</div>
+     <div class="ov-next-info">
+       <div class="ov-next-title">${nextSession.name}</div>
+       <div class="ov-next-sub">${nextSession.sub}</div>
      </div>
-     <div class="ov-injury-bar"><div class="ov-injury-bar-fill" style="width:${i.pct}%"></div></div>
-     <div class="ov-injury-bottom">
-       <div class="ov-injury-status">${i.status}</div>
-       <div class="ov-injury-trend" style="color:${trendColor}">${trendIcon} ${i.trendVal}</div>
+     <div class="ov-next-chevron">&#8250;</div>
+   </div>`;
+ } else {
+   nextSessionHtml = `<div class="ov-next-session" style="cursor:default">
+     <div class="ov-next-badge" style="border-color:var(--border);color:var(--muted)">REST</div>
+     <div class="ov-next-info">
+       <div class="ov-next-title">Rest day</div>
+       <div class="ov-next-sub">Recover well</div>
      </div>
    </div>`;
- }).join('');
+ }
+
+ // Injury tiles
+ const injuryZones = [
+   { key: 'wrist', bodyPart: 'Right Wrist', injuryType: 'TFCC' },
+   { key: 'elbow', bodyPart: 'Right Elbow', injuryType: 'Epicondyle' },
+   { key: 'knee', bodyPart: 'L. Knee', injuryType: 'Patella' },
+   { key: 'shoulder', bodyPart: 'L. Shoulder', injuryType: 'Press' },
+ ];
+ const latestScores = getLatestScores();
+ const injLog = JSON.parse(localStorage.getItem('gymapp_injury_log') || '[]');
+
+ const injuryHtml = '<div class="ov-injury-grid">' + injuryZones.map(z => {
+   const hasData = latestScores !== null && latestScores !== undefined;
+   const score = hasData ? (latestScores[z.key] ?? null) : null;
+   const hasScore = score !== null && score !== undefined;
+
+   // Dot color
+   let dotClass = 'green';
+   if (hasScore) { if (score >= 7) dotClass = 'red'; else if (score >= 4) dotClass = 'orange'; }
+
+   // Status
+   let status = '–';
+   if (hasScore) { status = score <= 3 ? 'Stable' : score <= 6 ? 'Monitor' : 'Caution'; }
+
+   // Trend + delta
+   const trend = getTrend(z.key);
+   let delta = 0;
+   if (injLog.length >= 2) {
+     const last = injLog[injLog.length - 1][z.key] ?? 0;
+     const prev = injLog[injLog.length - 2][z.key] ?? 0;
+     delta = Math.abs(last - prev);
+   }
+   let trendArrow = '–';
+   if (trend === '↑') trendArrow = '&#9650;';
+   else if (trend === '↓') trendArrow = '&#9660;';
+
+   return `<div class="ov-injury-tile">
+     <div class="ov-injury-header">
+       <div>
+         <div class="ov-injury-body-part">${z.bodyPart}</div>
+         <div class="ov-injury-type">${z.injuryType}</div>
+       </div>
+       <div class="ov-injury-dot ${dotClass}"></div>
+     </div>
+     <div class="ov-injury-score">${hasScore ? score : '–'}</div>
+     <div class="ov-injury-bottom">
+       <div class="ov-injury-status">${status}</div>
+       <div class="ov-injury-trend"><span class="ov-trend-arrow">${trendArrow}</span> ${delta}</div>
+     </div>
+   </div>`;
+ }).join('') + '</div>';
 
  el.innerHTML = `
-   <!-- Current Block -->
    <div class="ov-section-label" style="margin-top:0">Current block</div>
    <div class="ov-block-pill">
      <div class="ov-block-left">
-       <div class="ov-block-value">Hypertrophy · Wk 1/4</div>
+       <div class="ov-block-value">${blockLabel} · Wk ${weekNum}/4</div>
      </div>
      <div class="ov-block-right">
-       <div class="ov-block-bar"><div class="ov-block-bar-fill" style="width:0%"></div></div>
-       <div class="ov-block-pct">0%</div>
+       <div class="ov-block-bar"><div class="ov-block-bar-fill" style="width:${blockPct}%"></div></div>
+       <div class="ov-block-pct">${blockPct}%</div>
      </div>
    </div>
 
-   <!-- This Week -->
    <div class="ov-section-label">This week</div>
    <div class="ov-week-strip">${weekStrip}</div>
 
-   <!-- Next Session -->
-   <div class="ov-next-session" onclick="showTab('upperA', document.querySelector('.tab[onclick*=upperA]'))">
-     <div class="ov-next-badge">UA<br>Mon</div>
-     <div class="ov-next-info">
-       <div class="ov-next-title">Upper A</div>
-       <div class="ov-next-sub">Chest · Shoulders · Triceps · Back</div>
-     </div>
-     <div class="ov-next-chevron">&#8250;</div>
-   </div>
+   ${nextSessionHtml}
 
-   <!-- Injury Status -->
-   <div class="ov-section-label">Injury status</div>
-   <div class="ov-injury-grid">${injuryTiles}</div>
+   <div class="ov-section-label" style="font-size:18px;color:#f8fafc;letter-spacing:-0.5px;margin-bottom:16px">Injury status</div>
+   ${injuryHtml}
    <button class="ov-update-injuries-btn" onclick="showCheckin(null, null)">Update injuries</button>
  `;
 }
 
-// Render on load
-renderOverview('main');
+// Render on load — restore persisted block
+(function() {
+ const saved = localStorage.getItem('gymapp_current_block');
+ if (saved) setBlock(saved);
+ else renderOverview('main');
+})();
 
 // ─── AI SESSION ADAPTER ───────────────────────────────────────────
 
@@ -4372,7 +4460,7 @@ function setupAccordions() {
  // Add set button
  const addRow = document.createElement('div');
  addRow.className = 'log-add-set';
- addRow.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg> ADD SET';
+ addRow.innerHTML = 'Add set';
  addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
  container.appendChild(addRow);
 
@@ -4837,6 +4925,8 @@ function saveSession() {
  localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
 
  renderHistory();
+ const cb = localStorage.getItem('gymapp_current_block') || 'main';
+ renderOverview(cb === 'recovery' ? 'recovery' : 'main');
 }
 
 function exportHistory() {
