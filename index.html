@@ -3876,6 +3876,9 @@ function renderOverview(block) {
  // Block pill
  const blockLabels = { main: 'Hypertrophy · Wk 1–2', main34: 'Hypertrophy · Wk 3–4', recovery: 'Recovery' };
  const blockLabel = blockLabels[currentBlock] || 'Hypertrophy';
+ if (!localStorage.getItem('gymapp_block_start_' + currentBlock)) {
+   localStorage.setItem('gymapp_block_start_' + currentBlock, new Date().toISOString().slice(0, 10));
+ }
  const blockStart = localStorage.getItem('gymapp_block_start_' + currentBlock);
  const today = new Date();
  const daysSinceStart = blockStart ? Math.max(0, Math.floor((today - new Date(blockStart)) / 86400000)) : 0;
