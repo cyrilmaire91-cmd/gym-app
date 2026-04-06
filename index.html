@@ -546,36 +546,50 @@
 
  /* PREHAB BOX */
  .prehab-box {
- background: var(--card);
- border: none;
+ background: #141415;
+ border: 1px solid var(--border);
  border-radius: 12px;
- padding: 14px 16px;
+ padding: 12px;
  margin-bottom: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
  }
 
  .prehab-box-title {
- font-family: 'Inter', 'Inter', sans-serif;
- font-size: 10px;
+ font-family: 'Inter', sans-serif;
+ font-size: 12px;
  font-weight: 600;
- letter-spacing: -0.3px;
- text-transform: uppercase;
+ letter-spacing: -0.5px;
  color: var(--accent);
- margin-bottom: 0;
+ padding: 0;
+ margin: 0;
  }
 
  .prehab-box .exercise {
- background: transparent;
- border: none;
- border-radius: 0;
+ background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 12px;
  margin-bottom: 0;
  }
 
  .prehab-box .exercise-wrap {
- margin-bottom: 0;
+ margin-bottom: 4px;
+ border: 1px solid var(--border);
+ border-radius: 12px;
  }
 
  .prehab-box .exercise-wrap .exercise {
- border-bottom: 1px solid var(--border);
+ border: none;
+ border-bottom: none;
+ }
+
+ .prehab-box .exercise-wrap:last-of-type {
+ margin-bottom: 0;
+ }
+
+ .prehab-box .exercise-wrap.expanded {
+ border-color: var(--accent);
  }
 
  .prehab-box .exercise-wrap:last-of-type .exercise {
@@ -649,7 +663,7 @@
 
  /* Current Block Pill */
  .ov-block-pill {
-   background: var(--card); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+   background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
    display: flex; justify-content: space-between; align-items: center;
  }
  .ov-block-left .ov-block-label { font-size: 12px; font-weight: 500; color: #6b6b6b; }
@@ -662,7 +676,7 @@
  /* Weekly Strip */
  .ov-section-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 10px; margin-top: 16px; font-family: 'Inter', sans-serif; }
  .ov-week-strip {
-   background: var(--card); border-radius: 10px; padding: 14px 12px; margin-bottom: 16px;
+   background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; margin-bottom: 16px;
    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;
  }
  .ov-day-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -685,7 +699,7 @@
 
  /* Next Session */
  .ov-next-session {
-   background: var(--card); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+   background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
    display: flex; align-items: center; gap: 12px; cursor: pointer;
  }
  .ov-next-badge {
@@ -4370,7 +4384,6 @@ let currentExpandedWrap = null;
 
 function setupAccordions() {
  document.querySelectorAll('.session .exercise').forEach(ex => {
- if (ex.closest('.prehab-box')) return;
  if (ex.closest('.exercise-wrap')) return; // already wrapped
 
  const parent = ex.parentNode;
@@ -4418,9 +4431,22 @@ function setupAccordions() {
  const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
  const exName = nameEl ? nameEl.textContent : 'Exercise';
 
- // Extract rest time from sets text
- const restMatch = setsEl ? setsEl.textContent.match(/Rest\s*(\d+\s*(?:min|s))/i) : null;
- const restText = restMatch ? restMatch[1].toUpperCase() : '90S';
+ // Extract rest time from sets text or superset label
+ let restMatch = setsEl ? setsEl.textContent.match(/Rest\s*(\d+)\s*(min|s)/i) : null;
+ let restSeconds = 90; // default
+ if (restMatch) {
+   restSeconds = restMatch[2].toLowerCase() === 'min' ? parseInt(restMatch[1]) * 60 : parseInt(restMatch[1]);
+ } else {
+   // Check superset label for rest time
+   const supersetGroup = ex.closest('.superset-group');
+   if (supersetGroup) {
+     const label = supersetGroup.querySelector('.superset-label');
+     const ssMatch = label ? label.textContent.match(/(\d+)\s*s/i) : null;
+     if (ssMatch) restSeconds = parseInt(ssMatch[1]);
+   }
+ }
+ const restText = restSeconds >= 60 && restSeconds % 60 === 0 ? (restSeconds / 60) + ' MIN' : restSeconds + 'S';
+ wrap.dataset.restSeconds = restSeconds;
  // Extract RIR/RPE
  const rirMatch = setsEl ? setsEl.textContent.match(/(\d+[–-]\d+)\s*RIR/) : null;
  const rirText = rirMatch ? rirMatch[1] : null;
@@ -4648,6 +4674,11 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
    if (check.classList.contains('done')) {
      if (!weightPill.dataset.value && prevSet) { weightPill.dataset.value = String(prevSet.weight); renderPill(weightPill); }
      if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
+     // Set timer to exercise-specific rest time
+     const exWrap = wrap || swipeWrap.closest('.exercise-wrap');
+     if (exWrap && exWrap.dataset.restSeconds) {
+       timerDuration = parseInt(exWrap.dataset.restSeconds);
+     }
      startRestTimer();
      // Superset behavior: switch to partner exercise
      const w = wrap || swipeWrap.closest('.exercise-wrap');
