@@ -980,129 +980,71 @@
 .drawer-overlay.visible { display: block; }
 
 /* REST TIMER BAR */
+/* TIMER BAR — redesigned */
 .timer-bar {
- position: fixed;
- bottom: 0;
- left: 0;
- right: 0;
- background: var(--card);
- border-top: 1px solid var(--border);
- padding: 8px 12px;
- display: none;
- align-items: center;
- gap: 10px;
- z-index: 180;
- max-width: 600px;
- margin: 0 auto;
- height: 52px;
+ position: fixed; bottom: 0; left: 0; right: 0;
+ height: 80px; background: #1c1c1e;
+ display: none; align-items: center;
+ padding: 0 16px; overflow: hidden;
+ border-radius: 20px 20px 0 0;
+ z-index: 180; max-width: 600px; margin: 0 auto;
 }
 .timer-bar.visible { display: flex; }
-.timer-bar.idle { opacity: 0.7; }
+.timer-progress-fill {
+ position: absolute; top: 0; left: 0; bottom: 0;
+ background: rgba(255,255,255,0.10);
+ transition: width 1s linear;
+ pointer-events: none; z-index: 0;
+ width: 0%;
+}
+.timer-content {
+ position: relative; z-index: 1;
+ display: flex; align-items: center; width: 100%; gap: 16px;
+}
 .timer-play-btn {
- width: 36px;
- height: 36px;
- border-radius: 50%;
- border: 2px solid var(--accent);
- background: transparent;
- color: var(--accent);
- cursor: pointer;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
- padding: 0;
+ width: 52px; height: 52px; border-radius: 50%;
+ background: rgba(255,255,255,0.15);
+ border: 2px solid rgba(255,255,255,0.25);
+ flex-shrink: 0; display: flex; align-items: center;
+ justify-content: center; cursor: pointer; padding: 0;
+ color: #fff;
 }
-.timer-play-btn svg {
- width: 16px;
- height: 16px;
-}
-.timer-play-btn.running { background: var(--accent); color: #0A0A0A; }
+.timer-play-btn svg { width: 20px; height: 20px; }
 .timer-play-btn.running .timer-icon-play { display: none; }
 .timer-play-btn.running .timer-icon-pause { display: block !important; }
 .timer-play-btn:not(.running) .timer-icon-play { display: block; }
 .timer-play-btn:not(.running) .timer-icon-pause { display: none; }
-.timer-bar-time {
+.timer-display { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.timer-time {
  font-family: 'Inter', sans-serif;
- font-size: 22px;
- font-weight: 900;
- color: var(--text);
- min-width: 48px;
- text-align: center;
- flex-shrink: 0;
+ font-size: 48px; font-weight: 700; color: #fff;
+ line-height: 1; letter-spacing: -1px;
 }
-.timer-bar-time.done { color: var(--green); }
-.timer-progress-wrap {
- flex: 1;
- height: 6px;
- background: var(--border);
- border-radius: 3px;
- overflow: hidden;
- position: relative;
-}
-.timer-progress-fill {
- height: 100%;
- background: var(--accent);
- border-radius: 3px;
- width: 0%;
- transition: width 0.3s linear;
-}
-.timer-progress-fill.done { background: var(--green); }
-
-/* Timer done pulse */
-@keyframes timerPulse {
- 0%, 100% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
- 20% { box-shadow: 0 0 12px 2px rgba(226,241,107,0.5); }
- 40% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
- 60% { box-shadow: 0 0 12px 2px rgba(226,241,107,0.5); }
- 80% { box-shadow: 0 0 0 0 rgba(226,241,107,0); }
-}
-.timer-pulse {
- animation: timerPulse 1.5s ease-out;
-}
-.timer-stop-btn {
- width: 36px;
- height: 36px;
- border-radius: 50%;
- border: 2px solid var(--border);
- background: transparent;
- color: var(--muted);
- font-size: 14px;
- cursor: pointer;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
-}
-.timer-presets-row {
- position: fixed;
- bottom: 52px;
- left: 0;
- right: 0;
- display: none;
- justify-content: center;
- gap: 6px;
- z-index: 181;
- max-width: 600px;
- margin: 0 auto;
- padding: 0 12px;
-}
-.timer-presets-row.visible { display: flex; }
-.timer-preset {
- background: var(--card);
- border: 1px solid var(--border);
- color: var(--muted);
+.timer-up-next-name {
  font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 700;
- padding: 6px 14px;
- border-radius: 20px;
- cursor: pointer;
+ font-size: 22px; font-weight: 700; color: #fff;
+ white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.timer-preset.active {
- background: var(--accent);
- border-color: var(--accent);
- color: white;
+.timer-up-next-label {
+ font-family: 'Inter', sans-serif;
+ font-size: 12px; color: #888; margin-top: 2px;
 }
+.timer-action-btn {
+ display: flex; align-items: center; gap: 8px;
+ background: #2c2c2e; border: none; border-radius: 999px;
+ padding: 12px 20px; color: #fff;
+ font-family: 'Inter', sans-serif;
+ font-size: 16px; font-weight: 600;
+ cursor: pointer; flex-shrink: 0;
+}
+.timer-action-btn:active { opacity: 0.7; }
+.timer-action-btn svg { width: 16px; height: 16px; }
+/* Flash animation for last exercise */
+@keyframes timerFlash {
+ 0% { background: #fff; }
+ 100% { background: #1c1c1e; }
+}
+.timer-bar.flash { animation: timerFlash 0.2s ease-out; }
 .timer-start-btn {
  background: var(--card);
  border: 1px solid var(--accent);
@@ -4268,114 +4210,127 @@ let timerDuration = 90;
 let timerRemaining = 0;
 let timerInterval = null;
 let timerPaused = false;
+let timerNextExName = null;
+let timerIsLast = false;
 
 function showTimerBar() {
  document.getElementById('timerBar').classList.add('visible');
- document.getElementById('timerBar').classList.remove('idle');
 }
 
 function updateTimerBarDisplay() {
  const min = Math.floor(timerRemaining / 60);
  const sec = timerRemaining % 60;
- const timeEl = document.getElementById('timerBarTime');
- const fillEl = document.getElementById('timerProgressFill');
- timeEl.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
- timeEl.classList.remove('done');
- fillEl.classList.remove('done');
- const pct = ((timerDuration - timerRemaining) / timerDuration) * 100;
- fillEl.style.width = pct + '%';
-}
-
-function setTimerDuration(sec) {
- timerDuration = sec;
- document.querySelectorAll('.timer-preset').forEach(b => b.classList.remove('active'));
- event.target.classList.add('active');
- document.getElementById('timerPresetsRow').classList.remove('visible');
- if (!timerInterval && !timerPaused) {
- timerRemaining = sec;
- updateTimerBarDisplay();
+ const display = document.getElementById('timerDisplay');
+ const fill = document.getElementById('timerProgressFill');
+ const actionBtn = document.getElementById('timerActionBtn');
+ display.innerHTML = `<div class="timer-time">${min}:${sec.toString().padStart(2, '0')}</div>`;
+ const pct = (timerRemaining / timerDuration) * 100;
+ fill.style.width = pct + '%';
+ if (timerIsLast || timerRemaining <= 15) {
+   actionBtn.innerHTML = '<span>Stop</span>';
+ } else {
+   actionBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><span>Next</span>';
  }
 }
 
-function toggleTimerPresets() {
- document.getElementById('timerPresetsRow').classList.toggle('visible');
-}
 
 function startRestTimer() {
  timerRemaining = timerDuration;
  timerPaused = false;
+ // Determine next exercise
+ if (currentExpandedWrap) {
+   const nextWrap = getNextExerciseWrap(currentExpandedWrap);
+   if (nextWrap) {
+     const nameEl = nextWrap.querySelector('.ex-name');
+     timerNextExName = nameEl ? nameEl.textContent : null;
+     timerIsLast = false;
+   } else {
+     timerNextExName = null;
+     timerIsLast = true;
+   }
+ } else {
+   timerNextExName = null;
+   timerIsLast = false;
+ }
  showTimerBar();
  updateTimerBarDisplay();
- const playBtn = document.getElementById('timerPlayBtn');
- playBtn.classList.add('running');
-
+ document.getElementById('timerPlayBtn').classList.add('running');
  if (timerInterval) clearInterval(timerInterval);
  timerInterval = setInterval(() => {
- timerRemaining--;
- updateTimerBarDisplay();
- if (timerRemaining <= 0) {
- clearInterval(timerInterval);
- timerInterval = null;
- timerDone();
- }
+   timerRemaining--;
+   updateTimerBarDisplay();
+   if (timerRemaining <= 0) {
+     clearInterval(timerInterval);
+     timerInterval = null;
+     timerDone();
+   }
  }, 1000);
 }
 
 function toggleTimerPlayPause() {
  if (timerInterval) {
- // Pause
- clearInterval(timerInterval);
- timerInterval = null;
- timerPaused = true;
- const playBtn = document.getElementById('timerPlayBtn');
- playBtn.classList.remove('running');
+   clearInterval(timerInterval);
+   timerInterval = null;
+   timerPaused = true;
+   document.getElementById('timerPlayBtn').classList.remove('running');
  } else if (timerPaused && timerRemaining > 0) {
- // Resume
- timerPaused = false;
- const playBtn = document.getElementById('timerPlayBtn');
- playBtn.classList.add('running');
- timerInterval = setInterval(() => {
- timerRemaining--;
- updateTimerBarDisplay();
- if (timerRemaining <= 0) {
- clearInterval(timerInterval);
- timerInterval = null;
- timerDone();
- }
- }, 1000);
- } else {
- // Start fresh
- startRestTimer();
+   timerPaused = false;
+   document.getElementById('timerPlayBtn').classList.add('running');
+   timerInterval = setInterval(() => {
+     timerRemaining--;
+     updateTimerBarDisplay();
+     if (timerRemaining <= 0) {
+       clearInterval(timerInterval);
+       timerInterval = null;
+       timerDone();
+     }
+   }, 1000);
  }
 }
 
 function timerDone() {
- // Strong haptic burst pattern
  try { navigator.vibrate && navigator.vibrate([100, 50, 100, 50, 200, 100, 300]); } catch(e) {}
- const timeEl = document.getElementById('timerBarTime');
- const fillEl = document.getElementById('timerProgressFill');
  const bar = document.getElementById('timerBar');
- timeEl.textContent = 'GO!';
- timeEl.classList.add('done');
- fillEl.style.width = '100%';
- fillEl.classList.add('done');
- // Pulse animation on the timer bar
- if (bar) {
-   bar.classList.add('timer-pulse');
-   setTimeout(() => bar.classList.remove('timer-pulse'), 2000);
- }
- const playBtn = document.getElementById('timerPlayBtn');
- playBtn.classList.remove('running');
+ const display = document.getElementById('timerDisplay');
+ const fill = document.getElementById('timerProgressFill');
+ document.getElementById('timerPlayBtn').classList.remove('running');
  timerPaused = false;
+ fill.style.width = '0%';
+
+ if (timerNextExName) {
+   // State 3: show next exercise name
+   display.innerHTML = `<div class="timer-up-next-name">${timerNextExName}</div><div class="timer-up-next-label">Up next</div>`;
+   document.getElementById('timerActionBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg><span>Next</span>';
+   setTimeout(() => bar.classList.remove('visible'), 3000);
+ } else {
+   // State 4: flash + hide
+   bar.classList.add('flash');
+   try { navigator.vibrate && navigator.vibrate(200); } catch(e) {}
+   setTimeout(() => { bar.classList.remove('flash'); bar.classList.remove('visible'); }, 300);
+ }
+}
+
+function timerActionTap() {
+ if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+ timerPaused = false;
+ const bar = document.getElementById('timerBar');
+ const display = document.getElementById('timerDisplay');
+ document.getElementById('timerProgressFill').style.width = '0%';
+ document.getElementById('timerPlayBtn').classList.remove('running');
+
+ if (timerNextExName && timerRemaining > 15) {
+   display.innerHTML = `<div class="timer-up-next-name">${timerNextExName}</div><div class="timer-up-next-label">Up next</div>`;
+   setTimeout(() => bar.classList.remove('visible'), 3000);
+ } else {
+   bar.classList.remove('visible');
+ }
 }
 
 function stopTimer() {
  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
  timerPaused = false;
  document.getElementById('timerBar').classList.remove('visible');
- document.getElementById('timerPresetsRow').classList.remove('visible');
- const playBtn = document.getElementById('timerPlayBtn');
- playBtn.classList.remove('running');
+ document.getElementById('timerPlayBtn').classList.remove('running');
 }
 
 // ─── ACCORDION EXERCISE SETUP ─────────────────────────────────────
@@ -5197,18 +5152,20 @@ renderHistory = function() {
 
 <!-- REST TIMER BAR -->
 <div class="timer-bar" id="timerBar">
- <button class="timer-play-btn" id="timerPlayBtn" onclick="toggleTimerPlayPause()"><svg class="timer-icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg><svg class="timer-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg></button>
- <div class="timer-bar-time" id="timerBarTime">1:30</div>
- <div class="timer-progress-wrap" onclick="toggleTimerPresets()">
  <div class="timer-progress-fill" id="timerProgressFill"></div>
+ <div class="timer-content">
+   <button class="timer-play-btn" id="timerPlayBtn" onclick="toggleTimerPlayPause()">
+     <svg class="timer-icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+     <svg class="timer-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg>
+   </button>
+   <div class="timer-display" id="timerDisplay">
+     <div class="timer-time" id="timerTime">1:30</div>
+   </div>
+   <button class="timer-action-btn" id="timerActionBtn" onclick="timerActionTap()">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+     <span>Next</span>
+   </button>
  </div>
- <button class="timer-stop-btn" onclick="stopTimer()"></button>
-</div>
-<div class="timer-presets-row" id="timerPresetsRow">
- <button class="timer-preset" onclick="setTimerDuration(60)">60s</button>
- <button class="timer-preset active" onclick="setTimerDuration(90)">90s</button>
- <button class="timer-preset" onclick="setTimerDuration(120)">120s</button>
- <button class="timer-preset" onclick="setTimerDuration(180)">180s</button>
 </div>
 
 
