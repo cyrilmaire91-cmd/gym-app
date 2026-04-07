@@ -6683,8 +6683,10 @@ function injectMachineBadges() {
 }
 
 // Run badge injection after DOM is ready (accordions already set up by now)
-injectMachineBadges();
+try { injectMachineBadges(); } catch(e) { console.error('Badge injection failed:', e); }
 
+</script>
+<script>
 // ─── SETTINGS SYSTEM ──────────────────────────────────────────────
 
 function getAlternatives() { return JSON.parse(localStorage.getItem('gymApp_alternatives') || '{}'); }
