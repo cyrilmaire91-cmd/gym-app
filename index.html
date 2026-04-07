@@ -5782,6 +5782,7 @@ showTab = function(tabId, btn) {
    renderOverview(cb === 'recovery' ? 'recovery' : 'main');
  }
  if (SESSION_TABS.includes(tabId)) applySessionImpact();
+ if (SESSION_TABS.includes(tabId)) setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
 };
 
 // ─── PROGRESS CHARTS ──────────────────────────────────────────────
@@ -6171,6 +6172,19 @@ function drawProgressCanvas(exerciseName) {
  if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
  if (!localStorage.getItem('gymApp_gymEquipment')) localStorage.setItem('gymApp_gymEquipment', '[]');
  if (!localStorage.getItem('gymApp_activeSession')) localStorage.setItem('gymApp_activeSession', JSON.stringify({ gymId: null, substitutions: {} }));
+})();
+
+// Migrate old equipId → equipmentId in gymEquipment records
+(function migrateGymEquipment() {
+  const key = 'gymApp_gymEquipment';
+  const records = JSON.parse(localStorage.getItem(key) || '[]');
+  const migrated = records.map(r => {
+    if (r.equipId && !r.equipmentId) {
+      return { gymId: r.gymId, equipmentId: r.equipId, slotId: r.slotId || '' };
+    }
+    return r;
+  });
+  localStorage.setItem(key, JSON.stringify(migrated));
 })();
 
 function getGyms() { return JSON.parse(localStorage.getItem('gymApp_gyms') || '[]'); }
@@ -6703,6 +6717,7 @@ function openSettings() {
 function closeSettings() {
   document.getElementById('settingsPage').classList.remove('visible');
   settingsStack.length = 0;
+  try { refreshAllMachineBadges(); } catch(e) {}
 }
 
 function pushSettingsScreen(renderFn) {
@@ -6806,7 +6821,7 @@ function renderGymDetail(gymId) {
   if (!gym) { popSettingsScreen(); return; }
   const ge = getGymEquipment().filter(x => x.gymId === gymId);
   const allEquip = getEquipment();
-  const linkedEquip = ge.map(x => allEquip.find(e => e.id === x.equipId)).filter(Boolean);
+  const linkedEquip = ge.map(x => allEquip.find(e => e.id === x.equipmentId)).filter(Boolean);
 
   const page = document.getElementById('settingsPage');
   page.innerHTML = `
@@ -6851,7 +6866,7 @@ function renderAddGym() {
       <div id="settingsGymEquipChecks">
         ${equip.map(e => `
           <div class="settings-check-row" onclick="this.querySelector('.settings-check').classList.toggle('checked')">
-            <div class="settings-check" data-equip-id="${e.id}"></div>
+            <div class="settings-check" data-equip-id="${e.id}" data-slot-id="${e.slot || ''}"></div>
             <div style="flex:1">
               <div class="settings-row-title">${e.brand ? e.brand + ' — ' : ''}${e.name}</div>
             </div>
@@ -6874,7 +6889,7 @@ function saveNewGym() {
   const checkedEls = document.querySelectorAll('#settingsGymEquipChecks .settings-check.checked');
   const ge = getGymEquipment();
   checkedEls.forEach(el => {
-    ge.push({ gymId: gymId, equipId: el.dataset.equipId });
+    ge.push({ gymId: gymId, equipmentId: el.dataset.equipId, slotId: el.dataset.slotId || '' });
   });
   setGymEquipment(ge);
   popSettingsScreen();
@@ -6911,7 +6926,7 @@ function renderEquipmentScreen() {
   Object.keys(grouped).sort().forEach(brand => {
     html += `<div class="settings-section-label">${brand}</div>`;
     grouped[brand].forEach(e => {
-      const eGyms = ge.filter(x => x.equipId === e.id).map(x => gyms.find(g => g.id === x.gymId)).filter(Boolean);
+      const eGyms = ge.filter(x => x.equipmentId === e.id).map(x => gyms.find(g => g.id === x.gymId)).filter(Boolean);
       const gymNames = eGyms.map(g => g.name).join(', ') || 'No gym';
       html += `
         <div class="settings-row" onclick="pushSettingsScreen(() => renderEquipmentDetail('${e.id}'))">
@@ -6934,11 +6949,11 @@ function renderEquipmentDetail(equipId) {
   if (!item) { popSettingsScreen(); return; }
   const gyms = getGyms();
   const ge = getGymEquipment();
-  const linkedGyms = ge.filter(x => x.equipId === equipId).map(x => {
+  const linkedGyms = ge.filter(x => x.equipmentId === equipId).map(x => {
     const g = gyms.find(gg => gg.id === x.gymId);
     return g ? { ...g, geId: x.gymId } : null;
   }).filter(Boolean);
-  const unlinkedGyms = gyms.filter(g => !ge.some(x => x.equipId === equipId && x.gymId === g.id));
+  const unlinkedGyms = gyms.filter(g => !ge.some(x => x.equipmentId === equipId && x.gymId === g.id));
 
   const page = document.getElementById('settingsPage');
   page.innerHTML = `
@@ -6974,7 +6989,7 @@ function renderEquipmentDetail(equipId) {
 }
 
 function unlinkEquipGym(equipId, gymId) {
-  const ge = getGymEquipment().filter(x => !(x.equipId === equipId && x.gymId === gymId));
+  const ge = getGymEquipment().filter(x => !(x.equipmentId === equipId && x.gymId === gymId));
   setGymEquipment(ge);
   renderEquipmentDetail(equipId);
 }
@@ -6982,7 +6997,7 @@ function unlinkEquipGym(equipId, gymId) {
 function showAddGymToEquip(equipId) {
   const gyms = getGyms();
   const ge = getGymEquipment();
-  const unlinked = gyms.filter(g => !ge.some(x => x.equipId === equipId && x.gymId === g.id));
+  const unlinked = gyms.filter(g => !ge.some(x => x.equipmentId === equipId && x.gymId === g.id));
   const container = document.getElementById('settingsAddGymToEquipList');
   if (!container) return;
   container.innerHTML = unlinked.map(g => `
@@ -6994,7 +7009,7 @@ function showAddGymToEquip(equipId) {
 
 function linkEquipGym(equipId, gymId) {
   const ge = getGymEquipment();
-  ge.push({ gymId: gymId, equipId: equipId });
+  ge.push({ gymId: gymId, equipmentId: equipId, slotId: '' });
   setGymEquipment(ge);
   renderEquipmentDetail(equipId);
 }
@@ -7003,7 +7018,7 @@ function deleteEquipment(equipId) {
   if (!confirm('Delete this machine and all its links?')) return;
   const equip = getEquipment().filter(e => e.id !== equipId);
   setEquipment(equip);
-  const ge = getGymEquipment().filter(x => x.equipId !== equipId);
+  const ge = getGymEquipment().filter(x => x.equipmentId !== equipId);
   setGymEquipment(ge);
   popSettingsScreen();
 }
@@ -7118,7 +7133,7 @@ function saveNewEquipment() {
   const checkedGyms = document.querySelectorAll('#settingsEquipGymChecks .settings-check.checked');
   const ge = getGymEquipment();
   checkedGyms.forEach(el => {
-    ge.push({ gymId: el.dataset.gymId, equipId: equipId });
+    ge.push({ gymId: el.dataset.gymId, equipmentId: equipId, slotId: slot });
   });
   setGymEquipment(ge);
   popSettingsScreen();
@@ -7176,7 +7191,7 @@ function renderExerciseDetail(exName) {
 
   // Find equipment linked to this exercise slot, per gym
   const machinesByGym = gyms.map(g => {
-    const gymEquipIds = ge.filter(x => x.gymId === g.id).map(x => x.equipId);
+    const gymEquipIds = ge.filter(x => x.gymId === g.id).map(x => x.equipmentId);
     const machines = equip.filter(e => gymEquipIds.includes(e.id) && e.slot === exName);
     return { gym: g, machines: machines };
   }).filter(x => x.machines.length > 0);
