@@ -5225,9 +5225,28 @@ const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B',
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+ // Try equipment-specific match first if gym system is active
+ try {
+   const active = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
+   if (active.gymId) {
+     const ge = JSON.parse(localStorage.getItem('gymApp_gymEquipment') || '[]');
+     const link = ge.find(l => l.slotId === exName && l.gymId === active.gymId);
+     if (link) {
+       const equip = JSON.parse(localStorage.getItem('gymApp_equipment') || '[]');
+       const eq = equip.find(e => e.id === link.equipmentId);
+       if (eq) {
+         for (const entry of history) {
+           const ex = entry.exercises.find(e => e.name === exName && e.equipmentId === eq.id);
+           if (ex && ex.sets.length > 0) return ex.sets;
+         }
+       }
+     }
+   }
+ } catch(e) {}
+ // Fallback: match by name only
  for (const entry of history) {
- const ex = entry.exercises.find(e => e.name === exName);
- if (ex && ex.sets.length > 0) return ex.sets;
+   const ex = entry.exercises.find(e => e.name === exName);
+   if (ex && ex.sets.length > 0) return ex.sets;
  }
  return null;
 }
@@ -6525,26 +6544,7 @@ function confirmSubstitution(slotId) {
 
 // ─── PART 5: WEIGHT PRE-FILL UPDATE ────────────────────────────
 
-// Override getPreviousExerciseData to filter by equipmentId when available
-const _origGetPreviousExerciseData = getPreviousExerciseData;
-getPreviousExerciseData = function(exName) {
- const active = getActiveSession();
- const gymId = active.gymId;
-
- if (gymId) {
-   const equip = getEquipmentForSlot(exName, gymId);
-   if (equip) {
-     const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
-     for (const entry of history) {
-       const ex = entry.exercises.find(e => e.name === exName && e.equipmentId === equip.id);
-       if (ex && ex.sets.length > 0) return ex.sets;
-     }
-     // Fall back to non-equipment-specific history
-   }
- }
-
- return _origGetPreviousExerciseData(exName);
-};
+// getPreviousExerciseData now includes equipment-aware logic directly in the original function
 
 // Override saveSession to include equipmentId and substituteLabel
 const _origSaveSession = saveSession;
