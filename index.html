@@ -5256,7 +5256,6 @@ function goToNextExercise(currentWrap) {
 
 document.addEventListener('DOMContentLoaded', () => {
  setupAccordions(); // also handles superset toggle init
- try { injectMachineBadges(); } catch(e) {}
  // Add save button at the bottom of each session (not overview, not history)
  ['upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
  const session = document.getElementById('session-' + id);
@@ -6629,8 +6628,10 @@ function injectMachineBadges() {
  });
 }
 
-// Run badge injection after DOM is ready (accordions already set up by now)
-// injectMachineBadges() now runs inside DOMContentLoaded after setupAccordions()
+// Run badge injection — accordions are already set up by DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
+});
 
 </script>
 <script>
