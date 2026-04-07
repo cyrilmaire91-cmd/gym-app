@@ -6130,8 +6130,8 @@ let pendingGymSessionBtn = null;
 function openGymSheet(sessionId, btn, sessionName, sessionSub) {
  const gyms = getGyms();
 
- // If only 1 gym, skip the sheet
- if (gyms.length === 1) {
+ // If only 1 gym AND not freshly added (avoid auto-skip when user just created first gym)
+ if (gyms.length === 1 && !openGymSheet._forceShow) {
    const active = getActiveSession();
    active.gymId = gyms[0].id;
    active.substitutions = {};
@@ -6139,8 +6139,10 @@ function openGymSheet(sessionId, btn, sessionName, sessionSub) {
    localStorage.setItem('gymApp_lastGymId', gyms[0].id);
    _showTabWithAdapt(sessionId, btn);
    if (SESSION_TABS.includes(sessionId)) applySessionImpact();
+   refreshAllMachineBadges();
    return;
  }
+ openGymSheet._forceShow = false;
 
  pendingGymSessionId = sessionId;
  pendingGymSessionBtn = btn;
@@ -6196,7 +6198,8 @@ function addGymFromSheet() {
  // Re-render pills
  let container = document.getElementById('gymPillsContainer');
  if (!container) {
-   // First gym added — rebuild body
+   // First gym added — rebuild body (force show sheet so user sees their new gym)
+   openGymSheet._forceShow = true;
    openGymSheet(pendingGymSessionId, pendingGymSessionBtn,
      document.getElementById('gymSheetTitle').textContent,
      document.getElementById('gymSheetSub').textContent);
@@ -6236,6 +6239,7 @@ function startSessionFromGym() {
        setActiveSession(active);
        _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
        if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
+       refreshAllMachineBadges();
      }
      return;
    }
@@ -6254,6 +6258,7 @@ function startSessionFromGym() {
  if (pendingGymSessionId && pendingGymSessionBtn) {
    _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
    if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
+   refreshAllMachineBadges();
  }
  pendingGymSessionId = null;
  pendingGymSessionBtn = null;
