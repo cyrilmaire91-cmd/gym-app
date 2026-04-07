@@ -921,6 +921,19 @@
  stroke: #1C1C1E;
 }
 
+.session-gym-pill {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(226,241,107,0.1);
+  border: 1px solid rgba(226,241,107,0.2);
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 /* ADAPT DRAWER */
 .adapt-drawer {
  position: fixed;
@@ -2292,6 +2305,9 @@
  flex-wrap: wrap;
  gap: 8px;
  margin-bottom: 14px;
+ max-height: 160px;
+ overflow-y: auto;
+ -webkit-overflow-scrolling: touch;
 }
 .gym-pill {
  padding: 8px 16px;
@@ -4848,8 +4864,27 @@ document.addEventListener('DOMContentLoaded', () => {
  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L20 12l-6.1 3.3L12 21l-1.9-5.7L4 12l6.1-3.3z"/></svg>Change';
  btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
  topRow.appendChild(btn);
+ const gymPill = document.createElement('span');
+ gymPill.className = 'session-gym-pill';
+ gymPill.id = 'gymPill-' + id;
+ const activeGym = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
+ const gyms = JSON.parse(localStorage.getItem('gymApp_gyms') || '[]');
+ const gym = activeGym.gymId ? gyms.find(g => g.id === activeGym.gymId) : null;
+ gymPill.textContent = gym ? gym.name : 'No gym';
+ gymPill.onclick = (e) => { e.stopPropagation(); openGymSheet(id); };
+ topRow.appendChild(gymPill);
  });
 });
+
+function updateAllGymPills() {
+  const activeGym = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
+  const gyms = JSON.parse(localStorage.getItem('gymApp_gyms') || '[]');
+  const gym = activeGym.gymId ? gyms.find(g => g.id === activeGym.gymId) : null;
+  const label = gym ? gym.name : 'No gym';
+  document.querySelectorAll('.session-gym-pill').forEach(pill => {
+    pill.textContent = label;
+  });
+}
 
 // ─── REST TIMER (BOTTOM BAR) ──────────────────────────────────────
 
@@ -6334,6 +6369,7 @@ function startSessionFromGym() {
    if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
    refreshAllMachineBadges();
  }
+ updateAllGymPills();
  pendingGymSessionId = null;
  pendingGymSessionBtn = null;
 }
@@ -6426,7 +6462,9 @@ function openEquipSheet(slotId) {
  const allEquip = getEquipment();
  const gyms = getGyms();
 
- document.getElementById('equipSheetTitle').textContent = slotId;
+ const label = slotId.length > 28 ? slotId.slice(0, 26) + '...' : slotId;
+ document.getElementById('equipSheetTitle').textContent = label;
+ document.getElementById('equipSheetTitle').title = slotId;
  document.getElementById('equipSheetSub').textContent = gymId ? (gyms.find(g => g.id === gymId) || {}).name || '' : 'No gym selected';
 
  let body = '';
@@ -6530,25 +6568,31 @@ function removeEquipmentLink(slotId) {
 // ─── PART 4: SUBSTITUTION FLOW ──────────────────────────────────
 
 function openSubstitutionFlow(slotId) {
- // Parse Plan B suggestions from the exercise's .ex-note
- const suggestions = [];
- document.querySelectorAll('.exercise').forEach(ex => {
-   const nameEl = ex.querySelector('.ex-name');
-   if (nameEl && nameEl.textContent === slotId) {
-     const noteEl = ex.querySelector('.ex-note');
-     if (noteEl) {
-       const text = noteEl.textContent;
-       const planBMatch = text.match(/Plan\s*B[:\s]*(.+)/i);
-       if (planBMatch) {
-         // Split by "or", "→", ","
-         planBMatch[1].split(/\s*(?:or|→|,)\s*/i).forEach(s => {
-           const trimmed = s.replace(/[.]+$/, '').trim();
-           if (trimmed) suggestions.push(trimmed);
-         });
+ let alternatives = [];
+ const stored = JSON.parse(localStorage.getItem('gymApp_alternatives') || '{}');
+ if (stored[slotId] && stored[slotId].length > 0) {
+   alternatives = stored[slotId];
+ } else {
+   // Parse Plan B suggestions from the exercise's .ex-note
+   document.querySelectorAll('.exercise').forEach(ex => {
+     const nameEl = ex.querySelector('.ex-name');
+     if (nameEl && nameEl.textContent === slotId) {
+       const noteEl = ex.querySelector('.ex-note');
+       if (noteEl) {
+         const text = noteEl.textContent;
+         const planBMatch = text.match(/Plan\s*B[:\s]*(.+)/i);
+         if (planBMatch) {
+           // Split by "or", "→", ","
+           planBMatch[1].split(/\s*(?:or|→|,)\s*/i).forEach(s => {
+             const trimmed = s.replace(/[.]+$/, '').trim();
+             if (trimmed) alternatives.push(trimmed);
+           });
+         }
        }
      }
-   }
- });
+   });
+ }
+ const suggestions = alternatives;
 
  let subHtml = '<div class="sub-flow">';
  subHtml += '<div class="sub-flow-title">Substitute: ' + slotId + '</div>';
@@ -6718,6 +6762,7 @@ function closeSettings() {
   document.getElementById('settingsPage').classList.remove('visible');
   settingsStack.length = 0;
   try { refreshAllMachineBadges(); } catch(e) {}
+  try { updateAllGymPills(); } catch(e) {}
 }
 
 function pushSettingsScreen(renderFn) {
@@ -7009,8 +7054,11 @@ function showAddGymToEquip(equipId) {
 
 function linkEquipGym(equipId, gymId) {
   const ge = getGymEquipment();
-  ge.push({ gymId: gymId, equipmentId: equipId, slotId: '' });
+  const equip = getEquipment().find(e => e.id === equipId);
+  const slotId = equip && equip.slot ? equip.slot : '';
+  ge.push({ gymId: gymId, equipmentId: equipId, slotId: slotId });
   setGymEquipment(ge);
+  try { refreshAllMachineBadges(); } catch(e) {}
   renderEquipmentDetail(equipId);
 }
 
