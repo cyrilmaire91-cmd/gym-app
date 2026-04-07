@@ -2236,6 +2236,310 @@
  font-size: 13px;
  padding: 40px 0;
 }
+
+/* ─── GYM SELECTION + EQUIPMENT BOTTOM SHEETS ─── */
+.gym-sheet-overlay {
+ position: fixed;
+ inset: 0;
+ background: rgba(0,0,0,0.5);
+ z-index: 700;
+ opacity: 0;
+ pointer-events: none;
+ transition: opacity 280ms ease;
+}
+.gym-sheet-overlay.visible { opacity: 1; pointer-events: auto; }
+
+.gym-sheet {
+ position: fixed;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: #1c1c1e;
+ border-radius: 20px 20px 0 0;
+ z-index: 701;
+ transform: translateY(100%);
+ transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1);
+ max-width: 600px;
+ margin: 0 auto;
+ padding: 16px 16px 28px;
+ max-height: 85vh;
+ overflow-y: auto;
+}
+.gym-sheet.open { transform: translateY(0); }
+
+.gym-sheet-handle {
+ width: 36px;
+ height: 4px;
+ background: #555;
+ border-radius: 2px;
+ margin: 0 auto 14px;
+}
+.gym-sheet-title {
+ font-family: 'Inter', sans-serif;
+ font-size: 20px;
+ font-weight: 900;
+ text-transform: uppercase;
+ margin-bottom: 2px;
+}
+.gym-sheet-sub {
+ font-size: 12px;
+ color: var(--muted);
+ margin-bottom: 16px;
+}
+
+.gym-pills {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ margin-bottom: 14px;
+}
+.gym-pill {
+ padding: 8px 16px;
+ border-radius: 20px;
+ border: 1px solid var(--border);
+ background: transparent;
+ color: var(--text);
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: all 0.15s;
+}
+.gym-pill.active {
+ background: var(--accent);
+ color: #000;
+ border-color: var(--accent);
+}
+.gym-pill:active { opacity: 0.7; }
+
+.gym-add-row {
+ display: flex;
+ gap: 8px;
+ margin-bottom: 16px;
+}
+.gym-add-input {
+ flex: 1;
+ background: #111;
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ color: var(--text);
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ padding: 10px 12px;
+ outline: none;
+}
+.gym-add-input::placeholder { color: var(--muted); }
+.gym-add-input:focus { border-color: var(--accent); }
+.gym-add-btn {
+ background: var(--accent);
+ color: #000;
+ border: none;
+ border-radius: 8px;
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ font-weight: 600;
+ padding: 10px 16px;
+ cursor: pointer;
+}
+.gym-add-btn:active { opacity: 0.7; }
+
+.gym-start-btn {
+ width: 100%;
+ background: var(--accent);
+ color: #030B1A;
+ border: none;
+ border-radius: 8px;
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
+ font-weight: 600;
+ padding: 12px 8px;
+ cursor: pointer;
+ text-transform: none;
+ letter-spacing: -0.5px;
+}
+.gym-start-btn:active { opacity: 0.7; }
+
+/* Machine badge on exercise cards */
+.ex-machine-badge {
+ background: #111;
+ border-radius: 8px;
+ padding: 6px 10px;
+ font-family: 'Inter', sans-serif;
+ font-size: 10px;
+ margin-top: 4px;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ transition: opacity 0.15s;
+}
+.ex-machine-badge:active { opacity: 0.7; }
+.ex-machine-badge.configured {
+ color: var(--muted);
+ border: 1px solid transparent;
+}
+.ex-machine-badge.substituted {
+ color: var(--accent);
+ border: 1px solid var(--accent);
+ background: rgba(226, 241, 107, 0.08);
+}
+.ex-machine-badge.unconfigured {
+ color: var(--muted);
+ border: 1px dashed var(--border);
+}
+
+/* Equipment bottom sheet specifics */
+.equip-current {
+ background: #111;
+ border-radius: 10px;
+ padding: 12px 14px;
+ margin-bottom: 14px;
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ color: var(--text);
+}
+.equip-current-label {
+ font-size: 10px;
+ color: var(--muted);
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ margin-bottom: 4px;
+}
+
+.equip-list {
+ margin-bottom: 14px;
+}
+.equip-list-title {
+ font-family: 'Inter', sans-serif;
+ font-size: 11px;
+ font-weight: 600;
+ color: var(--muted);
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ margin-bottom: 8px;
+}
+.equip-list-item {
+ padding: 10px 14px;
+ background: #111;
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ margin-bottom: 6px;
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ color: var(--text);
+ cursor: pointer;
+ transition: border-color 0.15s;
+}
+.equip-list-item:active { border-color: var(--accent); }
+.equip-list-item .equip-gym-name {
+ font-size: 10px;
+ color: var(--muted);
+ margin-top: 2px;
+}
+
+.equip-add-form {
+ margin-bottom: 14px;
+}
+.equip-add-form .gym-add-input {
+ width: 100%;
+ margin-bottom: 8px;
+}
+
+.equip-action-btn {
+ width: 100%;
+ padding: 12px 8px;
+ border-radius: 8px;
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ font-weight: 600;
+ cursor: pointer;
+ margin-bottom: 8px;
+ text-align: center;
+}
+.equip-action-btn:active { opacity: 0.7; }
+.equip-remove-btn {
+ background: transparent;
+ border: 1px solid var(--border);
+ color: var(--muted);
+}
+.equip-substitute-btn {
+ background: transparent;
+ border: 1px solid var(--accent);
+ color: var(--accent);
+}
+.equip-save-btn {
+ background: var(--accent);
+ border: none;
+ color: #030B1A;
+}
+
+/* Substitution flow */
+.sub-flow { margin-top: 14px; }
+.sub-flow-title {
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
+ font-weight: 700;
+ margin-bottom: 10px;
+}
+.sub-suggestions {
+ margin-bottom: 10px;
+}
+.sub-suggestion-pill {
+ display: inline-block;
+ padding: 8px 14px;
+ border-radius: 20px;
+ border: 1px solid var(--border);
+ background: transparent;
+ color: var(--text);
+ font-family: 'Inter', sans-serif;
+ font-size: 12px;
+ cursor: pointer;
+ margin: 0 6px 6px 0;
+ transition: all 0.15s;
+}
+.sub-suggestion-pill:active,
+.sub-suggestion-pill.active {
+ background: var(--accent);
+ color: #000;
+ border-color: var(--accent);
+}
+.sub-free-input {
+ width: 100%;
+ background: #111;
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ color: var(--text);
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ padding: 10px 12px;
+ outline: none;
+ margin-bottom: 10px;
+}
+.sub-free-input::placeholder { color: var(--muted); }
+.sub-free-input:focus { border-color: var(--accent); }
+.sub-btn-row {
+ display: flex;
+ gap: 8px;
+}
+.sub-btn-row button {
+ flex: 1;
+ padding: 10px 8px;
+ border-radius: 8px;
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ font-weight: 600;
+ cursor: pointer;
+}
+.sub-cancel-btn {
+ background: transparent;
+ border: 1px solid var(--border);
+ color: var(--text);
+}
+.sub-confirm-btn {
+ background: var(--accent);
+ border: none;
+ color: #030B1A;
+}
 </style>
 </head>
 <body>
@@ -2436,6 +2740,24 @@
  <button class="addzone-cancel" onclick="closeAddZone()">Cancel</button>
  <button class="addzone-save" onclick="saveNewZone()">Add</button>
  </div>
+</div>
+
+<!-- GYM SELECTION SHEET -->
+<div class="gym-sheet-overlay" id="gymSheetOverlay" onclick="closeGymSheet()"></div>
+<div class="gym-sheet" id="gymSheet">
+ <div class="gym-sheet-handle"></div>
+ <div class="gym-sheet-title" id="gymSheetTitle">Start Session</div>
+ <div class="gym-sheet-sub" id="gymSheetSub"></div>
+ <div id="gymSheetBody"></div>
+</div>
+
+<!-- EQUIPMENT SHEET -->
+<div class="gym-sheet-overlay" id="equipSheetOverlay" onclick="closeEquipSheet()"></div>
+<div class="gym-sheet" id="equipSheet">
+ <div class="gym-sheet-handle"></div>
+ <div class="gym-sheet-title" id="equipSheetTitle">Equipment</div>
+ <div class="gym-sheet-sub" id="equipSheetSub"></div>
+ <div id="equipSheetBody"></div>
 </div>
 
 <!-- CHECK-IN SHEET -->
@@ -4191,7 +4513,7 @@ function renderOverview(block) {
  const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
  let nextSessionHtml;
  if (nextSession) {
-   nextSessionHtml = `<div class="ov-next-session" onclick="showTab('${nextSession.id}', document.querySelector('.tab[onclick*=${nextSession.id}]'))">
+   nextSessionHtml = `<div class="ov-next-session" onclick="openGymSheet('${nextSession.id}', document.querySelector('.tab[onclick*=${nextSession.id}]'), '${nextSession.name}', '${nextSession.sub}')">
      <div class="ov-next-badge">${nextSession.tag}<br>${dayNames[nextSession.dayIndex]}</div>
      <div class="ov-next-info">
        <div class="ov-next-title">${nextSession.name}</div>
@@ -5779,6 +6101,552 @@ function drawProgressCanvas(exerciseName) {
  </div>
 </div>
 
+
+<script>
+// ─── GYM SELECTION + EQUIPMENT + SUBSTITUTION SYSTEM ────────────
+
+// Data model initialization
+(function initGymData() {
+ if (!localStorage.getItem('gymApp_gyms')) localStorage.setItem('gymApp_gyms', '[]');
+ if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
+ if (!localStorage.getItem('gymApp_gymEquipment')) localStorage.setItem('gymApp_gymEquipment', '[]');
+ if (!localStorage.getItem('gymApp_activeSession')) localStorage.setItem('gymApp_activeSession', JSON.stringify({ gymId: null, substitutions: {} }));
+})();
+
+function getGyms() { return JSON.parse(localStorage.getItem('gymApp_gyms') || '[]'); }
+function setGyms(g) { localStorage.setItem('gymApp_gyms', JSON.stringify(g)); }
+function getEquipment() { return JSON.parse(localStorage.getItem('gymApp_equipment') || '[]'); }
+function setEquipment(e) { localStorage.setItem('gymApp_equipment', JSON.stringify(e)); }
+function getGymEquipment() { return JSON.parse(localStorage.getItem('gymApp_gymEquipment') || '[]'); }
+function setGymEquipment(ge) { localStorage.setItem('gymApp_gymEquipment', JSON.stringify(ge)); }
+function getActiveSession() { return JSON.parse(localStorage.getItem('gymApp_activeSession') || '{"gymId":null,"substitutions":{}}'); }
+function setActiveSession(s) { localStorage.setItem('gymApp_activeSession', JSON.stringify(s)); }
+
+// ─── PART 1: GYM SELECTION BOTTOM SHEET ─────────────────────────
+
+let pendingGymSessionId = null;
+let pendingGymSessionBtn = null;
+
+function openGymSheet(sessionId, btn, sessionName, sessionSub) {
+ const gyms = getGyms();
+
+ // If only 1 gym, skip the sheet
+ if (gyms.length === 1) {
+   const active = getActiveSession();
+   active.gymId = gyms[0].id;
+   active.substitutions = {};
+   setActiveSession(active);
+   localStorage.setItem('gymApp_lastGymId', gyms[0].id);
+   _showTabWithAdapt(sessionId, btn);
+   if (SESSION_TABS.includes(sessionId)) applySessionImpact();
+   return;
+ }
+
+ pendingGymSessionId = sessionId;
+ pendingGymSessionBtn = btn;
+
+ const lastGymId = localStorage.getItem('gymApp_lastGymId');
+
+ document.getElementById('gymSheetTitle').textContent = sessionName || 'Start Session';
+ document.getElementById('gymSheetSub').textContent = sessionSub || '';
+
+ let body = '';
+
+ if (gyms.length === 0) {
+   body += '<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">No gyms yet — add one to get started.</div>';
+ } else {
+   body += '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600;">Select gym</div>';
+   body += '<div class="gym-pills" id="gymPillsContainer">';
+   gyms.forEach(g => {
+     const isActive = g.id === lastGymId;
+     body += `<button class="gym-pill${isActive ? ' active' : ''}" data-gym-id="${g.id}" onclick="selectGymPill(this)">${g.name}</button>`;
+   });
+   body += '</div>';
+ }
+
+ body += '<div class="gym-add-row"><input class="gym-add-input" id="gymAddInput" placeholder="Add a gym" /><button class="gym-add-btn" onclick="addGymFromSheet()">Add</button></div>';
+ body += '<button class="gym-start-btn" id="gymStartBtn" onclick="startSessionFromGym()">Start session</button>';
+
+ document.getElementById('gymSheetBody').innerHTML = body;
+
+ // Enter key on input
+ const addInput = document.getElementById('gymAddInput');
+ if (addInput) addInput.onkeydown = function(e) { if (e.key === 'Enter') addGymFromSheet(); };
+
+ document.getElementById('gymSheetOverlay').classList.add('visible');
+ document.getElementById('gymSheet').classList.add('open');
+}
+
+function selectGymPill(pill) {
+ document.querySelectorAll('#gymPillsContainer .gym-pill').forEach(p => p.classList.remove('active'));
+ pill.classList.add('active');
+}
+
+function addGymFromSheet() {
+ const input = document.getElementById('gymAddInput');
+ const name = input.value.trim();
+ if (!name) return;
+
+ const gyms = getGyms();
+ const newGym = { id: 'gym_' + Date.now(), name };
+ gyms.push(newGym);
+ setGyms(gyms);
+ input.value = '';
+
+ // Re-render pills
+ let container = document.getElementById('gymPillsContainer');
+ if (!container) {
+   // First gym added — rebuild body
+   openGymSheet(pendingGymSessionId, pendingGymSessionBtn,
+     document.getElementById('gymSheetTitle').textContent,
+     document.getElementById('gymSheetSub').textContent);
+   // Auto-select the new gym
+   setTimeout(() => {
+     const pills = document.querySelectorAll('#gymPillsContainer .gym-pill');
+     pills.forEach(p => p.classList.remove('active'));
+     const newPill = document.querySelector(`[data-gym-id="${newGym.id}"]`);
+     if (newPill) newPill.classList.add('active');
+   }, 50);
+   return;
+ }
+
+ // Add new pill
+ const pill = document.createElement('button');
+ pill.className = 'gym-pill active';
+ pill.dataset.gymId = newGym.id;
+ pill.textContent = name;
+ pill.onclick = function() { selectGymPill(this); };
+ // Deselect others
+ container.querySelectorAll('.gym-pill').forEach(p => p.classList.remove('active'));
+ container.appendChild(pill);
+}
+
+function startSessionFromGym() {
+ const activePill = document.querySelector('#gymPillsContainer .gym-pill.active');
+ if (!activePill) {
+   // If no gym selected, check if any gyms exist
+   const gyms = getGyms();
+   if (gyms.length === 0) {
+     // No gyms — start without gym
+     closeGymSheet();
+     if (pendingGymSessionId && pendingGymSessionBtn) {
+       const active = getActiveSession();
+       active.gymId = null;
+       active.substitutions = {};
+       setActiveSession(active);
+       _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
+       if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
+     }
+     return;
+   }
+   return; // Must select a gym
+ }
+
+ const gymId = activePill.dataset.gymId;
+ const active = getActiveSession();
+ active.gymId = gymId;
+ active.substitutions = {};
+ setActiveSession(active);
+ localStorage.setItem('gymApp_lastGymId', gymId);
+
+ closeGymSheet();
+
+ if (pendingGymSessionId && pendingGymSessionBtn) {
+   _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
+   if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
+ }
+ pendingGymSessionId = null;
+ pendingGymSessionBtn = null;
+}
+
+function closeGymSheet() {
+ document.getElementById('gymSheetOverlay').classList.remove('visible');
+ document.getElementById('gymSheet').classList.remove('open');
+}
+
+// ─── PART 2: MACHINE BADGE ON EXERCISE CARDS ────────────────────
+
+function getEquipmentForSlot(slotId, gymId) {
+ const ge = getGymEquipment();
+ const link = ge.find(l => l.slotId === slotId && l.gymId === gymId);
+ if (!link) return null;
+ const equip = getEquipment();
+ return equip.find(e => e.id === link.equipmentId) || null;
+}
+
+function getLastWeightForEquipment(equipmentId, exName) {
+ const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+ for (const entry of history) {
+   const ex = entry.exercises.find(e => e.name === exName);
+   if (ex && ex.equipmentId === equipmentId && ex.sets.length > 0) {
+     const best = ex.sets.reduce((b, s) => s.weight > b ? s.weight : b, 0);
+     if (best > 0) return best;
+   }
+ }
+ return null;
+}
+
+function createMachineBadge(exName) {
+ const badge = document.createElement('div');
+ badge.className = 'ex-machine-badge';
+ badge.dataset.slotId = exName;
+ updateMachineBadge(badge, exName);
+ badge.onclick = function(e) {
+   e.stopPropagation();
+   openEquipSheet(exName);
+ };
+ return badge;
+}
+
+function updateMachineBadge(badge, exName) {
+ const active = getActiveSession();
+ const gymId = active.gymId;
+ const sub = active.substitutions[exName];
+
+ if (sub) {
+   badge.className = 'ex-machine-badge substituted';
+   badge.innerHTML = '↔ ' + sub + ' <span style="font-size:9px;opacity:0.7">(today\'s substitute)</span>';
+   return;
+ }
+
+ if (!gymId) {
+   badge.className = 'ex-machine-badge unconfigured';
+   badge.textContent = 'No gym selected';
+   return;
+ }
+
+ const equip = getEquipmentForSlot(exName, gymId);
+ if (equip) {
+   const lastW = getLastWeightForEquipment(equip.id, exName);
+   const weightStr = lastW !== null ? ' · ' + lastW + 'kg' : '';
+   badge.className = 'ex-machine-badge configured';
+   badge.textContent = equip.brand + ' – ' + equip.name + weightStr;
+ } else {
+   badge.className = 'ex-machine-badge unconfigured';
+   badge.textContent = 'No machine set — tap to configure';
+ }
+}
+
+function refreshAllMachineBadges() {
+ document.querySelectorAll('.ex-machine-badge').forEach(badge => {
+   const slotId = badge.dataset.slotId;
+   if (slotId) updateMachineBadge(badge, slotId);
+ });
+}
+
+// ─── PART 3: EQUIPMENT BOTTOM SHEET ─────────────────────────────
+
+let currentEquipSlotId = null;
+
+function openEquipSheet(slotId) {
+ currentEquipSlotId = slotId;
+ const active = getActiveSession();
+ const gymId = active.gymId;
+ const equip = gymId ? getEquipmentForSlot(slotId, gymId) : null;
+ const ge = getGymEquipment();
+ const allEquip = getEquipment();
+ const gyms = getGyms();
+
+ document.getElementById('equipSheetTitle').textContent = slotId;
+ document.getElementById('equipSheetSub').textContent = gymId ? (gyms.find(g => g.id === gymId) || {}).name || '' : 'No gym selected';
+
+ let body = '';
+
+ // Current machine
+ if (equip) {
+   body += '<div class="equip-current"><div class="equip-current-label">Current machine</div>' + equip.brand + ' – ' + equip.name + '</div>';
+ }
+
+ // Other machines linked to this slot at other gyms
+ const otherLinks = ge.filter(l => l.slotId === slotId && l.gymId !== gymId);
+ if (otherLinks.length > 0) {
+   body += '<div class="equip-list"><div class="equip-list-title">Same exercise at other gyms</div>';
+   otherLinks.forEach(link => {
+     const eq = allEquip.find(e => e.id === link.equipmentId);
+     const gym = gyms.find(g => g.id === link.gymId);
+     if (eq) {
+       body += `<div class="equip-list-item" onclick="assignEquipmentToSlot('${eq.id}','${slotId}')">
+         ${eq.brand} – ${eq.name}
+         <div class="equip-gym-name">${gym ? gym.name : 'Unknown gym'}</div>
+       </div>`;
+     }
+   });
+   body += '</div>';
+ }
+
+ // Add new machine form
+ body += '<div class="equip-add-form">';
+ body += '<div class="equip-list-title">Add new machine</div>';
+ body += '<input class="gym-add-input" id="equipBrandInput" placeholder="Brand (e.g. Hammer Strength)" />';
+ body += '<input class="gym-add-input" id="equipNameInput" placeholder="Machine name (e.g. Chest Press)" />';
+ body += '<button class="equip-action-btn equip-save-btn" onclick="addEquipmentFromSheet()">Save machine</button>';
+ body += '</div>';
+
+ // Remove link
+ if (equip && gymId) {
+   body += `<button class="equip-action-btn equip-remove-btn" onclick="removeEquipmentLink('${slotId}')">Remove machine link</button>`;
+ }
+
+ // Substitute exercise
+ body += `<button class="equip-action-btn equip-substitute-btn" onclick="openSubstitutionFlow('${slotId}')">Substitute exercise</button>`;
+
+ document.getElementById('equipSheetBody').innerHTML = body;
+ document.getElementById('equipSheetOverlay').classList.add('visible');
+ document.getElementById('equipSheet').classList.add('open');
+}
+
+function closeEquipSheet() {
+ document.getElementById('equipSheetOverlay').classList.remove('visible');
+ document.getElementById('equipSheet').classList.remove('open');
+ currentEquipSlotId = null;
+}
+
+function assignEquipmentToSlot(equipId, slotId) {
+ const active = getActiveSession();
+ const gymId = active.gymId;
+ if (!gymId) return;
+
+ const ge = getGymEquipment();
+ // Remove existing link for this gym+slot
+ const filtered = ge.filter(l => !(l.gymId === gymId && l.slotId === slotId));
+ filtered.push({ gymId, equipmentId: equipId, slotId });
+ setGymEquipment(filtered);
+
+ refreshAllMachineBadges();
+ closeEquipSheet();
+}
+
+function addEquipmentFromSheet() {
+ const brand = document.getElementById('equipBrandInput').value.trim();
+ const name = document.getElementById('equipNameInput').value.trim();
+ if (!brand || !name) return;
+
+ const equip = getEquipment();
+ const newEquip = { id: 'equip_' + Date.now(), brand, name };
+ equip.push(newEquip);
+ setEquipment(equip);
+
+ // Also link to current gym+slot
+ const active = getActiveSession();
+ if (active.gymId && currentEquipSlotId) {
+   assignEquipmentToSlot(newEquip.id, currentEquipSlotId);
+ } else {
+   closeEquipSheet();
+ }
+}
+
+function removeEquipmentLink(slotId) {
+ const active = getActiveSession();
+ const gymId = active.gymId;
+ if (!gymId) return;
+
+ const ge = getGymEquipment();
+ const filtered = ge.filter(l => !(l.gymId === gymId && l.slotId === slotId));
+ setGymEquipment(filtered);
+
+ refreshAllMachineBadges();
+ closeEquipSheet();
+}
+
+// ─── PART 4: SUBSTITUTION FLOW ──────────────────────────────────
+
+function openSubstitutionFlow(slotId) {
+ // Parse Plan B suggestions from the exercise's .ex-note
+ const suggestions = [];
+ document.querySelectorAll('.exercise').forEach(ex => {
+   const nameEl = ex.querySelector('.ex-name');
+   if (nameEl && nameEl.textContent === slotId) {
+     const noteEl = ex.querySelector('.ex-note');
+     if (noteEl) {
+       const text = noteEl.textContent;
+       const planBMatch = text.match(/Plan\s*B[:\s]*(.+)/i);
+       if (planBMatch) {
+         // Split by "or", "→", ","
+         planBMatch[1].split(/\s*(?:or|→|,)\s*/i).forEach(s => {
+           const trimmed = s.replace(/[.]+$/, '').trim();
+           if (trimmed) suggestions.push(trimmed);
+         });
+       }
+     }
+   }
+ });
+
+ let subHtml = '<div class="sub-flow">';
+ subHtml += '<div class="sub-flow-title">Substitute: ' + slotId + '</div>';
+
+ if (suggestions.length > 0) {
+   subHtml += '<div class="sub-suggestions">';
+   suggestions.forEach(s => {
+     subHtml += `<button class="sub-suggestion-pill" onclick="selectSubSuggestion(this, '${s.replace(/'/g, "\\'")}')">${s}</button>`;
+   });
+   subHtml += '</div>';
+ }
+
+ subHtml += '<input class="sub-free-input" id="subFreeInput" placeholder="Or type a substitute..." />';
+ subHtml += '<div class="sub-btn-row">';
+ subHtml += '<button class="sub-cancel-btn" onclick="cancelSubstitution()">Cancel</button>';
+ subHtml += `<button class="sub-confirm-btn" onclick="confirmSubstitution('${slotId.replace(/'/g, "\\'")}')">Confirm</button>`;
+ subHtml += '</div></div>';
+
+ document.getElementById('equipSheetBody').innerHTML = subHtml;
+}
+
+function selectSubSuggestion(pill, name) {
+ document.querySelectorAll('.sub-suggestion-pill').forEach(p => p.classList.remove('active'));
+ pill.classList.add('active');
+ document.getElementById('subFreeInput').value = name;
+}
+
+function cancelSubstitution() {
+ if (currentEquipSlotId) {
+   openEquipSheet(currentEquipSlotId);
+ } else {
+   closeEquipSheet();
+ }
+}
+
+function confirmSubstitution(slotId) {
+ const input = document.getElementById('subFreeInput');
+ const value = input ? input.value.trim() : '';
+ if (!value) return;
+
+ const active = getActiveSession();
+ active.substitutions[slotId] = value;
+ setActiveSession(active);
+
+ refreshAllMachineBadges();
+ closeEquipSheet();
+}
+
+// ─── PART 5: WEIGHT PRE-FILL UPDATE ────────────────────────────
+
+// Override getPreviousExerciseData to filter by equipmentId when available
+const _origGetPreviousExerciseData = getPreviousExerciseData;
+getPreviousExerciseData = function(exName) {
+ const active = getActiveSession();
+ const gymId = active.gymId;
+
+ if (gymId) {
+   const equip = getEquipmentForSlot(exName, gymId);
+   if (equip) {
+     const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+     for (const entry of history) {
+       const ex = entry.exercises.find(e => e.name === exName && e.equipmentId === equip.id);
+       if (ex && ex.sets.length > 0) return ex.sets;
+     }
+     // Fall back to non-equipment-specific history
+   }
+ }
+
+ return _origGetPreviousExerciseData(exName);
+};
+
+// Override saveSession to include equipmentId and substituteLabel
+const _origSaveSession = saveSession;
+saveSession = function() {
+ const sessionId = getCurrentSessionId();
+ if (!sessionId) return;
+
+ const active = getActiveSession();
+ const gymId = active.gymId;
+
+ const exercises = [];
+ document.querySelectorAll('.log-sets-container').forEach(container => {
+   const exName = container.dataset.logExercise;
+   const sets = [];
+   container.querySelectorAll('.log-set-row').forEach(row => {
+     const repsPill = row.querySelector('[data-field="reps"]');
+     const weightPill = row.querySelector('[data-field="weight"]');
+     const reps = repsPill ? repsPill.dataset.value : '';
+     const weight = weightPill ? weightPill.dataset.value : '';
+     const done = row.querySelector('.log-check') ? row.querySelector('.log-check').classList.contains('done') : false;
+     if (reps || weight || done) {
+       sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
+     }
+   });
+   const noteEl = container.querySelector('.log-note');
+   const note = noteEl ? noteEl.value.trim() : '';
+   if (sets.length > 0) {
+     const entry = { name: exName, sets, note };
+     // Add equipment ID if available
+     if (gymId) {
+       const equip = getEquipmentForSlot(exName, gymId);
+       if (equip) entry.equipmentId = equip.id;
+     }
+     // Add substitute label if active
+     const sub = active.substitutions[exName];
+     if (sub) entry.substituteLabel = sub;
+     exercises.push(entry);
+   }
+ });
+
+ if (exercises.length === 0) return;
+
+ const now = new Date();
+ const localDate = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+ const entry = {
+   id: Date.now(),
+   date: localDate + 'T' + now.toTimeString().slice(0,8),
+   sessionId,
+   sessionName: SESSION_NAMES[sessionId] || sessionId,
+   gymId: gymId || undefined,
+   exercises
+ };
+
+ const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
+ history.unshift(entry);
+ localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
+
+ // Reset substitutions for next session
+ const activeSession = getActiveSession();
+ activeSession.substitutions = {};
+ setActiveSession(activeSession);
+
+ renderHistory();
+ const cb = localStorage.getItem('gymapp_current_block') || 'main';
+ renderOverview(cb === 'recovery' ? 'recovery' : 'main');
+
+ showSummarySheet(entry);
+};
+
+// ─── INJECT MACHINE BADGES INTO ACCORDIONS ──────────────────────
+
+// Patch setupAccordions to inject machine badges
+const _origSetupAccordions = setupAccordions;
+setupAccordions = function() {
+ _origSetupAccordions();
+
+ // After accordion setup, inject machine badges
+ document.querySelectorAll('.exercise').forEach(ex => {
+   // Skip if already has badge
+   if (ex.querySelector('.ex-machine-badge')) return;
+   // Skip prehab/warmup exercises (no logging)
+   if (ex.closest('.prehab-box')) return;
+
+   const nameEl = ex.querySelector('.ex-name');
+   if (!nameEl) return;
+   const exName = nameEl.textContent;
+
+   const topRow = ex.querySelector('.ex-top-row');
+   const exNote = ex.querySelector('.ex-note');
+
+   const badge = createMachineBadge(exName);
+
+   // Insert after top row, before ex-note
+   if (exNote) {
+     ex.insertBefore(badge, exNote);
+   } else if (topRow) {
+     topRow.after(badge);
+   } else {
+     ex.appendChild(badge);
+   }
+ });
+};
+
+// Re-run to inject badges
+setupAccordions();
+
+</script>
 
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeAdaptDrawer()"></div>
