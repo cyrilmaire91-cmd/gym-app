@@ -4057,7 +4057,11 @@ function renderOverview(block) {
  const weekNum = Math.min(Math.floor(blockSessions / 4) + 1, 4);
  const blockPct = Math.min(100, Math.round((blockSessions / totalSessions) * 100));
 
- // This week strip
+ // This week strip — use local dates to avoid timezone offset issues
+ function localDateStr(d) {
+   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+ }
+ const todayStr = localDateStr(today);
  const dayOfWeek = today.getDay();
  const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
  const monday = new Date(today);
@@ -4073,18 +4077,20 @@ function renderOverview(block) {
  const dayLetters = ['M','T','W','T','F','S','S'];
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
 
- // Find sessions logged this week (Mon→Sun)
- const sundayDate = new Date(monday);
- sundayDate.setDate(monday.getDate() + 6);
- const mondayStr = monday.toISOString().slice(0, 10);
- const sundayStr = sundayDate.toISOString().slice(0, 10);
+ // Build date strings for each day of the week using local time
+ const weekDateStrs = [];
+ for (let i = 0; i < 7; i++) {
+   const d = new Date(monday);
+   d.setDate(monday.getDate() + i);
+   weekDateStrs.push(localDateStr(d));
+ }
 
  // Build a map: dateStr → sessionId for this week's logs
  const weekLogs = {};
  history.forEach(e => {
    if (!e.date) return;
    const d = e.date.slice(0, 10);
-   if (d >= mondayStr && d <= sundayStr) {
+   if (d >= weekDateStrs[0] && d <= weekDateStrs[6]) {
      weekLogs[d] = e.sessionId || '';
    }
  });
@@ -4100,18 +4106,14 @@ function renderOverview(block) {
 
  // Build week strip: mark days with actual logged sessions
  const weekDays = dayLetters.map((letter, i) => {
-   const dayDate = new Date(monday);
-   dayDate.setDate(monday.getDate() + i);
-   const dateStr = dayDate.toISOString().slice(0, 10);
+   const dateStr = weekDateStrs[i];
    const loggedId = weekLogs[dateStr];
 
    if (loggedId) {
      const sess = sessionSequence.find(s => s.id === loggedId);
      return { letter, state: 'done', tag: sess ? sess.tag : loggedId.slice(0, 2).toUpperCase() };
    }
-   // Mark today as "next" if it's today and there's a next session
-   const isToday = dateStr === today.toISOString().slice(0, 10);
-   if (isToday && nextSession) {
+   if (dateStr === todayStr && nextSession) {
      return { letter, state: 'next', tag: nextSession.tag };
    }
    return { letter, state: 'rest', tag: '' };
@@ -4119,7 +4121,7 @@ function renderOverview(block) {
 
  // Add dayIndex/dayName to nextSession for the card
  if (nextSession) {
-   const todayIdx = today.getDay() === 0 ? 6 : today.getDay() - 1; // 0=Mon
+   const todayIdx = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // 0=Mon
    nextSession = { ...nextSession, dayIndex: todayIdx, dayName: dayLetters[todayIdx] };
  }
 
