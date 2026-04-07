@@ -3979,13 +3979,6 @@ function renderInjuryDashboard() {
 let pendingSessionTab = null;
 let pendingSessionBtn = null;
 
-function checkedInToday() {
- const log = getInjuryLog();
- if (log.length === 0) return false;
- const last = log[log.length - 1];
- const today = new Date().toISOString().slice(0, 10);
- return last.date === today;
-}
 
 function showCheckin(tabId, btn) {
  pendingSessionTab = tabId;
@@ -4344,19 +4337,6 @@ function saveNewZone() {
 
 // ─── SESSION IMPACT ───────────────────────────────────────────────
 
-const INJURY_EXERCISE_MAP = {
- wrist: ['press', 'curl', 'incline', 'bench', 'overhead', 'extension', 'hammer'],
- shoulder: ['press', 'incline', 'bench', 'pulldown', 'overhead', 'landmine', 'y-raise'],
- elbow: ['row', 'pull', 'curl', 'deadlift', 'rdl', 'face pull', 'cable'],
- knee: ['squat', 'hack', 'leg press', 'split', 'lunge', 'extension', 'leg ext'],
-};
-
-const PLAN_B_MAP = {
- wrist: 'neutral grip pressing, wrist brace recommended',
- shoulder: 'DB press only, avoid fixed-path machines',
- elbow: 'neutral grip pulling only, no supinated curls',
- knee: 'belt squat or hack squat, controlled tempo',
-};
 
 function applySessionImpact() {
  const scores = getLatestScores();
@@ -4882,9 +4862,8 @@ function updateAllGymPills() {
   const activeGym = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
   const gyms = JSON.parse(localStorage.getItem('gymApp_gyms') || '[]');
   const gym = activeGym.gymId ? gyms.find(g => g.id === activeGym.gymId) : null;
-  const label = gym ? gym.name : 'No gym';
   document.querySelectorAll('.session-gym-pill').forEach(pill => {
-    pill.textContent = label;
+    pill.textContent = gym ? gym.name : 'No gym';
   });
 }
 
@@ -5010,12 +4989,6 @@ function timerActionTap() {
  }
 }
 
-function stopTimer() {
- if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
- timerPaused = false;
- document.getElementById('timerBar').classList.remove('visible');
- document.getElementById('timerPlayBtn').classList.remove('running');
-}
 
 // ─── ACCORDION EXERCISE SETUP ─────────────────────────────────────
 
@@ -5063,8 +5036,6 @@ function setupAccordions() {
  // Parse exercise info
  const nameEl = ex.querySelector('.ex-name');
  const setsEl = ex.querySelector('.ex-sets');
- const noteEl = ex.querySelector('.ex-note');
- const ytBtn = ex.querySelector('a[href*="youtube"]') || ex.dataset.ytUrl;
  const setsMatch = setsEl ? setsEl.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
  const numSets = setsMatch ? parseInt(setsMatch[1]) : 3;
  const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
@@ -5512,13 +5483,6 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  return swipeWrap;
 }
 
-function updateDeleteVisibility(container) {
- const rows = container.querySelectorAll('.log-set-row');
- rows.forEach(r => {
- const btn = r.querySelector('.log-delete-btn');
- if (btn) btn.classList.toggle('hidden', rows.length <= 1);
- });
-}
 
 function renderPill(pill) {
  const val = pill.dataset.value;
@@ -5668,7 +5632,6 @@ function addSetToContainer(container, defaultReps, wrap) {
  const newRow = createSetRow(r, w, wrap, setNum, null);
  const addBtn = container.querySelector('.log-add-set');
  container.insertBefore(newRow, addBtn);
- updateDeleteVisibility(container);
 }
 
 function saveSession() {
@@ -5742,7 +5705,7 @@ function renderHistory() {
  }
 
  list.innerHTML = '';
- history.slice(0, 20).forEach((entry, idx) => {
+ history.slice(0, 20).forEach((entry) => {
    const d = new Date(entry.date);
    const dateStr = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
    const exRows = entry.exercises.map(ex => {
