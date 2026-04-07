@@ -4870,6 +4870,30 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
        timerDuration = parseInt(exWrap.dataset.restSeconds);
      }
      startRestTimer();
+     // Pre-fill next set row with same weight/reps
+     const container = swipeWrap.closest('.log-sets-container');
+     if (container) {
+       const allWraps = [...container.querySelectorAll('.log-set-wrap')];
+       const curIdx = allWraps.indexOf(swipeWrap);
+       const nextWrap = allWraps[curIdx + 1];
+       if (nextWrap) {
+         const nextRow = nextWrap.querySelector('.log-set-row');
+         if (nextRow) {
+           const nw = nextRow.querySelector('[data-field="weight"]');
+           const nr = nextRow.querySelector('[data-field="reps"]');
+           if (nw && !nw.dataset.value && weightPill.dataset.value) {
+             nw.dataset.value = weightPill.dataset.value;
+             nw.classList.add('prefilled');
+             renderPill(nw);
+           }
+           if (nr && !nr.dataset.value && repsPill.dataset.value) {
+             nr.dataset.value = repsPill.dataset.value;
+             nr.classList.add('prefilled');
+             renderPill(nr);
+           }
+         }
+       }
+     }
      // Superset behavior: switch to partner exercise
      const w = wrap || swipeWrap.closest('.exercise-wrap');
      if (w && w.closest('.superset-group')) {
