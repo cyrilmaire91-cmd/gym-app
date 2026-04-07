@@ -3779,7 +3779,7 @@ function setupLumbagoAccordions() {
  // Column headers
  const lHeaders = document.createElement('div');
  lHeaders.className = 'log-set-headers';
- lHeaders.innerHTML = '<span class="header-label">REPS</span><span class="header-label">WEIGHT</span><div class="header-spacer"></div>';
+ lHeaders.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  container.appendChild(lHeaders);
 
  for (let s = 0; s < numSets; s++) {
@@ -4681,7 +4681,7 @@ function setupAccordions() {
  // Column headers
  const headers = document.createElement('div');
  headers.className = 'log-set-headers';
- headers.innerHTML = '<span class="header-label">REPS</span><span class="header-label">WEIGHT</span><div class="header-spacer"></div>';
+ headers.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  container.appendChild(headers);
 
  for (let s = 0; s < numSets; s++) {
@@ -4824,21 +4824,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  const row = document.createElement('div');
  row.className = 'log-set-row';
 
- // Reps pill
- const repsPill = document.createElement('div');
- repsPill.className = 'log-pill';
- repsPill.dataset.field = 'reps';
- repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
- repsPill.dataset.step = '1';
- repsPill.dataset.unit = 'reps';
- repsPill.dataset.label = 'Reps';
- repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
- if (prevSet && prevSet.reps) repsPill.classList.add('prefilled');
- renderPill(repsPill);
- repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
- row.appendChild(repsPill);
-
- // Weight pill
+ // Weight pill (first column)
  const prevWeight = prevSet && prevSet.weight ? prevSet.weight : defaultWeight;
  const weightPill = document.createElement('div');
  weightPill.className = 'log-pill';
@@ -4851,6 +4837,20 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  renderPill(weightPill);
  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
  row.appendChild(weightPill);
+
+ // Reps pill (second column)
+ const repsPill = document.createElement('div');
+ repsPill.className = 'log-pill';
+ repsPill.dataset.field = 'reps';
+ repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
+ repsPill.dataset.step = '1';
+ repsPill.dataset.unit = 'reps';
+ repsPill.dataset.label = 'Reps';
+ repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+ if (prevSet && prevSet.reps) repsPill.classList.add('prefilled');
+ renderPill(repsPill);
+ repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
+ row.appendChild(repsPill);
 
  // Check button
  const check = document.createElement('button');
