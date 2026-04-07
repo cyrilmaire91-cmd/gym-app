@@ -2540,6 +2540,38 @@
  border: none;
  color: #030B1A;
 }
+/* SETTINGS PAGE */
+.settings-page {
+  position: fixed; inset: 0; background: #0a0a0a; z-index: 400;
+  display: none; flex-direction: column; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.settings-page.visible { display: flex; }
+.settings-nav { display: flex; align-items: center; gap: 8px; padding: 16px; }
+.settings-back { background: none; border: none; color: var(--accent); font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.settings-title { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: #fff; padding: 0 16px 12px; }
+.settings-section-label { text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; color: #555; padding: 14px 14px 6px; font-family: 'Inter', sans-serif; }
+.settings-row { display: flex; align-items: center; padding: 11px 14px; border-bottom: 1px solid #111; cursor: pointer; }
+.settings-row-content { flex: 1; }
+.settings-row-title { font-size: 13px; color: #fff; font-family: 'Inter', sans-serif; font-weight: 500; }
+.settings-row-sub { font-size: 11px; color: #555; font-family: 'Inter', sans-serif; margin-top: 1px; }
+.settings-chevron { color: #333; font-size: 16px; flex-shrink: 0; }
+.settings-add-btn { background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; margin-left: auto; }
+.settings-input { width: 100%; background: #1c1c1e; border: 1px solid #38383a; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; padding: 10px 12px; outline: none; margin-bottom: 8px; }
+.settings-input:focus { border-color: var(--accent); }
+.settings-form { padding: 0 14px 14px; }
+.settings-save-btn { width: 100%; padding: 12px; background: var(--accent); color: #030B1A; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.settings-danger-btn { width: 100%; padding: 12px; background: none; border: none; color: #c0392b; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+.settings-pill { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; }
+.settings-pill.accent { background: rgba(226,241,107,0.15); color: var(--accent); border: 1px solid rgba(226,241,107,0.3); }
+.settings-pill.muted { background: #1c1c1e; color: #555; }
+.settings-check-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #111; cursor: pointer; }
+.settings-check { width: 20px; height: 20px; border-radius: 4px; border: 1.5px solid #38383a; background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.settings-check.checked { background: var(--accent); border-color: var(--accent); }
+.settings-check.checked::after { content: ''; width: 5px; height: 9px; border-right: 2px solid #030B1A; border-bottom: 2px solid #030B1A; transform: rotate(45deg); margin-top: -2px; }
+.settings-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; color: #888; background: #1c1c1e; margin-left: 6px; }
+.settings-remove-btn { background: none; border: none; color: #555; font-size: 16px; cursor: pointer; padding: 4px 8px; }
+.settings-empty { color: #333; font-size: 12px; padding: 14px; font-family: 'Inter', sans-serif; }
 </style>
 </head>
 <body>
@@ -2585,6 +2617,12 @@
  <div class="panel-item" data-block="recovery" onclick="selectBlock('recovery')">
  <div class="panel-item-label">Recovery</div>
  <div class="panel-item-sub">2-Week Deload Block</div>
+ </div>
+ <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+ <div class="panel-item" onclick="openSettings(); closePanel();" style="border-bottom:none;">
+ <div class="panel-item-label">Settings</div>
+ <div class="panel-item-sub">Gyms, equipment, exercises</div>
+ </div>
  </div>
  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
  <div class="panel-item" onclick="openInjuriesPage(); closePanel();" style="border-bottom:none;">
@@ -2728,6 +2766,9 @@
  </div>
  </div>
 </div>
+
+<!-- SETTINGS PAGE -->
+<div class="settings-page" id="settingsPage"></div>
 
 <!-- ADD ZONE SHEET -->
 <div class="picker-overlay" id="addZoneOverlay" onclick="closeAddZone()"></div>
@@ -6643,6 +6684,559 @@ function injectMachineBadges() {
 
 // Run badge injection after DOM is ready (accordions already set up by now)
 injectMachineBadges();
+
+// ─── SETTINGS SYSTEM ──────────────────────────────────────────────
+
+function getAlternatives() { return JSON.parse(localStorage.getItem('gymApp_alternatives') || '{}'); }
+function setAlternatives(a) { localStorage.setItem('gymApp_alternatives', JSON.stringify(a)); }
+
+const settingsStack = [];
+
+function openSettings() {
+  document.getElementById('settingsPage').classList.add('visible');
+  settingsStack.length = 0;
+  renderSettingsRoot();
+}
+
+function closeSettings() {
+  document.getElementById('settingsPage').classList.remove('visible');
+  settingsStack.length = 0;
+}
+
+function pushSettingsScreen(renderFn) {
+  settingsStack.push(renderFn);
+  renderFn();
+}
+
+function popSettingsScreen() {
+  settingsStack.pop();
+  if (settingsStack.length > 0) {
+    settingsStack[settingsStack.length - 1]();
+  } else {
+    renderSettingsRoot();
+  }
+}
+
+function settingsGenId() {
+  return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+}
+
+// ─── ROOT ─────────────────────────────────────────────────────────
+
+function renderSettingsRoot() {
+  const gyms = getGyms();
+  const equip = getEquipment();
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="closeSettings()">&lt; Close</button>
+    </div>
+    <div class="settings-title">Settings</div>
+    <div class="settings-section-label">Training</div>
+    <div class="settings-row" onclick="pushSettingsScreen(renderGymsScreen)">
+      <div class="settings-row-content">
+        <div class="settings-row-title">Gyms</div>
+        <div class="settings-row-sub">${gyms.length} gym${gyms.length !== 1 ? 's' : ''} configured</div>
+      </div>
+      <div class="settings-chevron">&rsaquo;</div>
+    </div>
+    <div class="settings-row" onclick="pushSettingsScreen(renderEquipmentScreen)">
+      <div class="settings-row-content">
+        <div class="settings-row-title">Equipment</div>
+        <div class="settings-row-sub">${equip.length} machine${equip.length !== 1 ? 's' : ''} in your library</div>
+      </div>
+      <div class="settings-chevron">&rsaquo;</div>
+    </div>
+    <div class="settings-row" onclick="pushSettingsScreen(renderExercisesScreen)">
+      <div class="settings-row-content">
+        <div class="settings-row-title">Exercises</div>
+        <div class="settings-row-sub">Manage Plan B / C alternatives</div>
+      </div>
+      <div class="settings-chevron">&rsaquo;</div>
+    </div>
+    <div class="settings-section-label">App</div>
+    <div class="settings-row" style="opacity:0.4;cursor:default">
+      <div class="settings-row-content">
+        <div class="settings-row-title">General</div>
+      </div>
+      <div class="settings-chevron">&rsaquo;</div>
+    </div>
+    <div class="settings-row" style="opacity:0.4;cursor:default">
+      <div class="settings-row-content">
+        <div class="settings-row-title">Export data</div>
+      </div>
+      <div class="settings-chevron">&rsaquo;</div>
+    </div>
+  `;
+}
+
+// ─── GYMS ─────────────────────────────────────────────────────────
+
+function renderGymsScreen() {
+  const gyms = getGyms();
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+      <button class="settings-add-btn" onclick="pushSettingsScreen(renderAddGym)">+ Add</button>
+    </div>
+    <div class="settings-title">Gyms</div>
+    ${gyms.length === 0 ? '<div class="settings-empty">No gyms configured yet.</div>' : ''}
+    ${gyms.map(g => `
+      <div class="settings-row" onclick="pushSettingsScreen(() => renderGymDetail('${g.id}'))">
+        <div class="settings-row-content">
+          <div class="settings-row-title">${g.name}</div>
+          <div class="settings-row-sub">${getGymEquipCount(g.id)} machine${getGymEquipCount(g.id) !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="settings-chevron">&rsaquo;</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function getGymEquipCount(gymId) {
+  return getGymEquipment().filter(ge => ge.gymId === gymId).length;
+}
+
+function renderGymDetail(gymId) {
+  const gyms = getGyms();
+  const gym = gyms.find(g => g.id === gymId);
+  if (!gym) { popSettingsScreen(); return; }
+  const ge = getGymEquipment().filter(x => x.gymId === gymId);
+  const allEquip = getEquipment();
+  const linkedEquip = ge.map(x => allEquip.find(e => e.id === x.equipId)).filter(Boolean);
+
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">${gym.name}</div>
+    <div class="settings-section-label">Equipment at this gym</div>
+    ${linkedEquip.length === 0 ? '<div class="settings-empty">No equipment linked yet.</div>' : ''}
+    ${linkedEquip.map(e => `
+      <div class="settings-row" style="cursor:default">
+        <div class="settings-row-content">
+          <div class="settings-row-title">${e.brand ? e.brand + ' — ' : ''}${e.name}</div>
+          ${e.slot ? '<div class="settings-row-sub">' + e.slot + '</div>' : ''}
+        </div>
+      </div>
+    `).join('')}
+    <button class="settings-danger-btn" onclick="removeGym('${gymId}')">Remove gym</button>
+  `;
+}
+
+function removeGym(gymId) {
+  if (!confirm('Remove this gym and all its equipment links?')) return;
+  const gyms = getGyms().filter(g => g.id !== gymId);
+  setGyms(gyms);
+  const ge = getGymEquipment().filter(x => x.gymId !== gymId);
+  setGymEquipment(ge);
+  popSettingsScreen();
+}
+
+function renderAddGym() {
+  const equip = getEquipment();
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">Add Gym</div>
+    <div class="settings-form">
+      <input class="settings-input" id="settingsGymName" placeholder="Gym name" />
+      ${equip.length > 0 ? '<div class="settings-section-label" style="padding-left:0">Equipment available</div>' : ''}
+      <div id="settingsGymEquipChecks">
+        ${equip.map(e => `
+          <div class="settings-check-row" onclick="this.querySelector('.settings-check').classList.toggle('checked')">
+            <div class="settings-check" data-equip-id="${e.id}"></div>
+            <div style="flex:1">
+              <div class="settings-row-title">${e.brand ? e.brand + ' — ' : ''}${e.name}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="settings-save-btn" onclick="saveNewGym()">Save gym</button>
+    </div>
+  `;
+}
+
+function saveNewGym() {
+  const name = document.getElementById('settingsGymName').value.trim();
+  if (!name) return;
+  const gymId = settingsGenId();
+  const gyms = getGyms();
+  gyms.push({ id: gymId, name: name });
+  setGyms(gyms);
+
+  const checkedEls = document.querySelectorAll('#settingsGymEquipChecks .settings-check.checked');
+  const ge = getGymEquipment();
+  checkedEls.forEach(el => {
+    ge.push({ gymId: gymId, equipId: el.dataset.equipId });
+  });
+  setGymEquipment(ge);
+  popSettingsScreen();
+}
+
+// ─── EQUIPMENT ────────────────────────────────────────────────────
+
+function renderEquipmentScreen() {
+  const equip = getEquipment();
+  const gyms = getGyms();
+  const ge = getGymEquipment();
+
+  // Group by brand
+  const grouped = {};
+  equip.forEach(e => {
+    const brand = e.brand || 'Other';
+    if (!grouped[brand]) grouped[brand] = [];
+    grouped[brand].push(e);
+  });
+
+  const page = document.getElementById('settingsPage');
+  let html = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+      <button class="settings-add-btn" onclick="pushSettingsScreen(renderAddEquipment)">+ Add</button>
+    </div>
+    <div class="settings-title">Equipment</div>
+  `;
+
+  if (equip.length === 0) {
+    html += '<div class="settings-empty">No equipment added yet.</div>';
+  }
+
+  Object.keys(grouped).sort().forEach(brand => {
+    html += `<div class="settings-section-label">${brand}</div>`;
+    grouped[brand].forEach(e => {
+      const eGyms = ge.filter(x => x.equipId === e.id).map(x => gyms.find(g => g.id === x.gymId)).filter(Boolean);
+      const gymNames = eGyms.map(g => g.name).join(', ') || 'No gym';
+      html += `
+        <div class="settings-row" onclick="pushSettingsScreen(() => renderEquipmentDetail('${e.id}'))">
+          <div class="settings-row-content">
+            <div class="settings-row-title">${e.name}</div>
+            <div class="settings-row-sub">${e.slot ? e.slot + ' · ' : ''}${gymNames}</div>
+          </div>
+          <div class="settings-chevron">&rsaquo;</div>
+        </div>
+      `;
+    });
+  });
+
+  page.innerHTML = html;
+}
+
+function renderEquipmentDetail(equipId) {
+  const equip = getEquipment();
+  const item = equip.find(e => e.id === equipId);
+  if (!item) { popSettingsScreen(); return; }
+  const gyms = getGyms();
+  const ge = getGymEquipment();
+  const linkedGyms = ge.filter(x => x.equipId === equipId).map(x => {
+    const g = gyms.find(gg => gg.id === x.gymId);
+    return g ? { ...g, geId: x.gymId } : null;
+  }).filter(Boolean);
+  const unlinkedGyms = gyms.filter(g => !ge.some(x => x.equipId === equipId && x.gymId === g.id));
+
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">${item.brand ? item.brand + ' — ' : ''}${item.name}</div>
+
+    <div class="settings-section-label">Linked exercise slot</div>
+    <div style="padding:6px 14px;">
+      ${item.slot ? `<span class="settings-pill accent">${item.slot}</span>` : '<span class="settings-pill muted">Not linked</span>'}
+      <button class="settings-add-btn" style="margin-left:12px" onclick="pushSettingsScreen(() => renderChangeSlot('${equipId}'))">Change slot</button>
+    </div>
+
+    <div class="settings-section-label">Available at</div>
+    ${linkedGyms.length === 0 ? '<div class="settings-empty">Not linked to any gym.</div>' : ''}
+    ${linkedGyms.map(g => `
+      <div class="settings-row" style="cursor:default">
+        <div class="settings-row-content">
+          <div class="settings-row-title">${g.name}</div>
+        </div>
+        <button class="settings-remove-btn" onclick="unlinkEquipGym('${equipId}','${g.id}')">&times;</button>
+      </div>
+    `).join('')}
+    ${unlinkedGyms.length > 0 ? `
+      <button class="settings-add-btn" style="padding:10px 14px" onclick="showAddGymToEquip('${equipId}')">+ Add gym</button>
+      <div id="settingsAddGymToEquipList"></div>
+    ` : ''}
+
+    <div class="settings-section-label" style="margin-top:16px">Danger zone</div>
+    <button class="settings-danger-btn" onclick="deleteEquipment('${equipId}')">Delete machine</button>
+  `;
+}
+
+function unlinkEquipGym(equipId, gymId) {
+  const ge = getGymEquipment().filter(x => !(x.equipId === equipId && x.gymId === gymId));
+  setGymEquipment(ge);
+  renderEquipmentDetail(equipId);
+}
+
+function showAddGymToEquip(equipId) {
+  const gyms = getGyms();
+  const ge = getGymEquipment();
+  const unlinked = gyms.filter(g => !ge.some(x => x.equipId === equipId && x.gymId === g.id));
+  const container = document.getElementById('settingsAddGymToEquipList');
+  if (!container) return;
+  container.innerHTML = unlinked.map(g => `
+    <div class="settings-check-row" onclick="linkEquipGym('${equipId}','${g.id}')">
+      <div class="settings-row-title">${g.name}</div>
+    </div>
+  `).join('');
+}
+
+function linkEquipGym(equipId, gymId) {
+  const ge = getGymEquipment();
+  ge.push({ gymId: gymId, equipId: equipId });
+  setGymEquipment(ge);
+  renderEquipmentDetail(equipId);
+}
+
+function deleteEquipment(equipId) {
+  if (!confirm('Delete this machine and all its links?')) return;
+  const equip = getEquipment().filter(e => e.id !== equipId);
+  setEquipment(equip);
+  const ge = getGymEquipment().filter(x => x.equipId !== equipId);
+  setGymEquipment(ge);
+  popSettingsScreen();
+}
+
+function renderChangeSlot(equipId) {
+  const exNames = [];
+  document.querySelectorAll('.session:not(#session-history) .ex-name').forEach(el => {
+    const n = el.textContent.trim();
+    if (n && !exNames.includes(n)) exNames.push(n);
+  });
+  const equip = getEquipment();
+  const item = equip.find(e => e.id === equipId);
+
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">Change Slot</div>
+    <div class="settings-section-label">Select exercise for ${item ? item.name : 'machine'}</div>
+    <div class="settings-row" onclick="setEquipSlot('${equipId}', '')">
+      <div class="settings-row-content">
+        <div class="settings-row-title" style="color:#555">None (unlink)</div>
+      </div>
+    </div>
+    ${exNames.map(n => `
+      <div class="settings-row" onclick="setEquipSlot('${equipId}', '${n.replace(/'/g, "\\'")}')">
+        <div class="settings-row-content">
+          <div class="settings-row-title">${n}</div>
+        </div>
+        ${item && item.slot === n ? '<span class="settings-pill accent">Current</span>' : ''}
+      </div>
+    `).join('')}
+  `;
+}
+
+function setEquipSlot(equipId, slot) {
+  const equip = getEquipment();
+  const item = equip.find(e => e.id === equipId);
+  if (item) {
+    item.slot = slot;
+    setEquipment(equip);
+  }
+  popSettingsScreen();
+}
+
+function renderAddEquipment() {
+  const gyms = getGyms();
+  const exNames = [];
+  document.querySelectorAll('.session:not(#session-history) .ex-name').forEach(el => {
+    const n = el.textContent.trim();
+    if (n && !exNames.includes(n)) exNames.push(n);
+  });
+
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">Add Equipment</div>
+    <div class="settings-form">
+      <input class="settings-input" id="settingsEquipBrand" placeholder="Brand (e.g. Hammer Strength)" />
+      <input class="settings-input" id="settingsEquipName" placeholder="Machine name" />
+
+      <div class="settings-section-label" style="padding-left:0">Exercise slot</div>
+      <div id="settingsEquipSlotPick" style="max-height:200px;overflow-y:auto;border:1px solid #1c1c1e;border-radius:8px;margin-bottom:8px">
+        <div class="settings-check-row" onclick="pickEquipSlot(this, '')" >
+          <div class="settings-check checked" data-slot=""></div>
+          <div class="settings-row-title" style="color:#555">None</div>
+        </div>
+        ${exNames.map(n => `
+          <div class="settings-check-row" onclick="pickEquipSlot(this, '${n.replace(/'/g, "\\'")}')">
+            <div class="settings-check" data-slot="${n}"></div>
+            <div class="settings-row-title">${n}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      ${gyms.length > 0 ? '<div class="settings-section-label" style="padding-left:0">Available at gyms</div>' : ''}
+      <div id="settingsEquipGymChecks">
+        ${gyms.map(g => `
+          <div class="settings-check-row" onclick="this.querySelector('.settings-check').classList.toggle('checked')">
+            <div class="settings-check" data-gym-id="${g.id}"></div>
+            <div class="settings-row-title">${g.name}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <button class="settings-save-btn" onclick="saveNewEquipment()">Save machine</button>
+    </div>
+  `;
+}
+
+function pickEquipSlot(row, slot) {
+  document.querySelectorAll('#settingsEquipSlotPick .settings-check').forEach(c => c.classList.remove('checked'));
+  row.querySelector('.settings-check').classList.add('checked');
+}
+
+function saveNewEquipment() {
+  const brand = document.getElementById('settingsEquipBrand').value.trim();
+  const name = document.getElementById('settingsEquipName').value.trim();
+  if (!name) return;
+
+  const slotEl = document.querySelector('#settingsEquipSlotPick .settings-check.checked');
+  const slot = slotEl ? slotEl.dataset.slot : '';
+
+  const equipId = settingsGenId();
+  const equip = getEquipment();
+  equip.push({ id: equipId, brand: brand, name: name, slot: slot });
+  setEquipment(equip);
+
+  const checkedGyms = document.querySelectorAll('#settingsEquipGymChecks .settings-check.checked');
+  const ge = getGymEquipment();
+  checkedGyms.forEach(el => {
+    ge.push({ gymId: el.dataset.gymId, equipId: equipId });
+  });
+  setGymEquipment(ge);
+  popSettingsScreen();
+}
+
+// ─── EXERCISES ────────────────────────────────────────────────────
+
+function renderExercisesScreen() {
+  const sessions = document.querySelectorAll('.session:not(#session-overview):not(#session-history)');
+  const alts = getAlternatives();
+
+  const page = document.getElementById('settingsPage');
+  let html = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">Exercises</div>
+  `;
+
+  sessions.forEach(session => {
+    const sessionId = session.id;
+    const label = sessionId.replace('session-', '').replace(/([a-z])([A-Z])/g, '$1 $2');
+    html += `<div class="settings-section-label">${label}</div>`;
+    const exNames = [];
+    session.querySelectorAll('.ex-name').forEach(el => {
+      const n = el.textContent.trim();
+      if (n && !exNames.includes(n)) exNames.push(n);
+    });
+    exNames.forEach(n => {
+      const myAlts = alts[n] || [];
+      const altPills = myAlts.length > 0
+        ? myAlts.map((a, i) => `<span class="settings-pill accent" style="margin-right:4px">Plan ${String.fromCharCode(66 + i)}: ${a}</span>`).join('')
+        : '<span style="color:#333;font-size:10px">No alternatives set</span>';
+      html += `
+        <div class="settings-row" onclick="pushSettingsScreen(() => renderExerciseDetail('${n.replace(/'/g, "\\'")}'))">
+          <div class="settings-row-content">
+            <div class="settings-row-title">${n}</div>
+            <div class="settings-row-sub" style="margin-top:3px">${altPills}</div>
+          </div>
+          <div class="settings-chevron">&rsaquo;</div>
+        </div>
+      `;
+    });
+  });
+
+  page.innerHTML = html;
+}
+
+function renderExerciseDetail(exName) {
+  const alts = getAlternatives();
+  const myAlts = alts[exName] || [];
+  const gyms = getGyms();
+  const ge = getGymEquipment();
+  const equip = getEquipment();
+
+  // Find equipment linked to this exercise slot, per gym
+  const machinesByGym = gyms.map(g => {
+    const gymEquipIds = ge.filter(x => x.gymId === g.id).map(x => x.equipId);
+    const machines = equip.filter(e => gymEquipIds.includes(e.id) && e.slot === exName);
+    return { gym: g, machines: machines };
+  }).filter(x => x.machines.length > 0);
+
+  const page = document.getElementById('settingsPage');
+  page.innerHTML = `
+    <div class="settings-nav">
+      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
+    </div>
+    <div class="settings-title">${exName}</div>
+
+    <div class="settings-section-label">Alternatives</div>
+    ${myAlts.length === 0 ? '<div class="settings-empty">No alternatives configured.</div>' : ''}
+    ${myAlts.map((a, i) => `
+      <div class="settings-row" style="cursor:default">
+        <div class="settings-row-content">
+          <div class="settings-row-title"><span class="settings-tag">Plan ${String.fromCharCode(66 + i)}</span> ${a}</div>
+        </div>
+        <button class="settings-remove-btn" onclick="removeAlternative('${exName.replace(/'/g, "\\'")}', ${i})">&times;</button>
+      </div>
+    `).join('')}
+
+    <div class="settings-form" style="padding-top:8px">
+      <div style="display:flex;gap:8px">
+        <input class="settings-input" id="settingsNewAlt" placeholder="Add alternative exercise" style="margin-bottom:0;flex:1" onkeydown="if(event.key==='Enter') addAlternative('${exName.replace(/'/g, "\\'")}')" />
+        <button class="settings-save-btn" style="width:auto;margin-top:0;padding:10px 16px" onclick="addAlternative('${exName.replace(/'/g, "\\'")}')">Add</button>
+      </div>
+    </div>
+
+    ${machinesByGym.length > 0 ? `
+      <div class="settings-section-label" style="margin-top:8px">Machine by gym</div>
+      ${machinesByGym.map(x => `
+        <div class="settings-row" style="cursor:default">
+          <div class="settings-row-content">
+            <div class="settings-row-title">${x.gym.name}</div>
+            <div class="settings-row-sub">${x.machines.map(m => (m.brand ? m.brand + ' ' : '') + m.name).join(', ')}</div>
+          </div>
+        </div>
+      `).join('')}
+    ` : ''}
+  `;
+}
+
+function addAlternative(exName) {
+  const input = document.getElementById('settingsNewAlt');
+  const val = input.value.trim();
+  if (!val) return;
+  const alts = getAlternatives();
+  if (!alts[exName]) alts[exName] = [];
+  alts[exName].push(val);
+  setAlternatives(alts);
+  renderExerciseDetail(exName);
+}
+
+function removeAlternative(exName, idx) {
+  const alts = getAlternatives();
+  if (!alts[exName]) return;
+  alts[exName].splice(idx, 1);
+  if (alts[exName].length === 0) delete alts[exName];
+  setAlternatives(alts);
+  renderExerciseDetail(exName);
+}
 
 </script>
 
