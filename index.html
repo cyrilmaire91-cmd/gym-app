@@ -2400,8 +2400,15 @@
  background: rgba(226, 241, 107, 0.08);
 }
 .ex-machine-badge.unconfigured {
- color: var(--muted);
- border: 1px dashed var(--border);
+ color: #555;
+ border: 1px dashed #2a2a2a;
+ background: #111;
+}
+.ex-machine-badge.no-gym {
+ color: #444;
+ border: 1px dashed #1a1a1a;
+ background: #0e0e0e;
+ opacity: 0.6;
 }
 
 /* Equipment bottom sheet specifics */
@@ -6314,8 +6321,8 @@ function updateMachineBadge(badge, exName) {
  }
 
  if (!gymId) {
-   badge.className = 'ex-machine-badge unconfigured';
-   badge.textContent = 'No gym selected';
+   badge.className = 'ex-machine-badge no-gym';
+   badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#444" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg> Add machine';
    return;
  }
 
@@ -6327,7 +6334,7 @@ function updateMachineBadge(badge, exName) {
    badge.textContent = equip.brand + ' – ' + equip.name + weightStr;
  } else {
    badge.className = 'ex-machine-badge unconfigured';
-   badge.textContent = 'No machine set — tap to configure';
+   badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#555" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg> Add machine';
  }
 }
 
