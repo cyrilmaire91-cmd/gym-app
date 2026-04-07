@@ -470,12 +470,12 @@
 
  /* SUPERSET */
  .superset-group {
- background: #141415;
- border: 1px solid var(--border);
- border-radius: 12px;
+ background: transparent;
+ border: none;
+ border-radius: 0;
  overflow: visible;
  margin-bottom: 8px;
- padding: 12px;
+ padding: 0;
  display: flex;
  flex-direction: column;
  gap: 8px;
@@ -515,6 +515,56 @@
 
  .superset-group .exercise-wrap.expanded {
  border-color: var(--accent);
+ }
+
+ /* Superset toggle switch */
+ .superset-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 0;
+ }
+ .superset-toggle {
+ width: 36px;
+ height: 20px;
+ border-radius: 100px;
+ background: #1c1c1e;
+ border: 1px solid #696969;
+ position: relative;
+ cursor: pointer;
+ padding: 0;
+ flex-shrink: 0;
+ }
+ .superset-toggle .toggle-thumb {
+ position: absolute;
+ width: 16px;
+ height: 16px;
+ border-radius: 100px;
+ top: 1px;
+ left: 1px;
+ background: #696969;
+ transition: left 0.2s ease, background 0.2s ease;
+ box-shadow: 0 2px 4px rgba(39,39,39,0.1);
+ }
+ .superset-toggle[aria-pressed="true"] .toggle-thumb {
+ left: 17px;
+ background: var(--accent);
+ }
+
+ /* Superset linked state — accent border wrapping cards */
+ .superset-cards {
+ display: flex;
+ flex-direction: column;
+ gap: 4px;
+ }
+ .superset-cards.linked {
+ border: 1px solid var(--accent);
+ border-radius: 12px;
+ padding: 4px;
+ }
+ .superset-cards:not(.linked) {
+ border: none;
+ padding: 0;
  }
 
  /* IF FLARES */
@@ -1216,7 +1266,6 @@
 .log-pill:active { opacity: 0.6; }
 .log-pill .pill-unit { display: none; }
 .log-pill.empty { color: var(--text); }
-.log-pill.prefilled { opacity: 0.6; }
 
 /* Check button — square, 44x44, 8px radius */
 .log-check {
@@ -4720,6 +4769,47 @@ function setupAccordions() {
  toggleAccordion(wrap);
  };
  });
+
+ // Restructure superset groups with toggle header and cards container
+ document.querySelectorAll('.superset-group').forEach(group => {
+   const label = group.querySelector('.superset-label');
+   if (!label) return;
+   const labelText = label.textContent.trim();
+   const letterMatch = labelText.match(/superset\s+([A-Z])/i);
+   const groupLetter = letterMatch ? letterMatch[1].toUpperCase() : '';
+   group.setAttribute('data-group', groupLetter);
+
+   // Create header with label + toggle
+   const header = document.createElement('div');
+   header.className = 'superset-header';
+   header.appendChild(label);
+   const toggleBtn = document.createElement('button');
+   toggleBtn.className = 'superset-toggle';
+   toggleBtn.setAttribute('aria-pressed', 'true');
+   toggleBtn.onclick = function() { toggleSuperset(this); };
+   toggleBtn.innerHTML = '<span class="toggle-thumb"></span>';
+   header.appendChild(toggleBtn);
+
+   // Create cards container
+   const cards = document.createElement('div');
+   cards.className = 'superset-cards linked';
+   const wraps = [...group.querySelectorAll('.exercise-wrap')];
+   wraps.forEach(w => cards.appendChild(w));
+
+   // Clear group and re-insert
+   while (group.firstChild) group.removeChild(group.firstChild);
+   group.appendChild(header);
+   group.appendChild(cards);
+ });
+}
+
+function toggleSuperset(btn) {
+ const group = btn.closest('.superset-group');
+ const cards = group.querySelector('.superset-cards');
+ const isOn = btn.getAttribute('aria-pressed') === 'true';
+
+ btn.setAttribute('aria-pressed', !isOn);
+ cards.classList.toggle('linked', !isOn);
 }
 
 function toggleAccordion(wrap) {
@@ -4835,7 +4925,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  weightPill.dataset.step = '0.5';
  weightPill.dataset.unit = 'kg';
  weightPill.dataset.label = 'Weight (kg)';
- if (prevSet && prevSet.weight) weightPill.classList.add('prefilled');
+
  renderPill(weightPill);
  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
  row.appendChild(weightPill);
@@ -4849,7 +4939,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  repsPill.dataset.unit = 'reps';
  repsPill.dataset.label = 'Reps';
  repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
- if (prevSet && prevSet.reps) repsPill.classList.add('prefilled');
+
  renderPill(repsPill);
  repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
  row.appendChild(repsPill);
@@ -4885,12 +4975,12 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
            const nr = nextRow.querySelector('[data-field="reps"]');
            if (nw && !nw.dataset.value && weightPill.dataset.value) {
              nw.dataset.value = weightPill.dataset.value;
-             nw.classList.add('prefilled');
+
              renderPill(nw);
            }
            if (nr && !nr.dataset.value && repsPill.dataset.value) {
              nr.dataset.value = repsPill.dataset.value;
-             nr.classList.add('prefilled');
+
              renderPill(nr);
            }
          }
@@ -4898,17 +4988,22 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
      }
      // Superset behavior: switch to partner exercise
      const w = wrap || swipeWrap.closest('.exercise-wrap');
-     if (w && w.closest('.superset-group')) {
-       const supersetWraps = [...w.closest('.superset-group').querySelectorAll('.exercise-wrap')];
-       const curIdx = supersetWraps.indexOf(w);
-       const partner = supersetWraps[(curIdx + 1) % supersetWraps.length];
-       if (partner && partner !== w) {
-         setTimeout(() => {
-           w.classList.remove('expanded');
-           partner.classList.add('expanded');
-           currentExpandedWrap = partner;
-           partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-         }, 300);
+     const supersetGroup = w ? w.closest('.superset-group') : null;
+     if (supersetGroup) {
+       const toggle = supersetGroup.querySelector('.superset-toggle');
+       const isLinked = !toggle || toggle.getAttribute('aria-pressed') === 'true';
+       if (isLinked) {
+         const supersetWraps = [...supersetGroup.querySelectorAll('.exercise-wrap')];
+         const curIdx = supersetWraps.indexOf(w);
+         const partner = supersetWraps[(curIdx + 1) % supersetWraps.length];
+         if (partner && partner !== w) {
+           setTimeout(() => {
+             w.classList.remove('expanded');
+             partner.classList.add('expanded');
+             currentExpandedWrap = partner;
+             partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+           }, 300);
+         }
        }
      }
    }
@@ -5106,7 +5201,7 @@ function confirmPicker() {
  haptic();
  if (activePill) {
  activePill.dataset.value = val > 0 ? String(val) : '';
- activePill.classList.remove('prefilled');
+
  renderPill(activePill);
  }
  closePicker();
@@ -5178,9 +5273,11 @@ function saveSession() {
 
  if (exercises.length === 0) return;
 
+ const now = new Date();
+ const localDate = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
  const entry = {
  id: Date.now(),
- date: new Date().toISOString(),
+ date: localDate + 'T' + now.toTimeString().slice(0,8),
  sessionId,
  sessionName: SESSION_NAMES[sessionId] || sessionId,
  exercises
