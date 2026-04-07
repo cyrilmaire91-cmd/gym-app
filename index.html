@@ -6611,16 +6611,10 @@ saveSession = function() {
 
 // ─── INJECT MACHINE BADGES INTO ACCORDIONS ──────────────────────
 
-// Patch setupAccordions to inject machine badges
-const _origSetupAccordions = setupAccordions;
-setupAccordions = function() {
- _origSetupAccordions();
-
- // After accordion setup, inject machine badges
+// Inject machine badges on all exercise cards
+function injectMachineBadges() {
  document.querySelectorAll('.exercise').forEach(ex => {
-   // Skip if already has badge
    if (ex.querySelector('.ex-machine-badge')) return;
-   // Skip prehab/warmup exercises (no logging)
    if (ex.closest('.prehab-box')) return;
 
    const nameEl = ex.querySelector('.ex-name');
@@ -6632,7 +6626,6 @@ setupAccordions = function() {
 
    const badge = createMachineBadge(exName);
 
-   // Insert after top row, before ex-note
    if (exNote) {
      ex.insertBefore(badge, exNote);
    } else if (topRow) {
@@ -6641,10 +6634,10 @@ setupAccordions = function() {
      ex.appendChild(badge);
    }
  });
-};
+}
 
-// Re-run to inject badges
-setupAccordions();
+// Run badge injection after DOM is ready (accordions already set up by now)
+injectMachineBadges();
 
 </script>
 
