@@ -13,7 +13,7 @@
  <link rel="apple-touch-icon" href="/icon-192.png">
  <meta name="theme-color" content="#0A0A0A">
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+ <!-- Chart.js CDN removed — using canvas API for progress charts -->
 <style>
  :root {
  --bg: #0A0A0A;
@@ -3720,18 +3720,6 @@
  <div class="session-goal">Your logged sessions and progress.</div>
  </div>
 
- <!-- chart-card hidden for now -->
- <div class="chart-card" style="display:none">
- <h3> Progress</h3>
- <select class="chart-select" id="chartExerciseSelect" onchange="updateChart()">
- <option value="">Select exercise…</option>
- </select>
- <div class="chart-container">
- <canvas id="progressChart"></canvas>
- </div>
- <div id="chartPB"></div>
- </div>
-
  <!-- Canvas progress chart -->
  <div class="progress-chart-section" id="progressChartSection">
  <div class="progress-chart-card">
@@ -3788,6 +3776,11 @@
  localStorage.removeItem('gym_history');
  }
  })();
+
+ function lsGet(key, fallback) {
+   try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+   catch(e) { return fallback; }
+ }
 
  function showTab(id, btn) {
  document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
@@ -3880,7 +3873,7 @@ const INJURY_ZONES = [
 ];
 
 function getInjuryLog() {
- return JSON.parse(localStorage.getItem('gymapp_injury_log') || '[]');
+ return lsGet('gymapp_injury_log', []);
 }
 
 function getLatestScores() {
@@ -3892,8 +3885,8 @@ function getLatestScores() {
 function getTrend(key) {
  const log = getInjuryLog();
  if (log.length < 2) return '→';
- const cur = log[log.length - 1][key];
- const prev = log[log.length - 2][key];
+ const cur = log[log.length - 1][key] ?? 0;
+ const prev = log[log.length - 2][key] ?? 0;
  if (cur > prev) return '↑';
  if (cur < prev) return '↓';
  return '→';
@@ -4775,6 +4768,8 @@ function renderAdaptedExercises(sessionId, exercises) {
  </div>`;
  }
 
+ setupAccordions();
+
  const banner = document.getElementById('adaptedBanner-' + sessionId);
  if (banner) banner.classList.add('visible');
 }
@@ -4824,6 +4819,9 @@ async function submitAdapt() {
  });
 
  const data = await response.json();
+ if (!response.ok || !data.content || !data.content[0]) {
+   throw new Error(data.error?.message || 'API error: ' + response.status);
+ }
  let text = data.content[0].text.trim();
  text = text.replace(/```json|```/g, '').trim();
  const exercises = JSON.parse(text);
@@ -5308,13 +5306,13 @@ function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
  // Check if gym system is active
  try {
-   const active = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
+   const active = lsGet('gymApp_activeSession', {});
    if (active.gymId) {
      // Gym selected — only match by equipment, never cross machine boundaries
-     const ge = JSON.parse(localStorage.getItem('gymApp_gymEquipment') || '[]');
+     const ge = lsGet('gymApp_gymEquipment', []);
      const link = ge.find(l => l.slotId === exName && l.gymId === active.gymId);
      if (link) {
-       const equip = JSON.parse(localStorage.getItem('gymApp_equipment') || '[]');
+       const equip = lsGet('gymApp_equipment', []);
        const eq = equip.find(e => e.id === link.equipmentId);
        if (eq) {
          for (const entry of history) {
@@ -5831,22 +5829,11 @@ showTab = function(tabId, btn) {
 
 // ─── PROGRESS CHARTS ──────────────────────────────────────────────
 
-let progressChart = null;
-
 function getAllExerciseNames() {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
  const names = new Set();
  history.forEach(entry => entry.exercises.forEach(ex => names.add(ex.name)));
  return [...names].sort();
-}
-
-function populateChartSelect() {
- const select = document.getElementById('chartExerciseSelect');
- if (!select) return;
- const current = select.value;
- const names = getAllExerciseNames();
- select.innerHTML = '<option value="">Select exercise…</option>' +
- names.map(n => `<option value="${n}" ${n === current ? 'selected' : ''}>${n}</option>`).join('');
 }
 
 function getExerciseHistory(name) {
@@ -5868,79 +5855,10 @@ function getExerciseHistory(name) {
  return data;
 }
 
-function updateChart() {
- const name = document.getElementById('chartExerciseSelect').value;
- const pbDiv = document.getElementById('chartPB');
- if (!name) {
- if (progressChart) { progressChart.destroy(); progressChart = null; }
- pbDiv.innerHTML = '';
- return;
- }
-
- const data = getExerciseHistory(name);
- if (data.length === 0) {
- pbDiv.innerHTML = '<div style="color:var(--muted);font-size:13px;">No data yet for this exercise.</div>';
- return;
- }
-
- const maxWeight = Math.max(...data.map(d => d.weight));
- const maxVolume = Math.max(...data.map(d => d.volume));
- const pbEntry = data.find(d => d.weight === maxWeight);
- pbDiv.innerHTML = `<span class="pb-badge"> PB: ${maxWeight}kg × ${pbEntry ? pbEntry.reps : '?'} reps</span>`;
-
- const ctx = document.getElementById('progressChart').getContext('2d');
- if (progressChart) progressChart.destroy();
-
- progressChart = new Chart(ctx, {
- type: 'line',
- data: {
- labels: data.map(d => d.date),
- datasets: [
- {
- label: 'Weight (kg)',
- data: data.map(d => d.weight),
- borderColor: '#f4511e',
- backgroundColor: 'rgba(244,81,30,0.1)',
- borderWidth: 2,
- tension: 0.3,
- yAxisID: 'y',
- pointBackgroundColor: data.map(d => d.weight === maxWeight ? '#ffd740' : '#f4511e'),
- pointRadius: data.map(d => d.weight === maxWeight ? 6 : 3),
- },
- {
- label: 'Volume (kg)',
- data: data.map(d => d.volume),
- borderColor: '#40c4ff',
- backgroundColor: 'rgba(64,196,255,0.1)',
- borderWidth: 2,
- tension: 0.3,
- yAxisID: 'y1',
- pointRadius: 2,
- }
- ]
- },
- options: {
- responsive: true,
- maintainAspectRatio: false,
- interaction: { mode: 'index', intersect: false },
- plugins: {
- legend: { labels: { color: '#888', font: { size: 11 } } }
- },
- scales: {
- x: { ticks: { color: '#888', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
- y: { position: 'left', ticks: { color: '#f4511e', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg', color: '#f4511e' } },
- y1: { position: 'right', ticks: { color: '#40c4ff', font: { size: 10 } }, grid: { display: false }, title: { display: true, text: 'vol', color: '#40c4ff' } }
- }
- }
- });
-}
-
-// Patch renderHistory to also populate chart
+// Patch renderHistory to also populate canvas-based progress chart
 const _origRenderHistory = renderHistory;
 renderHistory = function() {
  _origRenderHistory();
- populateChartSelect();
- if (document.getElementById('chartExerciseSelect').value) updateChart();
  populateProgressChart();
 };
 
@@ -6655,7 +6573,6 @@ function confirmSubstitution(slotId) {
 // getPreviousExerciseData now includes equipment-aware logic directly in the original function
 
 // Override saveSession to include equipmentId and substituteLabel
-const _origSaveSession = saveSession;
 saveSession = function() {
  const sessionId = getCurrentSessionId();
  if (!sessionId) return;
