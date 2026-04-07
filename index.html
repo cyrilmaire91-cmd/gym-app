@@ -4697,6 +4697,10 @@ Return ONLY a valid JSON array. No markdown, no explanation, no backticks. Each 
 { "section": "Main Lifts" | "Accessories", "icon": "emoji", "name": "exercise name", "sets": "3 × 10–12 · 2 RIR · Rest 90s", "note": "optional coaching note or Plan B" }`;
 
 function getApiKey() {
+ // Check for user-provided key first
+ const userKey = localStorage.getItem('gymapp_api_key');
+ if (userKey) return userKey;
+ // WARNING: Hardcoded key — move to serverless function in production
  const p = ['sk-ant-api','03-62440MIk','OJ01Amqf','EaCsVyZMIs','WoHgUIp6mt','PbLU1QkLlI','d4hQ6ZTF2K','cAqNAaTbow','WxPKWzXcfG','t7RJYDpppQ','-sfodFAAA'];
  return p.join('');
 }
@@ -5251,12 +5255,12 @@ function updateDoneState(wrap) {
 }
 
 function getNextExerciseWrap(currentWrap) {
- let next = currentWrap.nextElementSibling;
- while (next) {
- if (next.classList.contains('exercise-wrap')) return next;
- next = next.nextElementSibling;
- }
- return null;
+  // Get all exercise-wraps in the current session
+  const session = currentWrap.closest('.session');
+  if (!session) return null;
+  const allWraps = [...session.querySelectorAll('.exercise-wrap')];
+  const idx = allWraps.indexOf(currentWrap);
+  return idx >= 0 && idx < allWraps.length - 1 ? allWraps[idx + 1] : null;
 }
 
 function goToNextExercise(currentWrap) {
@@ -5282,7 +5286,8 @@ function goToNextExercise(currentWrap) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
- setupAccordions();
+ setupAccordions(); // also handles superset toggle init
+ try { injectMachineBadges(); } catch(e) {}
  // Add save button at the bottom of each session (not overview, not history)
  ['upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
  const session = document.getElementById('session-' + id);
@@ -5301,10 +5306,11 @@ const SESSION_NAMES = { upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B',
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- // Try equipment-specific match first if gym system is active
+ // Check if gym system is active
  try {
    const active = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
    if (active.gymId) {
+     // Gym selected — only match by equipment, never cross machine boundaries
      const ge = JSON.parse(localStorage.getItem('gymApp_gymEquipment') || '[]');
      const link = ge.find(l => l.slotId === exName && l.gymId === active.gymId);
      if (link) {
@@ -5317,9 +5323,11 @@ function getPreviousExerciseData(exName) {
          }
        }
      }
+     // Gym selected but no equipment match — return null, don't cross machines
+     return null;
    }
  } catch(e) {}
- // Fallback: match by name only
+ // No gym configured — fallback to name-only match
  for (const entry of history) {
    const ex = entry.exercises.find(e => e.name === exName);
    if (ex && ex.sets.length > 0) return ex.sets;
@@ -5670,7 +5678,7 @@ function saveSession() {
  if (!sessionId) return;
 
  const exercises = [];
- document.querySelectorAll('.log-sets-container').forEach(container => {
+ document.querySelectorAll('#session-' + sessionId + ' .log-sets-container').forEach(container => {
  const exName = container.dataset.logExercise;
  const sets = [];
  container.querySelectorAll('.log-set-row').forEach(row => {
@@ -5763,7 +5771,8 @@ function renderHistory() {
      requestAnimationFrame(() => { wrap.style.maxHeight = '0'; wrap.style.opacity = '0'; });
      setTimeout(() => {
        const h = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
-       h.splice(idx, 1);
+       const removeIdx = h.findIndex(e => e.id === entry.id);
+       if (removeIdx >= 0) h.splice(removeIdx, 1);
        localStorage.setItem('gymapp_history_v1', JSON.stringify(h));
        wrap.remove();
      }, 220);
@@ -6655,7 +6664,7 @@ saveSession = function() {
  const gymId = active.gymId;
 
  const exercises = [];
- document.querySelectorAll('.log-sets-container').forEach(container => {
+ document.querySelectorAll('#session-' + sessionId + ' .log-sets-container').forEach(container => {
    const exName = container.dataset.logExercise;
    const sets = [];
    container.querySelectorAll('.log-set-row').forEach(row => {
@@ -6741,7 +6750,7 @@ function injectMachineBadges() {
 }
 
 // Run badge injection after DOM is ready (accordions already set up by now)
-try { injectMachineBadges(); } catch(e) { console.error('Badge injection failed:', e); }
+// injectMachineBadges() now runs inside DOMContentLoaded after setupAccordions()
 
 </script>
 <script>
