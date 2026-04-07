@@ -560,10 +560,10 @@
  .superset-cards.linked {
  border: 1px solid var(--accent);
  border-radius: 12px;
- padding: 4px;
+ padding: 0;
  }
  .superset-cards:not(.linked) {
- border: none;
+ border: 1px solid transparent;
  padding: 0;
  }
 
@@ -4806,10 +4806,12 @@ function setupAccordions() {
 function toggleSuperset(btn) {
  const group = btn.closest('.superset-group');
  const cards = group.querySelector('.superset-cards');
+ const label = group.querySelector('.superset-label');
  const isOn = btn.getAttribute('aria-pressed') === 'true';
 
  btn.setAttribute('aria-pressed', !isOn);
  cards.classList.toggle('linked', !isOn);
+ if (label) label.style.color = isOn ? '#737373' : '';
 }
 
 function toggleAccordion(wrap) {
