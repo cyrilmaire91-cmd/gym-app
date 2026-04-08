@@ -47,7 +47,7 @@
 
  /* HEADER */
  header {
- background: linear-gradient(135deg, #1a0a06 0%, #0e0e0f 60%);
+ background: #141415;
  border-bottom: 2px solid var(--accent);
  padding: 20px 16px 14px;
  position: sticky;
@@ -308,7 +308,7 @@
 
  /* SECTIONS */
  .section {
- margin-bottom: 14px;
+ margin-bottom: 24px;
  }
 
  .section-label {
@@ -442,14 +442,14 @@
  font-family: 'Inter', 'Inter', sans-serif;
  font-size: 12px;
  font-weight: 600;
- color: var(--accent);
+ color: var(--muted);
  margin-top: 1px;
  line-height: 1.4;
  letter-spacing: -0.5px;
  }
 
  .ex-sets strong {
- color: var(--accent);
+ color: var(--muted);
  font-weight: 600;
  }
 
@@ -491,7 +491,7 @@
  border: none;
  border-radius: 0;
  overflow: visible;
- margin-bottom: 8px;
+ margin-bottom: 16px;
  padding: 0;
  display: flex;
  flex-direction: column;
@@ -518,23 +518,28 @@
  .superset-group .exercise-wrap {
  margin-bottom: 0;
  border: none;
- border-radius: 0;
+ border-radius: 12px;
  }
-
  .superset-group .exercise-wrap .exercise {
  border: none;
- border-radius: 0;
+ border-radius: 12px;
+ }
+
+ /* First card in superset: flat bottom */
+ .superset-cards .exercise-wrap:first-child:not(:only-child),
+ .superset-cards .exercise-wrap:first-child:not(:only-child) .exercise {
+ border-radius: 12px 12px 0 0;
+ }
+ /* Second+ card in superset: flat top */
+ .superset-cards .exercise-wrap + .exercise-wrap,
+ .superset-cards .exercise-wrap + .exercise-wrap .exercise {
+ border-radius: 0 0 12px 12px;
  }
 
  /* Divider between cards inside superset */
  .superset-cards .exercise-wrap + .exercise-wrap {
  border-top: 1px solid var(--border);
  }
-
- /* Round corners on first/last card inside the superset container */
- .superset-cards .exercise-wrap:first-child { border-radius: 12px 12px 0 0; overflow: hidden; }
- .superset-cards .exercise-wrap:last-child { border-radius: 0 0 12px 12px; overflow: hidden; }
- .superset-cards .exercise-wrap:only-child { border-radius: 12px; }
 
  .superset-group .exercise-wrap.expanded {
  border: none;
@@ -1255,6 +1260,33 @@
  background: var(--card);
 }
 .log-set-row.time-row .log-pill { flex: 2; }
+
+/* Unilateral split rows */
+.uni-set-wrap .uni-sub-row {
+ transition: none;
+}
+.uni-set-wrap .uni-sub-row:first-child {
+ margin-bottom: 4px;
+}
+.uni-side-label {
+ width: 20px;
+ flex-shrink: 0;
+ font-family: 'Inter', sans-serif;
+ font-size: 11px;
+ font-weight: 700;
+ color: var(--muted);
+ text-align: center;
+}
+.uni-side-header {
+ width: 20px;
+ flex: 0 0 20px !important;
+}
+.log-check-spacer {
+ width: 44px;
+ height: 44px;
+ flex-shrink: 0;
+}
+
 .log-set-row.swiped {
  transform: translateX(52px);
 }
@@ -2421,7 +2453,7 @@
  padding: 6px 10px;
  font-family: 'Inter', sans-serif;
  font-size: 10px;
- margin-top: 12px;
+ margin-top: 4px;
  cursor: pointer;
  display: flex;
  align-items: center;
@@ -2618,7 +2650,6 @@
  <div class="header-top">
  <div class="title-block">
  <h1>ARES <span>PROGRAM</span></h1>
- <p>4-Week Hypertrophy Block — Upper/Lower</p>
  </div>
  <button class="burger-btn" onclick="openPanel()">
  <span></span><span></span><span></span>
@@ -4269,6 +4300,8 @@ function setupLumbagoAccordions() {
  container.className = 'log-sets-container';
  container.dataset.logExercise = 'lumbago_' + exName;
  if (isTimeExL) container.dataset.timeEx = '1';
+ const isUniExL = exHasTag(ex, 'unilateral') && !isTimeExL;
+ if (isUniExL) container.dataset.uniEx = '1';
  container.onclick = (e) => e.stopPropagation();
 
  // Column headers
@@ -4276,13 +4309,15 @@ function setupLumbagoAccordions() {
  lHeaders.className = 'log-set-headers';
  if (isTimeExL) {
    lHeaders.innerHTML = '<span class="header-label header-label-wide">SEC</span><div class="header-spacer"></div>';
+ } else if (isUniExL) {
+   lHeaders.innerHTML = '<span class="header-label uni-side-header"></span><span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  } else {
    lHeaders.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  }
  container.appendChild(lHeaders);
 
  for (let s = 0; s < numSets; s++) {
- container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null, isTimeExL));
+ container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null, isTimeExL, isUniExL));
  }
 
  const addRow = document.createElement('div');
@@ -5201,19 +5236,24 @@ function setupAccordions() {
  if (isTimeEx) container.dataset.timeEx = '1';
  container.onclick = (e) => e.stopPropagation();
 
+ const isUniEx = exHasTag(ex, 'unilateral') && !isTimeEx;
+
  // Column headers
  const headers = document.createElement('div');
  headers.className = 'log-set-headers';
  if (isTimeEx) {
    headers.innerHTML = '<span class="header-label header-label-wide">SEC</span><div class="header-spacer"></div>';
+ } else if (isUniEx) {
+   headers.innerHTML = '<span class="header-label uni-side-header"></span><span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  } else {
    headers.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
  }
  container.appendChild(headers);
+ if (isUniEx) container.dataset.uniEx = '1';
 
  for (let s = 0; s < numSets; s++) {
  const prevSet = prevData && prevData[s] ? prevData[s] : null;
- container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet, isTimeEx));
+ container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet, isTimeEx, isUniEx));
  }
 
  // Add set button
@@ -5300,7 +5340,7 @@ function toggleAccordion(wrap) {
 
 function updateDoneState(wrap) {
  const checks = wrap.querySelectorAll('.log-check.done');
- const total = wrap.querySelectorAll('.log-set-row').length;
+ const total = wrap.querySelectorAll('.log-set-wrap').length;
  if (checks.length > 0) {
  wrap.classList.add('has-done');
  } else {
@@ -5411,123 +5451,218 @@ function getPreviousExerciseData(exName) {
  return null;
 }
 
-function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet, isTimeEx) {
+function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet, isTimeEx, isUniEx) {
  // Swipe wrapper
  const swipeWrap = document.createElement('div');
  swipeWrap.className = 'log-set-wrap';
+ if (isUniEx) swipeWrap.classList.add('uni-set-wrap');
 
- const row = document.createElement('div');
- row.className = 'log-set-row';
- if (isTimeEx) row.classList.add('time-row');
+ // ── Helper: build one standard row (bilateral or time) ──
+ function buildStandardRow() {
+   const row = document.createElement('div');
+   row.className = 'log-set-row';
+   if (isTimeEx) row.classList.add('time-row');
 
- if (!isTimeEx) {
- // Weight pill (first column)
- const prevWeight = prevSet && prevSet.weight ? prevSet.weight : defaultWeight;
- const weightPill = document.createElement('div');
- weightPill.className = 'log-pill';
- weightPill.dataset.field = 'weight';
- weightPill.dataset.value = prevWeight ? String(prevWeight) : '';
- weightPill.dataset.step = '0.5';
- weightPill.dataset.unit = 'kg';
- weightPill.dataset.label = 'Weight (kg)';
-
- renderPill(weightPill);
- weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
- row.appendChild(weightPill);
- }
-
- // Reps / Seconds pill
- const repsPill = document.createElement('div');
- repsPill.className = 'log-pill';
- if (isTimeEx) {
- repsPill.dataset.field = 'reps';
- repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
- repsPill.dataset.step = '1';
- repsPill.dataset.unit = 's';
- repsPill.dataset.label = 'Seconds';
- repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
- } else {
- repsPill.dataset.field = 'reps';
- repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
- repsPill.dataset.step = '1';
- repsPill.dataset.unit = 'reps';
- repsPill.dataset.label = 'Reps';
- repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
- }
-
- renderPill(repsPill);
- repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
- row.appendChild(repsPill);
-
- // Check button
- const check = document.createElement('button');
- check.className = 'log-check';
- check.setAttribute('aria-label', 'Complete set ' + setNum);
- check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
- check.onclick = (e) => {
-   e.stopPropagation();
-   haptic();
-   check.classList.toggle('done');
-   if (check.classList.contains('done')) {
-     if (!isTimeEx) { const wp = row.querySelector('[data-field="weight"]'); if (wp && !wp.dataset.value && prevSet) { wp.dataset.value = String(prevSet.weight); renderPill(wp); } }
-     if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
-     // Set timer to exercise-specific rest time
-     const exWrap = wrap || swipeWrap.closest('.exercise-wrap');
-     if (exWrap && exWrap.dataset.restSeconds) {
-       timerDuration = parseInt(exWrap.dataset.restSeconds);
-     }
-     startRestTimer();
-     // Pre-fill next set row with same weight/reps
-     const container = swipeWrap.closest('.log-sets-container');
-     if (container) {
-       const allWraps = [...container.querySelectorAll('.log-set-wrap')];
-       const curIdx = allWraps.indexOf(swipeWrap);
-       const nextWrap = allWraps[curIdx + 1];
-       if (nextWrap) {
-         const nextRow = nextWrap.querySelector('.log-set-row');
-         if (nextRow) {
-           const nw = nextRow.querySelector('[data-field="weight"]');
-           const nr = nextRow.querySelector('[data-field="reps"]');
-           const curW = row.querySelector('[data-field="weight"]');
-           if (nw && !nw.dataset.value && curW && curW.dataset.value) {
-             nw.dataset.value = curW.dataset.value;
-             renderPill(nw);
-           }
-           if (nr && !nr.dataset.value && repsPill.dataset.value) {
-             nr.dataset.value = repsPill.dataset.value;
-
-             renderPill(nr);
-           }
-         }
-       }
-     }
-     // Superset behavior: switch to partner exercise
-     const w = wrap || swipeWrap.closest('.exercise-wrap');
-     const supersetGroup = w ? w.closest('.superset-group') : null;
-     if (supersetGroup) {
-       const toggle = supersetGroup.querySelector('.superset-toggle');
-       const isLinked = !toggle || toggle.getAttribute('aria-pressed') === 'true';
-       if (isLinked) {
-         const supersetWraps = [...supersetGroup.querySelectorAll('.exercise-wrap')];
-         const curIdx = supersetWraps.indexOf(w);
-         const partner = supersetWraps[(curIdx + 1) % supersetWraps.length];
-         if (partner && partner !== w) {
-           setTimeout(() => {
-             w.classList.remove('expanded');
-             partner.classList.add('expanded');
-             currentExpandedWrap = partner;
-             partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-           }, 300);
-         }
-       }
-     }
+   if (!isTimeEx) {
+     const prevWeight = prevSet && prevSet.weight ? prevSet.weight : defaultWeight;
+     const weightPill = document.createElement('div');
+     weightPill.className = 'log-pill';
+     weightPill.dataset.field = 'weight';
+     weightPill.dataset.value = prevWeight ? String(prevWeight) : '';
+     weightPill.dataset.step = '0.5';
+     weightPill.dataset.unit = 'kg';
+     weightPill.dataset.label = 'Weight (kg)';
+     renderPill(weightPill);
+     weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
+     row.appendChild(weightPill);
    }
-   const w = wrap || swipeWrap.closest('.exercise-wrap');
-   if (w) updateDoneState(w);
- };
- row.appendChild(check);
 
- swipeWrap.appendChild(row);
+   const repsPill = document.createElement('div');
+   repsPill.className = 'log-pill';
+   repsPill.dataset.field = 'reps';
+   repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
+   repsPill.dataset.step = '1';
+   repsPill.dataset.unit = isTimeEx ? 's' : 'reps';
+   repsPill.dataset.label = isTimeEx ? 'Seconds' : 'Reps';
+   repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+   renderPill(repsPill);
+   repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
+   row.appendChild(repsPill);
+
+   return { row, repsPill };
+ }
+
+ // ── Helper: build one unilateral sub-row ──
+ function buildUniSubRow(side, pWeight, pReps) {
+   const row = document.createElement('div');
+   row.className = 'log-set-row uni-sub-row';
+   row.dataset.side = side;
+
+   const sideLabel = document.createElement('span');
+   sideLabel.className = 'uni-side-label';
+   sideLabel.textContent = side === 'L' ? 'L' : 'R';
+   row.appendChild(sideLabel);
+
+   const wPill = document.createElement('div');
+   wPill.className = 'log-pill';
+   wPill.dataset.field = 'weight' + side;
+   wPill.dataset.value = pWeight ? String(pWeight) : (defaultWeight ? String(defaultWeight) : '');
+   wPill.dataset.step = '0.5';
+   wPill.dataset.unit = 'kg';
+   wPill.dataset.label = 'Weight ' + side + ' (kg)';
+   renderPill(wPill);
+   wPill.onclick = (e) => { e.stopPropagation(); openPicker(wPill); };
+   row.appendChild(wPill);
+
+   const rPill = document.createElement('div');
+   rPill.className = 'log-pill';
+   rPill.dataset.field = 'reps' + side;
+   rPill.dataset.value = pReps ? String(pReps) : '';
+   rPill.dataset.step = '1';
+   rPill.dataset.unit = 'reps';
+   rPill.dataset.label = 'Reps ' + side;
+   rPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+   renderPill(rPill);
+   rPill.onclick = (e) => { e.stopPropagation(); openPicker(rPill); };
+   row.appendChild(rPill);
+
+   return row;
+ }
+
+ // ── Build the actual row(s) ──
+ let mainRow, repsPill;
+
+ if (isUniEx) {
+   const lRow = buildUniSubRow('L', prevSet && prevSet.weightL, prevSet && prevSet.repsL);
+   const rRow = buildUniSubRow('R', prevSet && prevSet.weightR, prevSet && prevSet.repsR);
+
+   // Check button only on R row
+   const check = document.createElement('button');
+   check.className = 'log-check';
+   check.setAttribute('aria-label', 'Complete set ' + setNum);
+   check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+   check.onclick = (e) => {
+     e.stopPropagation();
+     haptic();
+     check.classList.toggle('done');
+     if (check.classList.contains('done')) {
+       // Auto-fill empty pills from prevSet
+       [lRow, rRow].forEach(r => {
+         const side = r.dataset.side;
+         const wp = r.querySelector('[data-field="weight' + side + '"]');
+         const rp = r.querySelector('[data-field="reps' + side + '"]');
+         if (wp && !wp.dataset.value && prevSet && prevSet['weight' + side]) { wp.dataset.value = String(prevSet['weight' + side]); renderPill(wp); }
+         if (rp && !rp.dataset.value && prevSet && prevSet['reps' + side]) { rp.dataset.value = String(prevSet['reps' + side]); renderPill(rp); }
+       });
+       const exWrap = wrap || swipeWrap.closest('.exercise-wrap');
+       if (exWrap && exWrap.dataset.restSeconds) timerDuration = parseInt(exWrap.dataset.restSeconds);
+       startRestTimer();
+       // Pre-fill next set
+       const container = swipeWrap.closest('.log-sets-container');
+       if (container) {
+         const allWraps = [...container.querySelectorAll('.log-set-wrap')];
+         const curIdx = allWraps.indexOf(swipeWrap);
+         const nextWrap = allWraps[curIdx + 1];
+         if (nextWrap) {
+           ['L','R'].forEach(side => {
+             const curSideRow = swipeWrap.querySelector('[data-side="' + side + '"]');
+             const nxtSideRow = nextWrap.querySelector('[data-side="' + side + '"]');
+             if (!curSideRow || !nxtSideRow) return;
+             const cw = curSideRow.querySelector('[data-field="weight' + side + '"]');
+             const cr = curSideRow.querySelector('[data-field="reps' + side + '"]');
+             const nw = nxtSideRow.querySelector('[data-field="weight' + side + '"]');
+             const nr = nxtSideRow.querySelector('[data-field="reps' + side + '"]');
+             if (nw && !nw.dataset.value && cw && cw.dataset.value) { nw.dataset.value = cw.dataset.value; renderPill(nw); }
+             if (nr && !nr.dataset.value && cr && cr.dataset.value) { nr.dataset.value = cr.dataset.value; renderPill(nr); }
+           });
+         }
+       }
+       // Superset behavior
+       const w = wrap || swipeWrap.closest('.exercise-wrap');
+       const supersetGroup = w ? w.closest('.superset-group') : null;
+       if (supersetGroup) {
+         const toggle = supersetGroup.querySelector('.superset-toggle');
+         const isLinked = !toggle || toggle.getAttribute('aria-pressed') === 'true';
+         if (isLinked) {
+           const supersetWraps = [...supersetGroup.querySelectorAll('.exercise-wrap')];
+           const ci = supersetWraps.indexOf(w);
+           const partner = supersetWraps[(ci + 1) % supersetWraps.length];
+           if (partner && partner !== w) {
+             setTimeout(() => { w.classList.remove('expanded'); partner.classList.add('expanded'); currentExpandedWrap = partner; partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+           }
+         }
+       }
+     }
+     const w = wrap || swipeWrap.closest('.exercise-wrap');
+     if (w) updateDoneState(w);
+   };
+   rRow.appendChild(check);
+
+   // L row gets a spacer where check would be
+   const spacer = document.createElement('div');
+   spacer.className = 'log-check-spacer';
+   lRow.appendChild(spacer);
+
+   swipeWrap.appendChild(lRow);
+   swipeWrap.appendChild(rRow);
+   mainRow = rRow; // for swipe handling
+ } else {
+   const built = buildStandardRow();
+   mainRow = built.row;
+   repsPill = built.repsPill;
+
+   // Check button
+   const check = document.createElement('button');
+   check.className = 'log-check';
+   check.setAttribute('aria-label', 'Complete set ' + setNum);
+   check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+   check.onclick = (e) => {
+     e.stopPropagation();
+     haptic();
+     check.classList.toggle('done');
+     if (check.classList.contains('done')) {
+       if (!isTimeEx) { const wp = mainRow.querySelector('[data-field="weight"]'); if (wp && !wp.dataset.value && prevSet) { wp.dataset.value = String(prevSet.weight); renderPill(wp); } }
+       if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
+       const exWrap = wrap || swipeWrap.closest('.exercise-wrap');
+       if (exWrap && exWrap.dataset.restSeconds) timerDuration = parseInt(exWrap.dataset.restSeconds);
+       startRestTimer();
+       const container = swipeWrap.closest('.log-sets-container');
+       if (container) {
+         const allWraps = [...container.querySelectorAll('.log-set-wrap')];
+         const curIdx = allWraps.indexOf(swipeWrap);
+         const nextWrap = allWraps[curIdx + 1];
+         if (nextWrap) {
+           const nextRow = nextWrap.querySelector('.log-set-row');
+           if (nextRow) {
+             const nw = nextRow.querySelector('[data-field="weight"]');
+             const nr = nextRow.querySelector('[data-field="reps"]');
+             const curW = mainRow.querySelector('[data-field="weight"]');
+             if (nw && !nw.dataset.value && curW && curW.dataset.value) { nw.dataset.value = curW.dataset.value; renderPill(nw); }
+             if (nr && !nr.dataset.value && repsPill.dataset.value) { nr.dataset.value = repsPill.dataset.value; renderPill(nr); }
+           }
+         }
+       }
+       const w = wrap || swipeWrap.closest('.exercise-wrap');
+       const supersetGroup = w ? w.closest('.superset-group') : null;
+       if (supersetGroup) {
+         const toggle = supersetGroup.querySelector('.superset-toggle');
+         const isLinked = !toggle || toggle.getAttribute('aria-pressed') === 'true';
+         if (isLinked) {
+           const supersetWraps = [...supersetGroup.querySelectorAll('.exercise-wrap')];
+           const ci = supersetWraps.indexOf(w);
+           const partner = supersetWraps[(ci + 1) % supersetWraps.length];
+           if (partner && partner !== w) {
+             setTimeout(() => { w.classList.remove('expanded'); partner.classList.add('expanded'); currentExpandedWrap = partner; partner.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+           }
+         }
+       }
+     }
+     const w = wrap || swipeWrap.closest('.exercise-wrap');
+     if (w) updateDoneState(w);
+   };
+   mainRow.appendChild(check);
+   swipeWrap.appendChild(mainRow);
+ }
 
  // Delete button (revealed on swipe)
  const delBtn = document.createElement('div');
@@ -5554,47 +5689,48 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet, isTimeE
  }
  delBtn.addEventListener('touchstart', deleteRow, { passive: false });
  delBtn.addEventListener('click', deleteRow);
- swipeWrap.insertBefore(delBtn, row);
+ swipeWrap.insertBefore(delBtn, swipeWrap.firstChild);
 
- // Swipe-to-delete touch handling
+ // Swipe-to-delete touch handling — use mainRow (R row for uni, single row for bilateral)
  let startX = 0, currentX = 0, isSwiping = false;
- row.addEventListener('touchstart', (e) => {
+ const swipeTarget = mainRow;
+ swipeTarget.addEventListener('touchstart', (e) => {
    startX = e.touches[0].clientX;
    currentX = startX;
    isSwiping = false;
-   row.style.transition = 'none';
+   swipeTarget.style.transition = 'none';
  }, { passive: true });
 
- row.addEventListener('touchmove', (e) => {
+ swipeTarget.addEventListener('touchmove', (e) => {
    currentX = e.touches[0].clientX;
    const dx = currentX - startX;
    if (dx > 10) isSwiping = true;
    if (isSwiping) {
      const clamped = Math.min(Math.max(dx, 0), 56);
-     row.style.transform = `translateX(${clamped}px)`;
+     swipeTarget.style.transform = `translateX(${clamped}px)`;
      delBtn.style.opacity = Math.min(dx / 40, 1);
    }
  }, { passive: true });
 
- row.addEventListener('touchend', () => {
-   row.style.transition = 'transform 0.25s ease';
+ swipeTarget.addEventListener('touchend', () => {
+   swipeTarget.style.transition = 'transform 0.25s ease';
    const dx = currentX - startX;
    if (dx > 30) {
-     row.classList.add('swiped');
-     row.style.transform = '';
+     swipeTarget.classList.add('swiped');
+     swipeTarget.style.transform = '';
      swipeWrap.classList.add('reveal-delete');
    } else {
-     row.classList.remove('swiped');
-     row.style.transform = '';
+     swipeTarget.classList.remove('swiped');
+     swipeTarget.style.transform = '';
      swipeWrap.classList.remove('reveal-delete');
      delBtn.style.opacity = '0';
    }
  });
 
  // Tap anywhere on the row to close swipe
- row.addEventListener('click', () => {
-   if (row.classList.contains('swiped')) {
-     row.classList.remove('swiped');
+ swipeTarget.addEventListener('click', () => {
+   if (swipeTarget.classList.contains('swiped')) {
+     swipeTarget.classList.remove('swiped');
      swipeWrap.classList.remove('reveal-delete');
    }
  });
@@ -5712,7 +5848,7 @@ function openPicker(pill) {
  activePill = pill;
  pickerStep = parseFloat(pill.dataset.step) || 1;
  const rawVal = (pill.dataset.value || '').trim();
- const isWeight = pill.dataset.field === 'weight';
+ const isWeight = pill.dataset.field.startsWith('weight');
  const isBW = rawVal.startsWith('BW');
 
  // Set initial raw value from existing
@@ -5802,17 +5938,37 @@ function closePicker() {
 
 function addSetToContainer(container, defaultReps, wrap) {
  const isTime = container.dataset.timeEx === '1';
- const rows = container.querySelectorAll('.log-set-row');
- let w = '', r = defaultReps || '';
- if (rows.length > 0) {
- const lastRow = rows[rows.length - 1];
- const wp = lastRow.querySelector('[data-field="weight"]');
- const rp = lastRow.querySelector('[data-field="reps"]');
- if (wp && wp.dataset.value) w = wp.dataset.value;
- if (rp && rp.dataset.value) r = rp.dataset.value;
+ const isUni = container.dataset.uniEx === '1';
+ const wraps = container.querySelectorAll('.log-set-wrap');
+ const setNum = wraps.length + 1;
+
+ // Build a prevSet-like object from the last set wrap for pre-fill
+ let fakePrev = null;
+ if (wraps.length > 0) {
+   const lastWrap = wraps[wraps.length - 1];
+   if (isUni) {
+     fakePrev = {};
+     ['L','R'].forEach(side => {
+       const sr = lastWrap.querySelector('[data-side="' + side + '"]');
+       if (sr) {
+         const wp = sr.querySelector('[data-field="weight' + side + '"]');
+         const rp = sr.querySelector('[data-field="reps' + side + '"]');
+         if (wp && wp.dataset.value) fakePrev['weight' + side] = wp.dataset.value;
+         if (rp && rp.dataset.value) fakePrev['reps' + side] = rp.dataset.value;
+       }
+     });
+   } else {
+     const lastRow = lastWrap.querySelector('.log-set-row');
+     if (lastRow) {
+       fakePrev = {};
+       const wp = lastRow.querySelector('[data-field="weight"]');
+       const rp = lastRow.querySelector('[data-field="reps"]');
+       if (wp && wp.dataset.value) fakePrev.weight = wp.dataset.value;
+       if (rp && rp.dataset.value) fakePrev.reps = rp.dataset.value;
+     }
+   }
  }
- const setNum = rows.length + 1;
- const newRow = createSetRow(r, w, wrap, setNum, null, isTime);
+ const newRow = createSetRow(defaultReps, 0, wrap, setNum, fakePrev, isTime, isUni);
  const addBtn = container.querySelector('.log-add-set');
  container.insertBefore(newRow, addBtn);
 }
@@ -5821,11 +5977,35 @@ function saveSession() {
  const sessionId = getCurrentSessionId();
  if (!sessionId) return;
 
+ const active = getActiveSession();
+ const gymId = active.gymId;
  const exercises = [];
  document.querySelectorAll('#session-' + sessionId + ' .log-sets-container').forEach(container => {
  const exName = container.dataset.logExercise;
  const sets = [];
- container.querySelectorAll('.log-set-row').forEach(row => {
+ const isUni = container.dataset.uniEx === '1';
+ if (isUni) {
+ // Unilateral: read L+R sub-rows per set wrap
+ container.querySelectorAll('.log-set-wrap').forEach(sw => {
+   const lRow = sw.querySelector('[data-side="L"]');
+   const rRow = sw.querySelector('[data-side="R"]');
+   const done = rRow && rRow.querySelector('.log-check') ? rRow.querySelector('.log-check').classList.contains('done') : false;
+   const entry = { done };
+   ['L','R'].forEach(side => {
+     const sr = side === 'L' ? lRow : rRow;
+     if (!sr) return;
+     const wp = sr.querySelector('[data-field="weight' + side + '"]');
+     const rp = sr.querySelector('[data-field="reps' + side + '"]');
+     const wv = wp ? (wp.dataset.value || '') : '';
+     entry['weight' + side] = wv && wv.startsWith('BW') ? wv : (parseFloat(wv) || 0);
+     entry['reps' + side] = rp ? (parseInt(rp.dataset.value) || 0) : 0;
+   });
+   if (entry.repsL || entry.repsR || entry.weightL || entry.weightR || done) sets.push(entry);
+ });
+ } else {
+ container.querySelectorAll('.log-set-wrap').forEach(sw => {
+ const row = sw.querySelector('.log-set-row');
+ if (!row) return;
  const repsPill = row.querySelector('[data-field="reps"]');
  const weightPill = row.querySelector('[data-field="weight"]');
  const reps = repsPill ? repsPill.dataset.value : '';
@@ -5836,19 +6016,19 @@ function saveSession() {
  sets.push({ reps: parseInt(reps) || 0, weight: w, done });
  }
  });
+ } // end bilateral else
  const noteEl = container.querySelector('.log-note');
  const note = noteEl ? noteEl.value.trim() : '';
  if (sets.length > 0) {
  const exEntry = { name: exName, sets, note };
  // Attach equipment ID for machine-specific weight recall
- try {
-   const _active = lsGet('gymApp_activeSession', {});
-   if (_active.gymId) {
-     const _ge = lsGet('gymApp_gymEquipment', []);
-     const _link = _ge.find(l => l.slotId === exName && l.gymId === _active.gymId);
-     if (_link) exEntry.equipmentId = _link.equipmentId;
-   }
- } catch(e) {}
+ if (gymId) {
+   const equip = getEquipmentForSlot(exName, gymId);
+   if (equip) exEntry.equipmentId = equip.id;
+ }
+ // Attach substitute label if active
+ const sub = active.substitutions[exName];
+ if (sub) exEntry.substituteLabel = sub;
  exercises.push(exEntry);
  }
  });
@@ -5862,6 +6042,7 @@ function saveSession() {
  date: localDate + 'T' + now.toTimeString().slice(0,8),
  sessionId,
  sessionName: SESSION_NAMES[sessionId] || sessionId,
+ gymId: gymId || undefined,
  exercises
  };
 
@@ -5869,11 +6050,14 @@ function saveSession() {
  history.unshift(entry);
  localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
 
+ // Reset substitutions for next session
+ active.substitutions = {};
+ setActiveSession(active);
+
  renderHistory();
  const cb = localStorage.getItem('gymapp_current_block') || 'main';
  renderOverview(cb === 'recovery' ? 'recovery' : 'main');
 
- // Show session summary
  showSummarySheet(entry);
 }
 
@@ -6106,7 +6290,8 @@ function populateProgressChart() {
  // Auto-select first if none selected or selection invalid
  if (!selectedProgressExercise || !names.includes(selectedProgressExercise)) {
    selectedProgressExercise = names[0];
-   pillsContainer.querySelector('.progress-pill').classList.add('active');
+   const firstPill = pillsContainer.querySelector('.progress-pill');
+   if (firstPill) firstPill.classList.add('active');
  }
  drawProgressCanvas(selectedProgressExercise);
 }
@@ -6811,76 +6996,7 @@ function confirmSubstitution(slotId) {
  closeEquipSheet();
 }
 
-// ─── PART 5: WEIGHT PRE-FILL UPDATE ────────────────────────────
-
-// getPreviousExerciseData now includes equipment-aware logic directly in the original function
-
-// Override saveSession to include equipmentId and substituteLabel
-saveSession = function() {
- const sessionId = getCurrentSessionId();
- if (!sessionId) return;
-
- const active = getActiveSession();
- const gymId = active.gymId;
-
- const exercises = [];
- document.querySelectorAll('#session-' + sessionId + ' .log-sets-container').forEach(container => {
-   const exName = container.dataset.logExercise;
-   const sets = [];
-   container.querySelectorAll('.log-set-row').forEach(row => {
-     const repsPill = row.querySelector('[data-field="reps"]');
-     const weightPill = row.querySelector('[data-field="weight"]');
-     const reps = repsPill ? repsPill.dataset.value : '';
-     const weight = weightPill ? weightPill.dataset.value : '';
-     const done = row.querySelector('.log-check') ? row.querySelector('.log-check').classList.contains('done') : false;
-     if (reps || weight || done) {
-       sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
-     }
-   });
-   const noteEl = container.querySelector('.log-note');
-   const note = noteEl ? noteEl.value.trim() : '';
-   if (sets.length > 0) {
-     const entry = { name: exName, sets, note };
-     // Add equipment ID if available
-     if (gymId) {
-       const equip = getEquipmentForSlot(exName, gymId);
-       if (equip) entry.equipmentId = equip.id;
-     }
-     // Add substitute label if active
-     const sub = active.substitutions[exName];
-     if (sub) entry.substituteLabel = sub;
-     exercises.push(entry);
-   }
- });
-
- if (exercises.length === 0) return;
-
- const now = new Date();
- const localDate = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
- const entry = {
-   id: Date.now(),
-   date: localDate + 'T' + now.toTimeString().slice(0,8),
-   sessionId,
-   sessionName: SESSION_NAMES[sessionId] || sessionId,
-   gymId: gymId || undefined,
-   exercises
- };
-
- const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- history.unshift(entry);
- localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
-
- // Reset substitutions for next session
- const activeSession = getActiveSession();
- activeSession.substitutions = {};
- setActiveSession(activeSession);
-
- renderHistory();
- const cb = localStorage.getItem('gymapp_current_block') || 'main';
- renderOverview(cb === 'recovery' ? 'recovery' : 'main');
-
- showSummarySheet(entry);
-};
+// getPreviousExerciseData and saveSession are defined in the main script block
 
 // ─── INJECT MACHINE BADGES INTO ACCORDIONS ──────────────────────
 
