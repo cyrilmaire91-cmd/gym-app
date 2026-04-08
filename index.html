@@ -516,22 +516,28 @@
  }
 
  .superset-group .exercise-wrap {
- margin-bottom: 4px;
- border: 1px solid var(--border);
- border-radius: 12px;
+ margin-bottom: 0;
+ border: none;
+ border-radius: 0;
  }
 
  .superset-group .exercise-wrap .exercise {
  border: none;
- border-bottom: none;
+ border-radius: 0;
  }
 
- .superset-group .exercise-wrap:last-of-type {
- margin-bottom: 0;
+ /* Divider between cards inside superset */
+ .superset-cards .exercise-wrap + .exercise-wrap {
+ border-top: 1px solid var(--border);
  }
+
+ /* Round corners on first/last card inside the superset container */
+ .superset-cards .exercise-wrap:first-child { border-radius: 12px 12px 0 0; overflow: hidden; }
+ .superset-cards .exercise-wrap:last-child { border-radius: 0 0 12px 12px; overflow: hidden; }
+ .superset-cards .exercise-wrap:only-child { border-radius: 12px; }
 
  .superset-group .exercise-wrap.expanded {
- border-color: var(--accent);
+ border: none;
  }
 
  /* Superset toggle switch */
@@ -1209,6 +1215,12 @@
 }
 .log-set-headers .header-label {
  flex: 1;
+ font-family: 'Inter', sans-serif;
+ font-size: 12px;
+ font-weight: 500;
+ color: var(--muted);
+ text-align: center;
+ text-transform: uppercase;
 }
 .log-set-headers .header-label-wide {
  flex: 2;
@@ -5827,7 +5839,17 @@ function saveSession() {
  const noteEl = container.querySelector('.log-note');
  const note = noteEl ? noteEl.value.trim() : '';
  if (sets.length > 0) {
- exercises.push({ name: exName, sets, note });
+ const exEntry = { name: exName, sets, note };
+ // Attach equipment ID for machine-specific weight recall
+ try {
+   const _active = lsGet('gymApp_activeSession', {});
+   if (_active.gymId) {
+     const _ge = lsGet('gymApp_gymEquipment', []);
+     const _link = _ge.find(l => l.slotId === exName && l.gymId === _active.gymId);
+     if (_link) exEntry.equipmentId = _link.equipmentId;
+   }
+ } catch(e) {}
+ exercises.push(exEntry);
  }
  });
 
@@ -6274,6 +6296,12 @@ function drawProgressCanvas(exerciseName) {
  if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
  if (!localStorage.getItem('gymApp_gymEquipment')) localStorage.setItem('gymApp_gymEquipment', '[]');
  if (!localStorage.getItem('gymApp_activeSession')) localStorage.setItem('gymApp_activeSession', JSON.stringify({ gymId: null, substitutions: {} }));
+ // Auto-restore last used gym if active session has no gym
+ const _as = JSON.parse(localStorage.getItem('gymApp_activeSession'));
+ if (!_as.gymId) {
+   const _lastGym = localStorage.getItem('gymApp_lastGymId');
+   if (_lastGym) { _as.gymId = _lastGym; localStorage.setItem('gymApp_activeSession', JSON.stringify(_as)); }
+ }
 })();
 
 // Migrate old equipId → equipmentId in gymEquipment records
@@ -6540,6 +6568,25 @@ function openEquipSheet(slotId) {
 
  let body = '';
 
+ // Gym selector — if no gym is active, let user pick one inline
+ if (!gymId) {
+   const allGyms = getGyms();
+   if (allGyms.length > 0) {
+     body += '<div class="equip-select-wrap">';
+     body += '<div class="equip-select-label">Select gym first</div>';
+     body += '<select class="equip-select" id="equipGymSelect" onchange="equipGymChanged()">';
+     body += '<option value="">Choose a gym…</option>';
+     allGyms.forEach(g => { body += `<option value="${g.id}">${g.name}</option>`; });
+     body += '</select></div>';
+   } else {
+     body += '<div class="equip-select-wrap">';
+     body += '<div class="equip-select-label">Add a gym</div>';
+     body += '<div style="display:flex;gap:8px"><input class="gym-add-input" id="equipGymAddInput" placeholder="Gym name" style="flex:1" />';
+     body += '<button class="equip-action-btn equip-save-btn" style="width:auto;margin:0;padding:10px 16px" onclick="addGymFromEquipSheet()">Add</button></div>';
+     body += '</div>';
+   }
+ }
+
  // Dropdown: all machines saved at this gym
  if (gymId) {
    const ge = getGymEquipment();
@@ -6603,6 +6650,37 @@ function assignEquipmentToSlot(equipId, slotId) {
 
  refreshAllMachineBadges();
  closeEquipSheet();
+}
+
+function equipGymChanged() {
+ const sel = document.getElementById('equipGymSelect');
+ if (!sel || !sel.value) return;
+ const active = getActiveSession();
+ active.gymId = sel.value;
+ active.substitutions = {};
+ setActiveSession(active);
+ localStorage.setItem('gymApp_lastGymId', sel.value);
+ refreshAllMachineBadges();
+ // Re-open the sheet with the gym now set
+ if (currentEquipSlotId) openEquipSheet(currentEquipSlotId);
+}
+
+function addGymFromEquipSheet() {
+ const input = document.getElementById('equipGymAddInput');
+ const name = input ? input.value.trim() : '';
+ if (!name) return;
+ const gyms = getGyms();
+ const newGym = { id: 'gym_' + Date.now(), name };
+ gyms.push(newGym);
+ setGyms(gyms);
+ // Auto-select the new gym
+ const active = getActiveSession();
+ active.gymId = newGym.id;
+ active.substitutions = {};
+ setActiveSession(active);
+ localStorage.setItem('gymApp_lastGymId', newGym.id);
+ refreshAllMachineBadges();
+ if (currentEquipSlotId) openEquipSheet(currentEquipSlotId);
 }
 
 function equipSelectChanged(slotId) {
