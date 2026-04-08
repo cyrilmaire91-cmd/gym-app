@@ -390,6 +390,23 @@
  color: var(--accent);
  }
 
+ .ex-uni-badge {
+ display: inline-block;
+ font-size: 10px;
+ font-weight: 600;
+ color: var(--muted);
+ border: 1px solid var(--border);
+ border-radius: 4px;
+ padding: 1px 4px;
+ margin-left: 4px;
+ vertical-align: middle;
+ cursor: pointer;
+ user-select: none;
+ transition: opacity 0.15s;
+ }
+ .ex-uni-badge:active { opacity: 0.5; }
+ .ex-uni-badge.off { opacity: 0.3; text-decoration: line-through; }
+
  .ex-accordion {
  background: var(--card);
  border: none;
@@ -1192,6 +1209,9 @@
 }
 .log-set-headers .header-label {
  flex: 1;
+}
+.log-set-headers .header-label-wide {
+ flex: 2;
  font-family: 'Inter', 'Inter', sans-serif;
  font-size: 10px;
  font-weight: 600;
@@ -1222,6 +1242,7 @@
  z-index: 1;
  background: var(--card);
 }
+.log-set-row.time-row .log-pill { flex: 2; }
 .log-set-row.swiped {
  transform: translateX(52px);
 }
@@ -1279,6 +1300,7 @@
 .log-pill:active { opacity: 0.6; }
 .log-pill .pill-unit { display: none; }
 .log-pill.empty { color: var(--text); }
+.log-pill.bw-value { font-size: 12px; color: var(--accent); }
 
 /* Check button — square, 44x44, 8px radius */
 .log-check {
@@ -1411,6 +1433,11 @@
 .picker-key.empty-key {
  pointer-events: none;
  visibility: hidden;
+}
+.picker-bw-key {
+ font-size: 16px;
+ font-weight: 700;
+ color: var(--accent);
 }
 .picker-key svg {
  width: 26px;
@@ -2382,7 +2409,7 @@
  padding: 6px 10px;
  font-family: 'Inter', sans-serif;
  font-size: 10px;
- margin-top: 4px;
+ margin-top: 12px;
  cursor: pointer;
  display: flex;
  align-items: center;
@@ -2405,34 +2432,16 @@
  background: #111;
 }
 .ex-machine-badge.no-gym {
- color: #444;
- border: 1px dashed #1a1a1a;
- background: #0e0e0e;
- opacity: 0.6;
+ color: #666;
+ border: 1px dashed #333;
+ background: #161616;
 }
 
 /* Equipment bottom sheet specifics */
-.equip-current {
- background: #111;
- border-radius: 10px;
- padding: 12px 14px;
- margin-bottom: 14px;
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- color: var(--text);
-}
-.equip-current-label {
- font-size: 10px;
- color: var(--muted);
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 4px;
-}
-
-.equip-list {
+.equip-select-wrap {
  margin-bottom: 14px;
 }
-.equip-list-title {
+.equip-select-label {
  font-family: 'Inter', sans-serif;
  font-size: 11px;
  font-weight: 600;
@@ -2441,31 +2450,30 @@
  letter-spacing: 1px;
  margin-bottom: 8px;
 }
-.equip-list-item {
- padding: 10px 14px;
+.equip-select {
+ width: 100%;
  background: #111;
  border: 1px solid var(--border);
  border-radius: 8px;
- margin-bottom: 6px;
+ color: var(--text);
  font-family: 'Inter', sans-serif;
  font-size: 13px;
- color: var(--text);
- cursor: pointer;
- transition: border-color 0.15s;
+ padding: 10px 12px;
+ outline: none;
+ appearance: none;
+ -webkit-appearance: none;
+ background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+ background-repeat: no-repeat;
+ background-position: right 12px center;
 }
-.equip-list-item:active { border-color: var(--accent); }
-.equip-list-item .equip-gym-name {
- font-size: 10px;
- color: var(--muted);
- margin-top: 2px;
-}
+.equip-select:focus { border-color: var(--accent); }
+.equip-select option { background: #1C1C1E; color: var(--text); }
 
-.equip-add-form {
+.equip-input-wrap {
  margin-bottom: 14px;
 }
-.equip-add-form .gym-add-input {
+.equip-input-wrap .gym-add-input {
  width: 100%;
- margin-bottom: 8px;
 }
 
 .equip-action-btn {
@@ -2484,11 +2492,6 @@
  background: transparent;
  border: 1px solid var(--border);
  color: var(--muted);
-}
-.equip-substitute-btn {
- background: transparent;
- border: 1px solid var(--accent);
- color: var(--accent);
 }
 .equip-save-btn {
  background: var(--accent);
@@ -3762,6 +3765,7 @@
  <button class="picker-key" onclick="pickerKeyTap('8')" aria-label="8" style="touch-action:manipulation">8</button>
  <button class="picker-key" onclick="pickerKeyTap('9')" aria-label="9" style="touch-action:manipulation">9</button>
  <button class="picker-key" onclick="pickerKeyTap('.')" aria-label="Decimal point" id="pickerDotKey" style="touch-action:manipulation;display:none">.</button>
+ <button class="picker-key picker-bw-key" id="pickerBwKey" onclick="pickerKeyTap('BW')" aria-label="Bodyweight" style="touch-action:manipulation;display:none">BW</button>
  <button class="picker-key empty-key" id="pickerDotPlaceholder" aria-hidden="true"></button>
  <button class="picker-key" onclick="pickerKeyTap('0')" aria-label="0" style="touch-action:manipulation">0</button>
  <button class="picker-key" onclick="pickerKeyTap('back')" aria-label="Backspace" style="touch-action:manipulation">
@@ -3789,11 +3793,65 @@
    catch(e) { return fallback; }
  }
 
+ // ─── EXERCISE TAG INFERENCE ──────────────────────────────────────
+ function inferExerciseTags(ex) {
+   // If tags already set (explicit), keep them
+   if (ex.dataset.tags) return ex.dataset.tags.split(',');
+
+   const nameEl = ex.querySelector('.ex-name');
+   const setsEl = ex.querySelector('.ex-sets');
+   const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+   const setsText = setsEl ? setsEl.textContent.toLowerCase() : '';
+   const tags = [];
+
+   // Time-based
+   const timeNames = /\bplank\b|dead hang|\bhold\b|\bisometric\b/;
+   const timeDuration = /\d+s\b/;
+   if (timeNames.test(name) || timeDuration.test(setsText) || /\bsec\b|\btenu\b/.test(setsText)) {
+     tags.push('time');
+   }
+
+   // Unilateral
+   const uniNames = /\bsingle[- ]|\bunilateral\b|\bbulgarian\b|\bcopenhagen\b|\b1-arm\b|\bone[- ]arm\b|per side/;
+   const uniSets = /each side|each arm|each direction|each leg|chaque côté/;
+   if (uniNames.test(name) || uniSets.test(setsText)) {
+     tags.push('unilateral');
+   }
+
+   // Bodyweight
+   const bwNames = /\bdip\b|\bpull[- ]?up\b|\bpush[- ]?up\b|\bchin[- ]?up\b/;
+   if (bwNames.test(name)) {
+     tags.push('bodyweight');
+   }
+
+   // Ambrose hip protocol exercises (inside prehab-box)
+   if (ex.closest('.prehab-box')) {
+     // Flag prehab exercises with per-side cues as unilateral
+     if (!tags.includes('unilateral') && uniSets.test(setsText)) {
+       tags.push('unilateral');
+     }
+   }
+
+   ex.dataset.tags = tags.join(',');
+   return tags;
+ }
+
+ function exHasTag(ex, tag) {
+   if (!ex.dataset.tags) inferExerciseTags(ex);
+   return (',' + ex.dataset.tags + ',').indexOf(',' + tag + ',') !== -1;
+ }
+
+ // Run inference on all exercises at load
+ function tagAllExercises() {
+   document.querySelectorAll('.exercise').forEach(inferExerciseTags);
+ }
+
  function showTab(id, btn) {
  document.querySelectorAll('.session').forEach(s => s.classList.remove('active'));
  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
  document.getElementById('session-' + id).classList.add('active');
- btn.classList.add('active');
+ if (!btn) btn = document.querySelector('.tab[onclick*="' + id + '"]');
+ if (btn) btn.classList.add('active');
  window.scrollTo(0, 0);
  }
 
@@ -3802,7 +3860,8 @@
  function setBlock(block) {
  localStorage.setItem('gymapp_current_block', block);
  if (!localStorage.getItem('gymapp_block_start_' + block)) {
-   localStorage.setItem('gymapp_block_start_' + block, new Date().toISOString().slice(0, 10));
+   const _d = new Date();
+   localStorage.setItem('gymapp_block_start_' + block, _d.getFullYear() + '-' + String(_d.getMonth()+1).padStart(2,'0') + '-' + String(_d.getDate()).padStart(2,'0'));
  }
  currentBlock = block;
  // Update panel active state
@@ -4051,8 +4110,9 @@ function submitCheckin() {
 
  // Now open the session
  if (pendingSessionTab && pendingSessionBtn) {
- const orig = _showTabWithAdapt;
- orig(pendingSessionTab, pendingSessionBtn);
+ _showTabWithAdapt(pendingSessionTab, pendingSessionBtn);
+ applySessionImpact();
+ setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
  }
  pendingSessionTab = null;
  pendingSessionBtn = null;
@@ -4062,6 +4122,8 @@ function skipCheckin() {
  closeCheckin();
  if (pendingSessionTab && pendingSessionBtn) {
  _showTabWithAdapt(pendingSessionTab, pendingSessionBtn);
+ applySessionImpact();
+ setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
  }
  pendingSessionTab = null;
  pendingSessionBtn = null;
@@ -4160,6 +4222,7 @@ function setupLumbagoAccordions() {
  const numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
  const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
  const exName = nameEl ? nameEl.textContent : 'Exercise';
+ const isTimeExL = exHasTag(ex, 'time');
 
  const headerDiv = document.createElement('div');
  headerDiv.className = 'ex-expand-header';
@@ -4172,9 +4235,7 @@ function setupLumbagoAccordions() {
 
  const badgesDiv = document.createElement('div');
  badgesDiv.className = 'ex-expand-badges';
- // For timed exercises, show duration badge
- const isTimedEx = setsEl && (setsEl.textContent.includes('sec') || setsEl.textContent.includes('tenu'));
- if (isTimedEx) {
+ if (isTimeExL) {
  badgesDiv.innerHTML += `<span class="ex-expand-badge badge-rest">TIMED</span>`;
  }
  headerDiv.appendChild(badgesDiv);
@@ -4195,16 +4256,21 @@ function setupLumbagoAccordions() {
  const container = document.createElement('div');
  container.className = 'log-sets-container';
  container.dataset.logExercise = 'lumbago_' + exName;
+ if (isTimeExL) container.dataset.timeEx = '1';
  container.onclick = (e) => e.stopPropagation();
 
  // Column headers
  const lHeaders = document.createElement('div');
  lHeaders.className = 'log-set-headers';
- lHeaders.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
+ if (isTimeExL) {
+   lHeaders.innerHTML = '<span class="header-label header-label-wide">SEC</span><div class="header-spacer"></div>';
+ } else {
+   lHeaders.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
+ }
  container.appendChild(lHeaders);
 
  for (let s = 0; s < numSets; s++) {
- container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null));
+ container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null, isTimeExL));
  }
 
  const addRow = document.createElement('div');
@@ -4453,11 +4519,13 @@ function renderOverview(block) {
  const blockLabels = { main: 'Hypertrophy · Wk 1–2', main34: 'Hypertrophy · Wk 3–4', recovery: 'Recovery' };
  const blockLabel = blockLabels[currentBlock] || 'Hypertrophy';
  if (!localStorage.getItem('gymapp_block_start_' + currentBlock)) {
-   localStorage.setItem('gymapp_block_start_' + currentBlock, new Date().toISOString().slice(0, 10));
+   const _d = new Date();
+   localStorage.setItem('gymapp_block_start_' + currentBlock, _d.getFullYear() + '-' + String(_d.getMonth()+1).padStart(2,'0') + '-' + String(_d.getDate()).padStart(2,'0'));
  }
  const blockStart = localStorage.getItem('gymapp_block_start_' + currentBlock);
  const today = new Date();
- const blockStartDate = blockStart ? new Date(blockStart) : today;
+ // Parse as local midnight (not UTC) to match session date format
+ const blockStartDate = blockStart ? new Date(blockStart + 'T00:00:00') : today;
  // Count sessions logged since block start
  const allHistory = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
  const blockSessions = allHistory.filter(e => e.date && new Date(e.date) >= blockStartDate).length;
@@ -4853,15 +4921,6 @@ document.addEventListener('DOMContentLoaded', () => {
  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L20 12l-6.1 3.3L12 21l-1.9-5.7L4 12l6.1-3.3z"/></svg>Change';
  btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
  topRow.appendChild(btn);
- const gymPill = document.createElement('span');
- gymPill.className = 'session-gym-pill';
- gymPill.id = 'gymPill-' + id;
- const activeGym = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
- const gyms = JSON.parse(localStorage.getItem('gymApp_gyms') || '[]');
- const gym = activeGym.gymId ? gyms.find(g => g.id === activeGym.gymId) : null;
- gymPill.textContent = gym ? gym.name : 'No gym';
- gymPill.onclick = (e) => { e.stopPropagation(); openGymSheet(id); };
- topRow.appendChild(gymPill);
  });
 });
 
@@ -5032,6 +5091,27 @@ function setupAccordions() {
  if (exNote) ex.appendChild(exNote);
  }
 
+ // Unilateral ×2 badge
+ if (exHasTag(ex, 'unilateral')) {
+ const setsEl = ex.querySelector('.ex-sets');
+ if (setsEl) {
+   const uBadge = document.createElement('span');
+   uBadge.className = 'ex-uni-badge';
+   uBadge.textContent = '×2';
+   uBadge.title = 'Per side — tap to toggle';
+   uBadge.onclick = (e) => {
+     e.stopPropagation();
+     const tags = (ex.dataset.tags || '').split(',');
+     const idx = tags.indexOf('unilateral');
+     if (idx !== -1) tags.splice(idx, 1); else tags.push('unilateral');
+     ex.dataset.tags = tags.filter(Boolean).join(',');
+     uBadge.classList.toggle('off', idx !== -1);
+   };
+   setsEl.appendChild(document.createTextNode(' '));
+   setsEl.appendChild(uBadge);
+ }
+ }
+
  // Create accordion body
  const accordion = document.createElement('div');
  accordion.className = 'ex-accordion';
@@ -5047,6 +5127,7 @@ function setupAccordions() {
  const numSets = setsMatch ? parseInt(setsMatch[1]) : 3;
  const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
  const exName = nameEl ? nameEl.textContent : 'Exercise';
+ const isTimeEx = exHasTag(ex, 'time');
 
  // Extract rest time from sets text or superset label
  let restMatch = setsEl ? setsEl.textContent.match(/Rest\s*(\d+)\s*(min|s)/i) : null;
@@ -5105,17 +5186,22 @@ function setupAccordions() {
  const container = document.createElement('div');
  container.className = 'log-sets-container';
  container.dataset.logExercise = exName;
+ if (isTimeEx) container.dataset.timeEx = '1';
  container.onclick = (e) => e.stopPropagation();
 
  // Column headers
  const headers = document.createElement('div');
  headers.className = 'log-set-headers';
- headers.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
+ if (isTimeEx) {
+   headers.innerHTML = '<span class="header-label header-label-wide">SEC</span><div class="header-spacer"></div>';
+ } else {
+   headers.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
+ }
  container.appendChild(headers);
 
  for (let s = 0; s < numSets; s++) {
  const prevSet = prevData && prevData[s] ? prevData[s] : null;
- container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet));
+ container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, prevSet, isTimeEx));
  }
 
  // Add set button
@@ -5262,7 +5348,10 @@ function goToNextExercise(currentWrap) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+ tagAllExercises(); // infer tags before accordion setup reads them
  setupAccordions(); // also handles superset toggle init
+ // Inject machine badges now that accordions have created .ex-top-row elements
+ try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
  // Add save button at the bottom of each session (not overview, not history)
  ['upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
  const session = document.getElementById('session-' + id);
@@ -5310,14 +5399,16 @@ function getPreviousExerciseData(exName) {
  return null;
 }
 
-function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
+function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet, isTimeEx) {
  // Swipe wrapper
  const swipeWrap = document.createElement('div');
  swipeWrap.className = 'log-set-wrap';
 
  const row = document.createElement('div');
  row.className = 'log-set-row';
+ if (isTimeEx) row.classList.add('time-row');
 
+ if (!isTimeEx) {
  // Weight pill (first column)
  const prevWeight = prevSet && prevSet.weight ? prevSet.weight : defaultWeight;
  const weightPill = document.createElement('div');
@@ -5331,16 +5422,26 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
  renderPill(weightPill);
  weightPill.onclick = (e) => { e.stopPropagation(); openPicker(weightPill); };
  row.appendChild(weightPill);
+ }
 
- // Reps pill (second column)
+ // Reps / Seconds pill
  const repsPill = document.createElement('div');
  repsPill.className = 'log-pill';
+ if (isTimeEx) {
+ repsPill.dataset.field = 'reps';
+ repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
+ repsPill.dataset.step = '1';
+ repsPill.dataset.unit = 's';
+ repsPill.dataset.label = 'Seconds';
+ repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+ } else {
  repsPill.dataset.field = 'reps';
  repsPill.dataset.value = prevSet && prevSet.reps ? String(prevSet.reps) : '';
  repsPill.dataset.step = '1';
  repsPill.dataset.unit = 'reps';
  repsPill.dataset.label = 'Reps';
  repsPill.dataset.placeholder = defaultReps ? String(defaultReps) : '0';
+ }
 
  renderPill(repsPill);
  repsPill.onclick = (e) => { e.stopPropagation(); openPicker(repsPill); };
@@ -5356,7 +5457,7 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
    haptic();
    check.classList.toggle('done');
    if (check.classList.contains('done')) {
-     if (!weightPill.dataset.value && prevSet) { weightPill.dataset.value = String(prevSet.weight); renderPill(weightPill); }
+     if (!isTimeEx) { const wp = row.querySelector('[data-field="weight"]'); if (wp && !wp.dataset.value && prevSet) { wp.dataset.value = String(prevSet.weight); renderPill(wp); } }
      if (!repsPill.dataset.value && prevSet) { repsPill.dataset.value = String(prevSet.reps); renderPill(repsPill); }
      // Set timer to exercise-specific rest time
      const exWrap = wrap || swipeWrap.closest('.exercise-wrap');
@@ -5375,9 +5476,9 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
          if (nextRow) {
            const nw = nextRow.querySelector('[data-field="weight"]');
            const nr = nextRow.querySelector('[data-field="reps"]');
-           if (nw && !nw.dataset.value && weightPill.dataset.value) {
-             nw.dataset.value = weightPill.dataset.value;
-
+           const curW = row.querySelector('[data-field="weight"]');
+           if (nw && !nw.dataset.value && curW && curW.dataset.value) {
+             nw.dataset.value = curW.dataset.value;
              renderPill(nw);
            }
            if (nr && !nr.dataset.value && repsPill.dataset.value) {
@@ -5493,11 +5594,13 @@ function createSetRow(defaultReps, defaultWeight, wrap, setNum, prevSet) {
 function renderPill(pill) {
  const val = pill.dataset.value;
  if (val) {
- pill.textContent = val;
+ pill.textContent = pill.dataset.unit === 's' ? val + 's' : val;
  pill.classList.remove('empty');
+ pill.classList.toggle('bw-value', val.startsWith('BW'));
  } else {
- pill.textContent = '-';
+ pill.textContent = pill.dataset.unit === 's' ? '-' : '-';
  pill.classList.add('empty');
+ pill.classList.remove('bw-value');
  }
 }
 
@@ -5507,6 +5610,7 @@ let activePill = null;
 let pickerStep = 1;
 let pickerRaw = ''; // string buffer for keypad input
 let pickerClosing = false;
+let pickerPreFilled = false;
 const PICKER_MAX_LEN = 5; // max chars (e.g. "120.5")
 const PICKER_MAX_INT = 3; // max digits before decimal
 
@@ -5521,6 +5625,10 @@ function pickerUpdateDisplay() {
  display.textContent = '0';
  display.classList.add('empty');
  confirm.disabled = true;
+ } else if (pickerRaw.startsWith('BW')) {
+ display.textContent = pickerRaw;
+ display.classList.remove('empty');
+ confirm.disabled = false;
  } else {
  display.textContent = pickerRaw;
  display.classList.remove('empty');
@@ -5531,14 +5639,44 @@ function pickerUpdateDisplay() {
 
 function pickerKeyTap(key) {
  haptic();
- if (key === 'back') {
- pickerRaw = pickerRaw.slice(0, -1);
+ if (key === 'BW') {
+ pickerRaw = 'BW';
+ pickerPreFilled = false;
+ } else if (key === 'back') {
+ pickerPreFilled = false;
+ if (pickerRaw.startsWith('BW+')) {
+   // BW+10 → backspace removes last char; if only "BW+" left, trim to "BW"
+   pickerRaw = pickerRaw.slice(0, -1);
+   if (pickerRaw === 'BW+') pickerRaw = 'BW';
+ } else if (pickerRaw === 'BW') {
+   pickerRaw = '';
+ } else {
+   pickerRaw = pickerRaw.slice(0, -1);
+ }
+ } else if (pickerRaw.startsWith('BW')) {
+ // In BW mode — digits append as +X
+ if (key === '.') return; // no decimals for BW offset
+ pickerPreFilled = false;
+ const plus = pickerRaw.indexOf('+');
+ const offset = plus !== -1 ? pickerRaw.slice(plus + 1) : '';
+ if (offset.length >= PICKER_MAX_INT) return;
+ if (plus === -1) {
+   pickerRaw = 'BW+' + key;
+ } else {
+   pickerRaw += key;
+ }
+ // strip leading zeros in offset: "BW+05" → "BW+5"
+ const newPlus = pickerRaw.indexOf('+');
+ const newOffset = pickerRaw.slice(newPlus + 1);
+ if (newOffset.length > 1) pickerRaw = 'BW+' + String(parseInt(newOffset, 10));
  } else if (key === '.') {
+ if (pickerPreFilled) { pickerRaw = '0'; pickerPreFilled = false; }
  if (pickerRaw.includes('.')) return;
  if (pickerRaw === '') pickerRaw = '0';
  pickerRaw += '.';
  } else {
- // digit 0-9
+ // digit 0-9 — clear pre-filled value on first tap
+ if (pickerPreFilled) { pickerRaw = ''; pickerPreFilled = false; }
  const dotIdx = pickerRaw.indexOf('.');
  if (dotIdx !== -1) {
  // already have decimal — allow max 1 digit after dot
@@ -5561,42 +5699,68 @@ function pickerKeyTap(key) {
 function openPicker(pill) {
  activePill = pill;
  pickerStep = parseFloat(pill.dataset.step) || 1;
- const existing = parseFloat(pill.dataset.value) || parseFloat(pill.dataset.placeholder) || 0;
+ const rawVal = (pill.dataset.value || '').trim();
+ const isWeight = pill.dataset.field === 'weight';
+ const isBW = rawVal.startsWith('BW');
 
  // Set initial raw value from existing
- if (existing > 0) {
- pickerRaw = pickerStep < 1 ? String(parseFloat(existing.toFixed(1))) : String(Math.round(existing));
+ if (isBW) {
+ pickerRaw = rawVal;
+ pickerPreFilled = true;
  } else {
- pickerRaw = '';
+ const existing = parseFloat(rawVal) || parseFloat(pill.dataset.placeholder) || 0;
+ if (existing > 0) {
+   pickerRaw = pickerStep < 1 ? String(parseFloat(existing.toFixed(1))) : String(Math.round(existing));
+   pickerPreFilled = true;
+ } else {
+   pickerRaw = '';
+   pickerPreFilled = false;
+ }
  }
 
  document.getElementById('pickerLabel').textContent = pill.dataset.label.toUpperCase();
 
- // Show/hide decimal key
+ // Show/hide decimal key and BW key
  const dotKey = document.getElementById('pickerDotKey');
  const dotPlaceholder = document.getElementById('pickerDotPlaceholder');
+ const bwKey = document.getElementById('pickerBwKey');
  if (pickerStep < 1) {
  dotKey.style.display = 'flex';
  dotPlaceholder.style.display = 'none';
  } else {
  dotKey.style.display = 'none';
- dotPlaceholder.style.display = '';
+ dotPlaceholder.style.display = isWeight ? 'none' : '';
  }
+ bwKey.style.display = isWeight ? 'flex' : 'none';
 
  pickerUpdateDisplay();
- document.getElementById('pickerOverlay').classList.add('visible');
- document.getElementById('pickerSheet').classList.add('open');
+ // Clear stale closing state — if transitionend never fired on a previous close,
+ // the 'closing' class persists and overrides 'open' (later in CSS), hiding the sheet.
+ pickerClosing = false;
+ const overlay = document.getElementById('pickerOverlay');
+ const sheet = document.getElementById('pickerSheet');
+ overlay.classList.remove('closing');
+ sheet.classList.remove('closing');
+ overlay.classList.add('visible');
+ sheet.classList.add('open');
 }
 
 function confirmPicker() {
  if (pickerClosing) return;
- const val = parseFloat(pickerRaw) || 0;
- if (val <= 0) return;
+ const isBW = pickerRaw.startsWith('BW');
+ if (!isBW) {
+   const val = parseFloat(pickerRaw) || 0;
+   if (val <= 0) return;
+ }
  pickerClosing = true;
  haptic();
  if (activePill) {
- activePill.dataset.value = val > 0 ? String(val) : '';
-
+ if (isBW) {
+   activePill.dataset.value = pickerRaw;
+ } else {
+   const val = parseFloat(pickerRaw) || 0;
+   activePill.dataset.value = val > 0 ? String(val) : '';
+ }
  renderPill(activePill);
  }
  closePicker();
@@ -5625,6 +5789,7 @@ function closePicker() {
 
 
 function addSetToContainer(container, defaultReps, wrap) {
+ const isTime = container.dataset.timeEx === '1';
  const rows = container.querySelectorAll('.log-set-row');
  let w = '', r = defaultReps || '';
  if (rows.length > 0) {
@@ -5635,7 +5800,7 @@ function addSetToContainer(container, defaultReps, wrap) {
  if (rp && rp.dataset.value) r = rp.dataset.value;
  }
  const setNum = rows.length + 1;
- const newRow = createSetRow(r, w, wrap, setNum, null);
+ const newRow = createSetRow(r, w, wrap, setNum, null, isTime);
  const addBtn = container.querySelector('.log-add-set');
  container.insertBefore(newRow, addBtn);
 }
@@ -5652,10 +5817,11 @@ function saveSession() {
  const repsPill = row.querySelector('[data-field="reps"]');
  const weightPill = row.querySelector('[data-field="weight"]');
  const reps = repsPill ? repsPill.dataset.value : '';
- const weight = weightPill ? weightPill.dataset.value : '';
+ const weight = weightPill ? (weightPill.dataset.value || '') : '';
  const done = row.querySelector('.log-check') ? row.querySelector('.log-check').classList.contains('done') : false;
  if (reps || weight || done) {
- sets.push({ reps: parseInt(reps) || 0, weight: parseFloat(weight) || 0, done });
+ const w = weight && weight.startsWith('BW') ? weight : (parseFloat(weight) || 0);
+ sets.push({ reps: parseInt(reps) || 0, weight: w, done });
  }
  });
  const noteEl = container.querySelector('.log-note');
@@ -5786,6 +5952,11 @@ function renderHistory() {
 const _showTabWithAdapt = showTab;
 const SESSION_TABS = ['upperA','lowerA','upperB','lowerB','recA','recB','recC'];
 showTab = function(tabId, btn) {
+ // TODO: re-enable pre-session check-in modal for session tabs
+ // if (SESSION_TABS.includes(tabId)) {
+ //   showCheckin(tabId, btn);
+ //   return;
+ // }
  _showTabWithAdapt(tabId, btn);
  if (tabId === 'history') renderHistory();
  if (tabId === 'overview') {
@@ -6331,7 +6502,7 @@ function updateMachineBadge(badge, exName) {
    const lastW = getLastWeightForEquipment(equip.id, exName);
    const weightStr = lastW !== null ? ' · ' + lastW + 'kg' : '';
    badge.className = 'ex-machine-badge configured';
-   badge.textContent = equip.brand + ' – ' + equip.name + weightStr;
+   badge.textContent = equipDisplayName(equip) + weightStr;
  } else {
    badge.className = 'ex-machine-badge unconfigured';
    badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#555" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg> Add machine';
@@ -6349,12 +6520,16 @@ function refreshAllMachineBadges() {
 
 let currentEquipSlotId = null;
 
+function equipDisplayName(eq) {
+ if (!eq) return '';
+ return eq.brand ? eq.brand + ' \u2013 ' + eq.name : eq.name;
+}
+
 function openEquipSheet(slotId) {
  currentEquipSlotId = slotId;
  const active = getActiveSession();
  const gymId = active.gymId;
  const equip = gymId ? getEquipmentForSlot(slotId, gymId) : null;
- const ge = getGymEquipment();
  const allEquip = getEquipment();
  const gyms = getGyms();
 
@@ -6365,43 +6540,44 @@ function openEquipSheet(slotId) {
 
  let body = '';
 
- // Current machine
- if (equip) {
-   body += '<div class="equip-current"><div class="equip-current-label">Current machine</div>' + equip.brand + ' – ' + equip.name + '</div>';
- }
-
- // Other machines linked to this slot at other gyms
- const otherLinks = ge.filter(l => l.slotId === slotId && l.gymId !== gymId);
- if (otherLinks.length > 0) {
-   body += '<div class="equip-list"><div class="equip-list-title">Same exercise at other gyms</div>';
-   otherLinks.forEach(link => {
-     const eq = allEquip.find(e => e.id === link.equipmentId);
-     const gym = gyms.find(g => g.id === link.gymId);
-     if (eq) {
-       body += `<div class="equip-list-item" onclick="assignEquipmentToSlot('${eq.id}','${slotId}')">
-         ${eq.brand} – ${eq.name}
-         <div class="equip-gym-name">${gym ? gym.name : 'Unknown gym'}</div>
-       </div>`;
-     }
+ // Dropdown: all machines saved at this gym
+ if (gymId) {
+   const ge = getGymEquipment();
+   const gymLinks = ge.filter(l => l.gymId === gymId);
+   const seen = new Set();
+   const gymMachines = [];
+   gymLinks.forEach(l => {
+     if (seen.has(l.equipmentId)) return;
+     seen.add(l.equipmentId);
+     const eq = allEquip.find(e => e.id === l.equipmentId);
+     if (eq) gymMachines.push(eq);
    });
-   body += '</div>';
+   if (gymMachines.length > 0) {
+     body += '<div class="equip-select-wrap">';
+     body += '<div class="equip-select-label">Machines at this gym</div>';
+     body += `<select class="equip-select" id="equipMachineSelect" onchange="equipSelectChanged('${slotId}')">`;
+     body += '<option value="">Select a machine…</option>';
+     gymMachines.forEach(eq => {
+       const selected = equip && equip.id === eq.id ? ' selected' : '';
+       body += `<option value="${eq.id}"${selected}>${equipDisplayName(eq)}</option>`;
+     });
+     body += '</select></div>';
+   }
  }
 
- // Add new machine form
- body += '<div class="equip-add-form">';
- body += '<div class="equip-list-title">Add new machine</div>';
- body += '<input class="gym-add-input" id="equipBrandInput" placeholder="Brand (e.g. Hammer Strength)" />';
- body += '<input class="gym-add-input" id="equipNameInput" placeholder="Machine name (e.g. Chest Press)" />';
- body += '<button class="equip-action-btn equip-save-btn" onclick="addEquipmentFromSheet()">Save machine</button>';
+ // Single text input, pre-filled if machine is linked
+ const currentName = equip ? equipDisplayName(equip) : '';
+ body += '<div class="equip-input-wrap">';
+ body += `<input class="gym-add-input" id="equipNameInput" placeholder="e.g. Hammer Strength \u2013 Chest Press" value="${currentName.replace(/"/g, '&quot;')}" />`;
  body += '</div>';
 
- // Remove link
+ // Save button
+ body += '<button class="equip-action-btn equip-save-btn" onclick="addEquipmentFromSheet()">Save machine</button>';
+
+ // Remove link (only if machine currently linked)
  if (equip && gymId) {
    body += `<button class="equip-action-btn equip-remove-btn" onclick="removeEquipmentLink('${slotId}')">Remove machine link</button>`;
  }
-
- // Substitute exercise
- body += `<button class="equip-action-btn equip-substitute-btn" onclick="openSubstitutionFlow('${slotId}')">Substitute exercise</button>`;
 
  document.getElementById('equipSheetBody').innerHTML = body;
  document.getElementById('equipSheetOverlay').classList.add('visible');
@@ -6429,19 +6605,39 @@ function assignEquipmentToSlot(equipId, slotId) {
  closeEquipSheet();
 }
 
+function equipSelectChanged(slotId) {
+ const sel = document.getElementById('equipMachineSelect');
+ if (!sel || !sel.value) return;
+ assignEquipmentToSlot(sel.value, slotId);
+}
+
 function addEquipmentFromSheet() {
- const brand = document.getElementById('equipBrandInput').value.trim();
  const name = document.getElementById('equipNameInput').value.trim();
- if (!brand || !name) return;
+ if (!name) return;
 
- const equip = getEquipment();
- const newEquip = { id: 'equip_' + Date.now(), brand, name };
- equip.push(newEquip);
- setEquipment(equip);
-
- // Also link to current gym+slot
  const active = getActiveSession();
- if (active.gymId && currentEquipSlotId) {
+ const gymId = active.gymId;
+ const currentEquip = gymId ? getEquipmentForSlot(currentEquipSlotId, gymId) : null;
+
+ // If editing an existing linked machine, update it in place
+ if (currentEquip && equipDisplayName(currentEquip) !== name) {
+   currentEquip.brand = '';
+   currentEquip.name = name;
+   const allEquip = getEquipment();
+   const idx = allEquip.findIndex(e => e.id === currentEquip.id);
+   if (idx >= 0) { allEquip[idx] = currentEquip; setEquipment(allEquip); }
+   refreshAllMachineBadges();
+   closeEquipSheet();
+   return;
+ }
+
+ // Otherwise create new equipment and link it
+ const allEquip = getEquipment();
+ const newEquip = { id: 'equip_' + Date.now(), brand: '', name };
+ allEquip.push(newEquip);
+ setEquipment(allEquip);
+
+ if (gymId && currentEquipSlotId) {
    assignEquipmentToSlot(newEquip.id, currentEquipSlotId);
  } else {
    closeEquipSheet();
@@ -6624,21 +6820,12 @@ function injectMachineBadges() {
    const exNote = ex.querySelector('.ex-note');
 
    const badge = createMachineBadge(exName);
-
-   if (exNote) {
-     ex.insertBefore(badge, exNote);
-   } else if (topRow) {
-     topRow.after(badge);
-   } else {
-     ex.appendChild(badge);
-   }
+   ex.appendChild(badge);
  });
 }
 
-// Run badge injection — accordions are already set up by DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-  try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
-});
+// Badge injection now runs inside the setupAccordions DOMContentLoaded handler
+// to guarantee .ex-top-row elements exist before badges are inserted.
 
 </script>
 <script>
