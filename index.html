@@ -3518,24 +3518,15 @@
  </div>
 
  <div class="section">
- <div class="section-label"><span>Bloc Chaîne Postérieure · Rest 2min</span></div>
+ <div class="section-label"><span>Hip Thrust · Rest 2min</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
  <div class="ex-name">Hip Thrust (Machine Panatta)</div>
  <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0 · Rest 2min"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min</div>
- <div class="ex-note">Full hip extension au sommet. Pas d'hyperextension lombaire.</div>
+ <div class="ex-note">Full hip extension. Pas d'hyperextension lombaire.</div>
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=hip+thrust+machine+panatta+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Romanian Deadlift</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0 · Rest 2min"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min</div>
- <div class="ex-note">Hip hinge, colonne neutre. Ischios + fessiers + bas du dos. Sangles recommandées.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+technique+hamstrings" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
@@ -3833,6 +3824,15 @@
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Romanian Deadlift</div>
+ <div class="ex-sets" data-perio-type="rdl-fbc" data-perio-suffix="2-1-0 · Rest 2min"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min</div>
+ <div class="ex-note">Hip hinge, neutral spine. Straps recommandés.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+technique+hamstrings" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
  </div>
 
  <div class="section">
@@ -3872,14 +3872,6 @@
  <div class="ex-note">ROM partiel si genou sensible.</div>
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=leg+extension+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Lying or Seated Ham Curl</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 10–15</strong> · 2-1-0</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=lying+leg+curl+hamstring+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
  <div class="ex-icon"></div>
@@ -4456,7 +4448,7 @@
  // Render overview for this block and switch to it
  renderOverview(block === 'recovery' ? 'recovery' : block === 'fullbody' ? 'fullbody' : 'main');
  if (block === 'fullbody') {
-   const fbBTab = document.querySelector('.tab[data-block="fullbody"]');
+   const fbBTab = document.querySelector('.tab[onclick*="fullBodyB"]');
    if (fbBTab) showTab('fullBodyB', fbBTab);
  } else {
    const overviewTab = document.querySelector('.tab');
@@ -5112,9 +5104,9 @@ function renderOverview(block) {
  monday.setHours(0,0,0,0);
 
  const sessionSequence = currentBlock === 'fullbody' ? [
-   { id: 'fullBodyB', tag: 'FB-B', name: 'Full Body B', sub: 'Lundi · Hip Thrust · RDL · CSR · Bras' },
-   { id: 'fullBodyA', tag: 'FB-A', name: 'Full Body A', sub: 'Mercredi · Belt Squat · Incline Press · Câbles' },
-   { id: 'fullBodyC', tag: 'FB-C', name: 'Full Body C', sub: 'Vendredi · Belt Squat · Jambes · Copenhagen' },
+   { id: 'fullBodyB', tag: 'A', name: 'Full Body A', sub: 'Lundi · Hip Thrust · CSR · Bras · Bulgarian' },
+   { id: 'fullBodyA', tag: 'B', name: 'Full Body B', sub: 'Mercredi · Belt Squat · Incline Press · Câbles' },
+   { id: 'fullBodyC', tag: 'C', name: 'Full Body C', sub: 'Vendredi · Belt Squat · RDL · Jambes · Copenhagen' },
  ] : [
    { id: 'upperA', tag: 'UA', name: 'Upper A', sub: 'Chest · Shoulders · Triceps · Back' },
    { id: 'lowerA', tag: 'LA', name: 'Lower A', sub: 'Belt squat · RDL · Split squat' },
@@ -5132,18 +5124,18 @@ function renderOverview(block) {
    weekDateStrs.push(localDateStr(d));
  }
 
- // Build a map: dateStr → sessionId for this week's logs
+ // Build a map: dateStr → sessionId (last session that day, for strip display)
+ // Also collect ALL session IDs done this week for doneSessionIds check
  const weekLogs = {};
+ const doneSessionIds = new Set();
  history.forEach(e => {
    if (!e.date) return;
    const d = e.date.slice(0, 10);
    if (d >= weekDateStrs[0] && d <= weekDateStrs[6]) {
-     weekLogs[d] = e.sessionId || '';
+     weekLogs[d] = e.sessionId || '';       // strip display: last per day is fine
+     if (e.sessionId) doneSessionIds.add(e.sessionId); // completion: collect all
    }
  });
-
- // Determine which sessions in the sequence are done this week
- const doneSessionIds = new Set(Object.values(weekLogs));
 
  // Find next session in sequence
  let nextSession = null;
@@ -5189,7 +5181,7 @@ function renderOverview(block) {
  const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
  let nextSessionHtml;
  if (nextSession) {
-   nextSessionHtml = `<div class="ov-next-session" onclick="openGymSheet('${nextSession.id}', document.querySelector('.tab[onclick*=${nextSession.id}]'), '${nextSession.name}', '${nextSession.sub}')">
+   nextSessionHtml = `<div class="ov-next-session" onclick="openGymSheet('${nextSession.id}', null, '${nextSession.name}', '${nextSession.sub}')">
      <div class="ov-next-badge">${nextSession.tag}<br>${dayNames[nextSession.dayIndex]}</div>
      <div class="ov-next-info">
        <div class="ov-next-title">${nextSession.name}</div>
@@ -5260,11 +5252,11 @@ function renderOverview(block) {
  const weeklyScheduleHtml = currentBlock === 'fullbody' ? `
    <div class="ov-section-label">Weekly Schedule</div>
    <div class="overview-card" style="padding:12px 16px;">
-     <div class="day-row"><div class="day-label" style="min-width:40px">Lun</div><div><div class="day-name">FB-B · Panatta/Hammer</div><div class="day-detail">Hip Thrust · RDL · CSR · Bras · Bulgarian</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Lun</div><div><div class="day-name">Full Body A · Panatta/Hammer</div><div class="day-detail">Hip Thrust · CSR · Bras · Bulgarian</div></div></div>
      <div class="day-row"><div class="day-label" style="min-width:40px">Mar</div><div><div class="day-name">🥊 Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Mer</div><div><div class="day-name">FB-A · Câbles/Technogym</div><div class="day-detail">Belt Squat · Incline Press · Pulldown · Épaules</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Mer</div><div><div class="day-name">Full Body B · Câbles/Technogym</div><div class="day-detail">Belt Squat · Incline Press · Pulldown · Épaules</div></div></div>
      <div class="day-row"><div class="day-label" style="min-width:40px">Jeu</div><div><div class="day-name">🥊 Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Ven</div><div><div class="day-name">FB-C · Belt Squat/Câbles</div><div class="day-detail">Belt Squat · Jambes · Tirage Neutre · Copenhagen</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Ven</div><div><div class="day-name">Full Body C · Belt Squat/Câbles</div><div class="day-detail">Belt Squat · RDL · Jambes · Tirage Neutre · Copenhagen</div></div></div>
      <div class="day-row"><div class="day-label" style="min-width:40px">S–D</div><div><div class="day-name">Repos</div><div class="day-detail">Récupération · Mobilité</div></div></div>
    </div>
  ` : '';
@@ -5937,6 +5929,8 @@ function goToNextExercise(currentWrap) {
 
 document.addEventListener('DOMContentLoaded', () => {
  tagAllExercises(); // infer tags before accordion setup reads them
+ // Run periodization BEFORE accordion so headers get correct week's sets/reps
+ if (typeof updatePeriodizationDisplay === 'function') updatePeriodizationDisplay();
  setupAccordions(); // also handles superset toggle init
  // Inject machine badges now that accordions have created .ex-top-row elements
  try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
@@ -5954,7 +5948,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── WORKOUT LOGGER ───────────────────────────────────────────────
 
-const SESSION_NAMES = { fullBodyA: 'FB-A · Mercredi', fullBodyB: 'FB-B · Lundi', fullBodyC: 'FB-C · Vendredi', upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B', recA: 'Recovery A', recB: 'Recovery B', recC: 'Recovery C' };
+const SESSION_NAMES = { fullBodyA: 'Full Body B · Mercredi', fullBodyB: 'Full Body A · Lundi', fullBodyC: 'Full Body C · Vendredi', upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B', recA: 'Recovery A', recB: 'Recovery B', recC: 'Recovery C' };
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
@@ -6469,6 +6463,7 @@ function closePicker() {
 
  activePill = null;
  pickerRaw = '';
+ pickerPreFilled = false;
 }
 
 
@@ -8138,18 +8133,18 @@ function removeAlternative(exName, idx) {
 <script>
 // ─── PERIODIZATION SYSTEM ─────────────────────────────────────────
 const PERIODIZATION_DATA = [
-  { week:1,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rir:3, phase:'Technique' },
-  { week:2,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rir:2, phase:'Accumulation' },
-  { week:3,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rir:1, phase:'Intensité' },
-  { week:4,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rir:3, phase:'Déload · Volume −40%' },
-  { week:5,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rir:2, phase:'Force' },
-  { week:6,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rir:2, phase:'Force' },
-  { week:7,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rir:1, phase:'Force intensité' },
-  { week:8,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rir:3, phase:'Déload · Volume −40%' },
-  { week:9,  bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rir:2, phase:'Hypertrophie' },
-  { week:10, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rir:2, phase:'Hypertrophie' },
-  { week:11, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rir:1, phase:'Hypertrophie intensité' },
-  { week:12, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rir:3, phase:'Déload · Volume −40%' },
+  { week:1,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:3, phase:'Technique' },
+  { week:2,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:2, phase:'Accumulation' },
+  { week:3,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:1, phase:'Intensité' },
+  { week:4,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:3, phase:'Déload · Volume −40%' },
+  { week:5,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:2, phase:'Force' },
+  { week:6,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:2, phase:'Force' },
+  { week:7,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:1, phase:'Force intensité' },
+  { week:8,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:3, phase:'Déload · Volume −40%' },
+  { week:9,  bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:2, phase:'Hypertrophie' },
+  { week:10, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:2, phase:'Hypertrophie' },
+  { week:11, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:1, phase:'Hypertrophie intensité' },
+  { week:12, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:3, phase:'Déload · Volume −40%' },
 ];
 
 function getPerioWeek() {
@@ -8195,9 +8190,14 @@ function updatePeriodizationDisplay() {
     var sets = el.dataset.perioFixedSets || pd.accSets;
     el.innerHTML = '<strong>' + sets + ' × ' + pd.accReps + '</strong>' + (suffix ? ' · ' + suffix : '');
   });
+  // RDL in FB-C: Bloc 1-2 same sets as main, Bloc 3 uses 8-10 reps instead of 6-8
+  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="rdl-fbc"]').forEach(function(el) {
+    var suffix = el.dataset.perioSuffix;
+    el.innerHTML = '<strong>' + pd.mainSets + ' × ' + pd.rdlReps + '</strong>' + (suffix ? ' · ' + suffix : '');
+  });
 }
 document.addEventListener('DOMContentLoaded', function() {
-  updatePeriodizationDisplay();
+  // updatePeriodizationDisplay() is now called before setupAccordions() in the main DOMContentLoaded
   var _origSave = typeof saveSession === 'function' ? saveSession : null;
   if (_origSave) {
     saveSession = function() {
