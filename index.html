@@ -5491,11 +5491,12 @@ document.addEventListener('DOMContentLoaded', () => {
  topRow.className = 'session-header-top';
  h2.parentNode.insertBefore(topRow, h2);
  topRow.appendChild(h2);
- const btn = document.createElement('button');
- btn.className = 'adapt-inline-btn visible';
- btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L20 12l-6.1 3.3L12 21l-1.9-5.7L4 12l6.1-3.3z"/></svg>Change';
- btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
- topRow.appendChild(btn);
+ // Change/Adapt button hidden for now
+ // const btn = document.createElement('button');
+ // btn.className = 'adapt-inline-btn visible';
+ // btn.innerHTML = 'Change';
+ // btn.onclick = (e) => { e.stopPropagation(); openAdaptDrawer(); };
+ // topRow.appendChild(btn);
  });
 });
 
