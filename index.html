@@ -1942,124 +1942,6 @@
  line-height: 1.4;
 }
 
-/* HISTORY VIEW */
-/* History swipe-to-delete */
-.history-swipe-wrap {
- position: relative;
- overflow: hidden;
- border-radius: 12px;
- margin-bottom: 10px;
-}
-.history-card {
- background: var(--card);
- border: none;
- border-radius: 12px;
- padding: 14px 16px;
- position: relative;
- transition: transform 0.25s ease;
- z-index: 1;
-}
-.history-card.swiped {
- transform: translateX(52px);
-}
-.history-swipe-delete {
- position: absolute;
- left: 0;
- top: 0;
- bottom: 0;
- width: 52px;
- background: var(--text);
- display: flex;
- align-items: center;
- justify-content: center;
- border-radius: 8px 0 0 8px;
- cursor: pointer;
- z-index: 0;
- opacity: 0;
- transition: opacity 0.2s ease;
-}
-.history-card.swiped ~ .history-swipe-delete {
- opacity: 1;
-}
-.history-swipe-delete svg {
- width: 18px;
- height: 18px;
- stroke: #3a3a3c;
- stroke-width: 2;
- fill: none;
-}
-.history-date {
- font-family: 'Inter', sans-serif;
- font-size: 12px;
- font-weight: 700;
- color: var(--muted);
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 6px;
-}
-.history-session-name {
- font-family: 'Inter', sans-serif;
- font-size: 18px;
- font-weight: 900;
- text-transform: uppercase;
- margin-bottom: 8px;
-}
-.history-ex-row {
- display: flex;
- justify-content: space-between;
- align-items: center;
- padding: 4px 0;
- border-bottom: 1px solid var(--border);
- font-size: 13px;
-}
-.history-ex-row:last-child { border-bottom: none; }
-.history-ex-name { font-weight: 600; }
-.history-ex-detail { color: var(--muted); font-size: 12px; }
-
-/* PROGRESS CHARTS */
-.chart-card {
- background: var(--card);
- border: 1px solid var(--border);
- border-radius: 10px;
- padding: 14px 16px;
- margin-bottom: 12px;
-}
-.chart-card h3 {
- font-family: 'Inter', sans-serif;
- font-size: 17px;
- font-weight: 800;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin-bottom: 10px;
- color: var(--accent);
-}
-.chart-select {
- background: var(--card2);
- border: 1px solid var(--border);
- border-radius: 8px;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- padding: 8px 12px;
- width: 100%;
- margin-bottom: 12px;
- outline: none;
- -webkit-appearance: none;
-}
-.chart-select:focus { border-color: var(--accent); }
-.chart-container { position: relative; height: 220px; margin-bottom: 8px; }
-.pb-badge {
- display: inline-block;
- background: rgba(255,215,64,0.15);
- color: var(--yellow);
- font-size: 12px;
- font-weight: 700;
- padding: 3px 8px;
- border-radius: 4px;
- letter-spacing: 0.5px;
- text-transform: uppercase;
-}
-
 /* SESSION SUMMARY SHEET */
 .summary-overlay {
  position: fixed;
@@ -2165,331 +2047,6 @@
 }
 .summary-close-btn:active { transform: scale(0.98); }
 
-/* PROGRESS CHART (Canvas) */
-.progress-chart-section { margin-bottom: 16px; }
-.progress-chart-card {
- background: #1c1c1e;
- border-radius: 12px;
- padding: 14px 16px;
-}
-.progress-chart-title {
- font-family: 'Inter', sans-serif;
- font-size: 14px;
- font-weight: 600;
- color: var(--text);
- margin-bottom: 10px;
-}
-.progress-pills-scroll {
- display: flex;
- gap: 6px;
- overflow-x: auto;
- scrollbar-width: none;
- padding-bottom: 2px;
- margin-bottom: 12px;
-}
-.progress-pills-scroll::-webkit-scrollbar { display: none; }
-.progress-pill {
- flex-shrink: 0;
- background: transparent;
- border: 1.5px solid var(--border);
- color: var(--muted);
- font-family: 'Inter', sans-serif;
- font-size: 10px;
- font-weight: 700;
- padding: 6px 12px;
- border-radius: 20px;
- cursor: pointer;
- transition: all 0.2s;
- white-space: nowrap;
- text-transform: uppercase;
- letter-spacing: 0.5px;
-}
-.progress-pill.active {
- border-color: var(--accent);
- color: var(--accent);
- background: rgba(226,241,107,0.1);
-}
-.progress-canvas-wrap {
- position: relative;
- height: 200px;
- margin-bottom: 8px;
-}
-.progress-canvas-wrap canvas {
- width: 100% !important;
- height: 100% !important;
-}
-.progress-best-stat {
- font-size: 12px;
- color: var(--muted);
-}
-.progress-best-stat strong {
- color: var(--accent);
- font-weight: 700;
-}
-.progress-empty-state {
- text-align: center;
- color: var(--muted);
- font-size: 13px;
- padding: 40px 0;
-}
-
-/* ─── GYM SELECTION + EQUIPMENT BOTTOM SHEETS ─── */
-.gym-sheet-overlay {
- position: fixed;
- inset: 0;
- background: rgba(0,0,0,0.5);
- z-index: 700;
- opacity: 0;
- pointer-events: none;
- transition: opacity 280ms ease;
-}
-.gym-sheet-overlay.visible { opacity: 1; pointer-events: auto; }
-
-.gym-sheet {
- position: fixed;
- bottom: 0;
- left: 0;
- right: 0;
- background: #1c1c1e;
- border-radius: 20px 20px 0 0;
- z-index: 701;
- transform: translateY(100%);
- transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1);
- max-width: 600px;
- margin: 0 auto;
- padding: 16px 16px 28px;
- max-height: 85vh;
- overflow-y: auto;
-}
-.gym-sheet.open { transform: translateY(0); }
-
-.gym-sheet-handle {
- width: 36px;
- height: 4px;
- background: #555;
- border-radius: 2px;
- margin: 0 auto 14px;
-}
-.gym-sheet-title {
- font-family: 'Inter', sans-serif;
- font-size: 20px;
- font-weight: 900;
- text-transform: uppercase;
- margin-bottom: 2px;
-}
-.gym-sheet-sub {
- font-size: 12px;
- color: var(--muted);
- margin-bottom: 16px;
-}
-
-.gym-pills {
- display: flex;
- flex-wrap: wrap;
- gap: 8px;
- margin-bottom: 14px;
- max-height: 160px;
- overflow-y: auto;
- -webkit-overflow-scrolling: touch;
-}
-.gym-pill {
- padding: 8px 16px;
- border-radius: 20px;
- border: 1px solid var(--border);
- background: transparent;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.15s;
-}
-.gym-pill.active {
- background: var(--accent);
- color: #000;
- border-color: var(--accent);
-}
-.gym-pill:active { opacity: 0.7; }
-
-.gym-add-row {
- display: flex;
- gap: 8px;
- margin-bottom: 16px;
-}
-.gym-add-input {
- flex: 1;
- background: #111;
- border: 1px solid var(--border);
- border-radius: 8px;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- padding: 10px 12px;
- outline: none;
-}
-.gym-add-input::placeholder { color: var(--muted); }
-.gym-add-input:focus { border-color: var(--accent); }
-.gym-add-btn {
- background: var(--accent);
- color: #000;
- border: none;
- border-radius: 8px;
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 600;
- padding: 10px 16px;
- cursor: pointer;
-}
-.gym-add-btn:active { opacity: 0.7; }
-
-.gym-start-btn {
- width: 100%;
- background: var(--accent);
- color: #030B1A;
- border: none;
- border-radius: 8px;
- font-family: 'Inter', sans-serif;
- font-size: 14px;
- font-weight: 600;
- padding: 12px 8px;
- cursor: pointer;
- text-transform: none;
- letter-spacing: -0.5px;
-}
-.gym-start-btn:active { opacity: 0.7; }
-
-/* Machine name input on exercise cards */
-
-
-/* Equipment bottom sheet specifics */
-.equip-select-wrap {
- margin-bottom: 14px;
-}
-.equip-select-label {
- font-family: 'Inter', sans-serif;
- font-size: 11px;
- font-weight: 600;
- color: var(--muted);
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 8px;
-}
-.equip-select {
- width: 100%;
- background: #111;
- border: 1px solid var(--border);
- border-radius: 8px;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- padding: 10px 12px;
- outline: none;
- appearance: none;
- -webkit-appearance: none;
- background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
- background-repeat: no-repeat;
- background-position: right 12px center;
-}
-.equip-select:focus { border-color: var(--accent); }
-.equip-select option { background: #1C1C1E; color: var(--text); }
-
-.equip-input-wrap {
- margin-bottom: 14px;
-}
-.equip-input-wrap .gym-add-input {
- width: 100%;
-}
-
-.equip-action-btn {
- width: 100%;
- padding: 12px 8px;
- border-radius: 8px;
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 600;
- cursor: pointer;
- margin-bottom: 8px;
- text-align: center;
-}
-.equip-action-btn:active { opacity: 0.7; }
-.equip-remove-btn {
- background: transparent;
- border: 1px solid var(--border);
- color: var(--muted);
-}
-.equip-save-btn {
- background: var(--accent);
- border: none;
- color: #030B1A;
-}
-
-/* Substitution flow */
-.sub-flow { margin-top: 14px; }
-.sub-flow-title {
- font-family: 'Inter', sans-serif;
- font-size: 14px;
- font-weight: 700;
- margin-bottom: 10px;
-}
-.sub-suggestions {
- margin-bottom: 10px;
-}
-.sub-suggestion-pill {
- display: inline-block;
- padding: 8px 14px;
- border-radius: 20px;
- border: 1px solid var(--border);
- background: transparent;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 12px;
- cursor: pointer;
- margin: 0 6px 6px 0;
- transition: all 0.15s;
-}
-.sub-suggestion-pill:active,
-.sub-suggestion-pill.active {
- background: var(--accent);
- color: #000;
- border-color: var(--accent);
-}
-.sub-free-input {
- width: 100%;
- background: #111;
- border: 1px solid var(--border);
- border-radius: 8px;
- color: var(--text);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- padding: 10px 12px;
- outline: none;
- margin-bottom: 10px;
-}
-.sub-free-input::placeholder { color: var(--muted); }
-.sub-free-input:focus { border-color: var(--accent); }
-.sub-btn-row {
- display: flex;
- gap: 8px;
-}
-.sub-btn-row button {
- flex: 1;
- padding: 10px 8px;
- border-radius: 8px;
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 600;
- cursor: pointer;
-}
-.sub-cancel-btn {
- background: transparent;
- border: 1px solid var(--border);
- color: var(--text);
-}
-.sub-confirm-btn {
- background: var(--accent);
- border: none;
- color: #030B1A;
-}
 /* SETTINGS PAGE */
 .settings-page {
   position: fixed; inset: 0; background: #0a0a0a; z-index: 400;
@@ -2686,24 +2243,6 @@
  <button class="addzone-cancel" onclick="closeAddZone()">Cancel</button>
  <button class="addzone-save" onclick="saveNewZone()">Add</button>
  </div>
-</div>
-
-<!-- GYM SELECTION SHEET -->
-<div class="gym-sheet-overlay" id="gymSheetOverlay" onclick="closeGymSheet()"></div>
-<div class="gym-sheet" id="gymSheet">
- <div class="gym-sheet-handle"></div>
- <div class="gym-sheet-title" id="gymSheetTitle">Start Session</div>
- <div class="gym-sheet-sub" id="gymSheetSub"></div>
- <div id="gymSheetBody"></div>
-</div>
-
-<!-- EQUIPMENT SHEET -->
-<div class="gym-sheet-overlay" id="equipSheetOverlay" onclick="closeEquipSheet()"></div>
-<div class="gym-sheet" id="equipSheet">
- <div class="gym-sheet-handle"></div>
- <div class="gym-sheet-title" id="equipSheetTitle">Equipment</div>
- <div class="gym-sheet-sub" id="equipSheetSub"></div>
- <div id="equipSheetBody"></div>
 </div>
 
 <!-- CHECK-IN SHEET -->
@@ -3436,28 +2975,7 @@
 
  </div>
 
- <!-- ===== HISTORY ===== -->
- <div class="session" id="session-history">
- <div class="session-header">
- <h2><span class="session-title-label">Workout</span><span>History</span></h2>
- <div class="session-goal">Your logged sessions and progress.</div>
- </div>
 
- <!-- Canvas progress chart -->
- <div class="progress-chart-section" id="progressChartSection">
- <div class="progress-chart-card">
- <div class="progress-chart-title">Progress</div>
- <div class="progress-pills-scroll" id="progressPills"></div>
- <div class="progress-canvas-wrap" id="progressCanvasWrap">
- <canvas id="progressCanvasChart"></canvas>
- </div>
- <div id="progressBestStat" class="progress-best-stat"></div>
- </div>
- </div>
-
- <div id="historyList"></div>
- <button onclick="exportHistory()" style="width:100%;margin-top:12px;padding:14px 16px;height:44px;background:var(--card);border:1px solid #6a6a6a;border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:-0.5px;cursor:pointer;">Export history as JSON</button>
- </div>
 
 </div>
 
@@ -3492,15 +3010,6 @@
 
 
 <script>
- // ─── DATA MIGRATION ────────────────────────────────────────────────
- (function migrateHistory() {
- const oldData = localStorage.getItem('gym_history');
- if (oldData && !localStorage.getItem('gymapp_history_v1')) {
- localStorage.setItem('gymapp_history_v1', oldData);
- localStorage.removeItem('gym_history');
- }
- })();
-
  function lsGet(key, fallback) {
    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
    catch(e) { return fallback; }
@@ -3984,86 +3493,14 @@ function applySessionImpact() {
 
 // ─── DYNAMIC OVERVIEW ─────────────────────────────────────────────
 
-const OVERVIEW_DATA = {
- main: {
- accent: 'var(--accent)',
- cards: [
- { title: 'Weekly Structure', type: 'weekly-grid', rows: [
- { cards: [
- { day: 'Day 1', name: 'Upper A', detail: 'Chest · Shoulders · Triceps · Back', size: 'full' },
- ]},
- { cards: [
- { day: 'Day 2', name: 'Lower A', detail: 'Belt squat · RDL · Split squat · Hip prehab', size: 'full' },
- ]},
- { cards: [
- { day: 'Day 3', name: 'Rest / Shadowboxing at home', detail: '10–15 min technique, footwork — no power', size: 'full' },
- ]},
- { cards: [
- { day: 'Day 4', name: 'Upper B', detail: 'Back · Biceps · Rear delt · Chest accessory', size: 'full' },
- ]},
- { cards: [
- { day: 'Day 5', name: 'Lower B', detail: 'Hip thrust · Hinge · Abduction · Conditioning', size: 'full' },
- ]},
- { cards: [
- { day: 'Day 6-7', name: 'Rest / Shadowboxing / Mobility', detail: 'Hip mobility block 3–5x/week at home', size: 'full' },
- ]},
- ]},
- { title: ' Progression', type: 'prog', items: [
- { weeks: 'WK 1–2', desc: 'Establish movements. 4 sets main lifts. 2–3 RIR. Learn the sessions.' },
- { weeks: 'WK 3–4', desc: 'Tighten to 1–2 RIR. Push closer to failure.' },
- ]},
- ]
- },
- recovery: {
- accent: '#888',
- cards: [
- { title: ' Recovery Block — 2 Weeks', type: 'text',
- text: 'Full Body · 3 sessions/week · 55 min max' },
- { title: 'Goal', type: 'text',
- text: "Active recovery block triggered by golfer's elbow flare and accumulated fatigue. The goal is NOT to progress — it's to let tendons recover while maintaining the muscle stimulus. Volume is reduced by ~30%, intensity stays moderate (RIR 3+)." },
- { title: '⚠ Key Rules', type: 'list', items: [
- 'No biceps isolation for 2 weeks',
- 'All pulling movements: neutral or overhand grip only — no supinated grip under load',
- 'If any pulling movement aggravates elbow at 3+/10 → switch to 1-arm cable or skip',
- 'If a session feels off (bad sleep, soreness) → cut 1 set per exercise, don\'t change movements',
- 'Week 2 should feel easier — that\'s intentional',
- ]},
- { title: ' Sessions', type: 'days', items: [
- { label: 'A', name: 'Push emphasis', detail: 'Belt squat · DB Incline · Row · RDL' },
- { label: 'B', name: 'Pull emphasis', detail: 'Hack squat · Pulldown · DB Press · Hip thrust' },
- { label: 'C', name: 'Legs emphasis', detail: 'Bulgarian split squat · Cable row · DB Bench · Calves' },
- ]},
- { title: ' Return Condition', type: 'text',
- text: "Resume the hypertrophy block (WK 1-2) after these 2 weeks ONLY if golfer's elbow is back to 1/10 or less. If still flaring — consult Ambrose." },
- ]
- }
-};
-
 function renderOverview(block) {
  const el = document.getElementById('session-overview');
-
- if (block === 'recovery') {
-   const data = OVERVIEW_DATA.recovery;
-   const accentColor = data.accent;
-   el.innerHTML = data.cards.map(card => {
-     let content = '';
-     if (card.type === 'days') {
-       content = card.items.map(d => `<div class="day-row"><div class="day-label">${d.label}</div><div><div class="day-name">${d.name}</div><div class="day-detail">${d.detail}</div></div></div>`).join('');
-     } else if (card.type === 'text') {
-       content = `<div style="font-size:13px;color:#bbb;line-height:1.6;">${card.text}</div>`;
-     } else if (card.type === 'list') {
-       content = `<ul style="margin:0;padding-left:18px;font-size:13px;color:#bbb;line-height:1.8;">${card.items.map(li => `<li>${li}</li>`).join('')}</ul>`;
-     }
-     return `<div class="overview-card"><h3 style="color:${accentColor}">${card.title}</h3>${content}</div>`;
-   }).join('');
-   return;
- }
 
  // ── MAIN OVERVIEW (dynamic) ──
  const currentBlock = localStorage.getItem('gymapp_current_block') || 'main';
 
  // Block pill
- const blockLabels = { main: 'Hypertrophy · Wk 1–2', main34: 'Hypertrophy · Wk 3–4', recovery: 'Recovery', fullbody: 'Full Body 3-Day' };
+ const blockLabels = { fullbody: 'MT S&C · 3-Day' };
  const blockLabel = blockLabels[currentBlock] || 'Hypertrophy';
  if (!localStorage.getItem('gymapp_block_start_' + currentBlock)) {
    const _d = new Date();
@@ -4076,7 +3513,7 @@ function renderOverview(block) {
  // Count sessions logged since block start
  const allHistory = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
  const blockSessions = allHistory.filter(e => e.date && new Date(e.date) >= blockStartDate).length;
- const sessionsPerWeek = currentBlock === 'fullbody' ? 3 : 4;
+ const sessionsPerWeek = 3;
  const totalSessions = sessionsPerWeek * 4;
  const weekNum = Math.min(Math.floor(blockSessions / sessionsPerWeek) + 1, 4);
  const blockPct = Math.min(100, Math.round((blockSessions / totalSessions) * 100));
@@ -4092,15 +3529,10 @@ function renderOverview(block) {
  monday.setDate(today.getDate() + mondayOffset);
  monday.setHours(0,0,0,0);
 
- const sessionSequence = currentBlock === 'fullbody' ? [
+ const sessionSequence = [
    { id: 'fullBodyB', tag: 'S1', name: 'S1', sub: 'Quad Dominant · Jump Squat · Belt Squat · Incline Press · Sprints' },
    { id: 'fullBodyA', tag: 'S2', name: 'S2', sub: 'Posterior Chain · Med Ball · RDL · Pulldown · Bike Intervals' },
    { id: 'fullBodyC', tag: 'S3', name: 'S3', sub: 'Unilateral · Explosive BSS · Weighted BSS · DB Shoulder · Intervals' },
- ] : [
-   { id: 'upperA', tag: 'UA', name: 'Upper A', sub: 'Chest · Shoulders · Triceps · Back' },
-   { id: 'lowerA', tag: 'LA', name: 'Lower A', sub: 'Belt squat · RDL · Split squat' },
-   { id: 'upperB', tag: 'UB', name: 'Upper B', sub: 'Back · Biceps · Rear delt' },
-   { id: 'lowerB', tag: 'LB', name: 'Lower B', sub: 'Hip thrust · Hinge · Abduction' },
  ];
  const dayLetters = ['M','T','W','T','F','S','S'];
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
@@ -4486,12 +3918,6 @@ document.addEventListener('DOMContentLoaded', () => {
  // topRow.appendChild(btn);
  });
 });
-
-function updateAllGymPills() {
-  document.querySelectorAll('.session-gym-pill').forEach(pill => {
-    pill.textContent = gym ? gym.name : 'No gym';
-  });
-}
 
 // ─── REST TIMER (BOTTOM BAR) ──────────────────────────────────────
 
@@ -5535,104 +4961,10 @@ function saveSession() {
  localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
 
 
- renderHistory();
  const cb = localStorage.getItem('gymapp_current_block') || 'main';
  renderOverview('fullbody');
 
  showSummarySheet(entry);
-}
-
-function exportHistory() {
- const data = localStorage.getItem('gymapp_history_v1') || '[]';
- const blob = new Blob([data], { type: 'application/json' });
- const url = URL.createObjectURL(blob);
- const a = document.createElement('a');
- a.href = url;
- a.download = `gym-history-${new Date().toISOString().slice(0,10)}.json`;
- a.click();
- URL.revokeObjectURL(url);
-}
-
-function renderHistory() {
- const list = document.getElementById('historyList');
- if (!list) return;
- const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
-
- if (history.length === 0) {
-   list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px 0;font-size:14px;">No sessions logged yet.<br>Go to a session and tap Log to start.</div>';
-   return;
- }
-
- list.innerHTML = '';
- history.slice(0, 20).forEach((entry) => {
-   const d = new Date(entry.date);
-   const dateStr = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
-   const exRows = entry.exercises.map(ex => {
-     const bestSet = ex.sets.reduce((best, s) => s.weight > best.weight ? s : best, { weight: 0, reps: 0 });
-     const totalVol = ex.sets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
-     return `<div class="history-ex-row"><span class="history-ex-name">${ex.name}</span><span class="history-ex-detail">${bestSet.weight}kg × ${bestSet.reps} · Vol: ${totalVol}kg</span></div>`;
-   }).join('');
-
-   const wrap = document.createElement('div');
-   wrap.className = 'history-swipe-wrap';
-
-   const card = document.createElement('div');
-   card.className = 'history-card';
-   card.innerHTML = `<div class="history-date">${dateStr}</div><div class="history-session-name">${entry.sessionName}</div>${exRows}`;
-   wrap.appendChild(card);
-
-   const del = document.createElement('div');
-   del.className = 'history-swipe-delete';
-   del.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
-   del.onclick = () => {
-     haptic();
-     wrap.style.maxHeight = wrap.offsetHeight + 'px';
-     wrap.style.transition = 'max-height 0.2s ease, opacity 0.2s ease';
-     requestAnimationFrame(() => { wrap.style.maxHeight = '0'; wrap.style.opacity = '0'; });
-     setTimeout(() => {
-       const h = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
-       const removeIdx = h.findIndex(e => e.id === entry.id);
-       if (removeIdx >= 0) h.splice(removeIdx, 1);
-       localStorage.setItem('gymapp_history_v1', JSON.stringify(h));
-       wrap.remove();
-     }, 220);
-   };
-   wrap.appendChild(del);
-
-   // Swipe right to reveal delete on left
-   let startX = 0, currentX = 0, swiping = false;
-   card.addEventListener('touchstart', (e) => {
-     startX = e.touches[0].clientX; currentX = startX; swiping = false;
-     card.style.transition = 'none';
-   }, { passive: true });
-   card.addEventListener('touchmove', (e) => {
-     currentX = e.touches[0].clientX;
-     const dx = currentX - startX;
-     if (dx > 10) swiping = true;
-     if (swiping) {
-       card.style.transform = `translateX(${Math.min(Math.max(dx, 0), 56)}px)`;
-       del.style.opacity = Math.min(dx / 40, 1);
-     }
-   }, { passive: true });
-   card.addEventListener('touchend', () => {
-     card.style.transition = 'transform 0.25s ease';
-     const dx = currentX - startX;
-     if (dx > 30) {
-       card.classList.add('swiped'); card.style.transform = ''; del.style.opacity = '';
-     } else {
-       card.classList.remove('swiped'); card.style.transform = '';
-       del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0';
-     }
-   });
-   card.addEventListener('click', () => {
-     if (card.classList.contains('swiped')) {
-       card.classList.remove('swiped');
-       del.style.transition = 'opacity 0.2s ease'; del.style.opacity = '0';
-     }
-   });
-
-   list.appendChild(wrap);
- });
 }
 
 // Patch showTab to handle history + pre-session check-in
@@ -5645,48 +4977,8 @@ showTab = function(tabId, btn) {
  //   return;
  // }
  _showTabWithAdapt(tabId, btn);
- if (tabId === 'history') renderHistory();
- if (tabId === 'overview') {
-   const cb = localStorage.getItem('gymapp_current_block') || 'main';
-   renderOverview('fullbody');
- }
+ if (tabId === 'overview') renderOverview('fullbody');
  if (SESSION_TABS.includes(tabId)) applySessionImpact();
- if (SESSION_TABS.includes(tabId)) setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
-};
-
-// ─── PROGRESS CHARTS ──────────────────────────────────────────────
-
-function getAllExerciseNames() {
- const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- const names = new Set();
- history.forEach(entry => entry.exercises.forEach(ex => names.add(ex.name)));
- return [...names].sort();
-}
-
-function getExerciseHistory(name) {
- const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- const data = [];
- history.slice().reverse().forEach(entry => {
- const ex = entry.exercises.find(e => e.name === name);
- if (!ex) return;
- const bestSet = ex.sets.reduce((best, s) => s.weight > best.weight ? s : best, { weight: 0, reps: 0 });
- const totalVol = ex.sets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
- const d = new Date(entry.date);
- data.push({
- date: d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }),
- weight: bestSet.weight,
- reps: bestSet.reps,
- volume: totalVol
- });
- });
- return data;
-}
-
-// Patch renderHistory to also populate canvas-based progress chart
-const _origRenderHistory = renderHistory;
-renderHistory = function() {
- _origRenderHistory();
- populateProgressChart();
 };
 
 // ─── SESSION SUMMARY SHEET ──────────────────────────────────────
@@ -5737,188 +5029,6 @@ function closeSummarySheet() {
  document.getElementById('summarySheet').classList.remove('open');
  document.getElementById('summaryOverlay').classList.remove('visible');
 }
-
-// ─── CANVAS PROGRESS CHART ─────────────────────────────────────
-
-let selectedProgressExercise = '';
-
-function populateProgressChart() {
- const pillsContainer = document.getElementById('progressPills');
- const section = document.getElementById('progressChartSection');
- if (!pillsContainer || !section) return;
-
- const names = getAllExerciseNames();
- if (names.length === 0) {
-   section.style.display = 'none';
-   return;
- }
- section.style.display = '';
-
- pillsContainer.innerHTML = '';
- names.forEach(name => {
-   const pill = document.createElement('button');
-   pill.className = 'progress-pill' + (name === selectedProgressExercise ? ' active' : '');
-   pill.textContent = name;
-   pill.onclick = () => {
-     selectedProgressExercise = name;
-     pillsContainer.querySelectorAll('.progress-pill').forEach(p => p.classList.remove('active'));
-     pill.classList.add('active');
-     drawProgressCanvas(name);
-   };
-   pillsContainer.appendChild(pill);
- });
-
- // Auto-select first if none selected or selection invalid
- if (!selectedProgressExercise || !names.includes(selectedProgressExercise)) {
-   selectedProgressExercise = names[0];
-   const firstPill = pillsContainer.querySelector('.progress-pill');
-   if (firstPill) firstPill.classList.add('active');
- }
- drawProgressCanvas(selectedProgressExercise);
-}
-
-function drawProgressCanvas(exerciseName) {
- const canvas = document.getElementById('progressCanvasChart');
- const wrap = document.getElementById('progressCanvasWrap');
- const bestDiv = document.getElementById('progressBestStat');
- if (!canvas || !wrap) return;
-
- const data = getExerciseHistory(exerciseName);
- // Last 10 data points
- const points = data.slice(-10);
-
- if (points.length < 2) {
-   wrap.innerHTML = '<div class="progress-empty-state">Need at least 2 sessions to show a chart.</div>';
-   bestDiv.innerHTML = '';
-   return;
- }
-
- // Ensure canvas element exists
- if (!wrap.querySelector('canvas')) {
-   wrap.innerHTML = '<canvas id="progressCanvasChart"></canvas>';
- }
- const cvs = wrap.querySelector('canvas');
- const ctx = cvs.getContext('2d');
-
- // Set canvas resolution to match display
- const rect = wrap.getBoundingClientRect();
- const dpr = window.devicePixelRatio || 1;
- cvs.width = rect.width * dpr;
- cvs.height = rect.height * dpr;
- cvs.style.width = rect.width + 'px';
- cvs.style.height = rect.height + 'px';
- ctx.scale(dpr, dpr);
-
- const W = rect.width;
- const H = rect.height;
- const pad = { top: 20, right: 16, bottom: 36, left: 40 };
- const chartW = W - pad.left - pad.right;
- const chartH = H - pad.top - pad.bottom;
-
- const weights = points.map(p => p.weight);
- const minW = Math.min(...weights);
- const maxW = Math.max(...weights);
- const range = maxW - minW || 10;
- const yMin = Math.max(0, minW - range * 0.15);
- const yMax = maxW + range * 0.15;
-
- // Clear
- ctx.clearRect(0, 0, W, H);
-
- // Grid lines
- const ySteps = 4;
- ctx.strokeStyle = 'rgba(255,255,255,0.06)';
- ctx.lineWidth = 1;
- for (let i = 0; i <= ySteps; i++) {
-   const y = pad.top + (chartH / ySteps) * i;
-   ctx.beginPath();
-   ctx.moveTo(pad.left, y);
-   ctx.lineTo(W - pad.right, y);
-   ctx.stroke();
- }
-
- // Y axis labels
- ctx.fillStyle = '#888';
- ctx.font = '10px Inter, sans-serif';
- ctx.textAlign = 'right';
- ctx.textBaseline = 'middle';
- for (let i = 0; i <= ySteps; i++) {
-   const y = pad.top + (chartH / ySteps) * i;
-   const val = yMax - ((yMax - yMin) / ySteps) * i;
-   ctx.fillText(Math.round(val), pad.left - 6, y);
- }
-
- // X positions
- const xStep = points.length > 1 ? chartW / (points.length - 1) : 0;
- function getX(i) { return pad.left + i * xStep; }
- function getY(w) { return pad.top + chartH - ((w - yMin) / (yMax - yMin)) * chartH; }
-
- // Line
- const accent = '#E2F16B';
- ctx.strokeStyle = accent;
- ctx.lineWidth = 2;
- ctx.lineJoin = 'round';
- ctx.lineCap = 'round';
- ctx.beginPath();
- points.forEach((p, i) => {
-   const x = getX(i);
-   const y = getY(p.weight);
-   if (i === 0) ctx.moveTo(x, y);
-   else ctx.lineTo(x, y);
- });
- ctx.stroke();
-
- // Fill under line
- ctx.save();
- ctx.beginPath();
- points.forEach((p, i) => {
-   const x = getX(i);
-   const y = getY(p.weight);
-   if (i === 0) ctx.moveTo(x, y);
-   else ctx.lineTo(x, y);
- });
- ctx.lineTo(getX(points.length - 1), pad.top + chartH);
- ctx.lineTo(getX(0), pad.top + chartH);
- ctx.closePath();
- const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
- grad.addColorStop(0, 'rgba(226,241,107,0.18)');
- grad.addColorStop(1, 'rgba(226,241,107,0)');
- ctx.fillStyle = grad;
- ctx.fill();
- ctx.restore();
-
- // Dots
- points.forEach((p, i) => {
-   const x = getX(i);
-   const y = getY(p.weight);
-   ctx.beginPath();
-   ctx.arc(x, y, 4, 0, Math.PI * 2);
-   ctx.fillStyle = accent;
-   ctx.fill();
-   ctx.strokeStyle = '#1c1c1e';
-   ctx.lineWidth = 2;
-   ctx.stroke();
- });
-
- // X axis labels (dates)
- ctx.fillStyle = '#888';
- ctx.font = '9px Inter, sans-serif';
- ctx.textAlign = 'center';
- ctx.textBaseline = 'top';
- // Show max ~6 labels to avoid overlap
- const labelInterval = Math.max(1, Math.ceil(points.length / 6));
- points.forEach((p, i) => {
-   if (i % labelInterval === 0 || i === points.length - 1) {
-     ctx.fillText(p.date, getX(i), pad.top + chartH + 8);
-   }
- });
-
- // Best ever stat
- const allData = getExerciseHistory(exerciseName);
- const bestWeight = Math.max(...allData.map(d => d.weight));
- const bestEntry = allData.find(d => d.weight === bestWeight);
- bestDiv.innerHTML = bestEntry ? `<strong>Best ever:</strong> ${bestWeight}kg x ${bestEntry.reps} reps` : '';
-}
 </script>
 
 
@@ -5953,37 +5063,6 @@ function drawProgressCanvas(exerciseName) {
 </div>
 
 
-<script>
-// ─── GYM SELECTION + EQUIPMENT + SUBSTITUTION SYSTEM ────────────
-
-// Data model initialization
-(function initGymData() {
-  if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
- if (!localStorage.getItem('gymApp_gymEquipment')) localStorage.setItem('gymApp_gymEquipment', '[]');
- if (!localStorage.getItem('gymApp_activeSession')) localStorage.setItem('gymApp_activeSession', JSON.stringify({ gymId: null, substitutions: {} }));
- // Auto-restore last used gym if active session has no gym
- const _as = JSON.parse(localStorage.getItem('gymApp_activeSession'));
- if (!_as.gymId) {
-   const _lastGym = localStorage.getItem('gymApp_lastGymId');
-   if (_lastGym) { _as.gymId = _lastGym; localStorage.setItem('gymApp_activeSession', JSON.stringify(_as)); }
- }
-})();
-
-// Migrate old equipId → equipmentId in gymEquipment records
-(function migrateGymEquipment() {
-  const key = 'gymApp_gymEquipment';
-  const records = JSON.parse(localStorage.getItem(key) || '[]');
-  const migrated = records.map(r => {
-    if (r.equipId && !r.equipmentId) {
-      return { gymId: r.gymId, equipmentId: r.equipId, slotId: r.slotId || '' };
-    }
-    return r;
-  });
-  localStorage.setItem(key, JSON.stringify(migrated));
-})();
-
-
-</script>
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeAdaptDrawer()"></div>
 
