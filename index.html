@@ -2523,6 +2523,65 @@
 .settings-remove-btn { background: none; border: none; color: #555; font-size: 16px; cursor: pointer; padding: 4px 8px; }
 .settings-empty { color: #333; font-size: 12px; padding: 14px; font-family: 'Inter', sans-serif; }
 /* ── PERIODIZATION BADGE ── */
+/* MT CONTROLS BAR */
+#mt-controls-bar {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: #141415;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+}
+#mt-controls-bar.visible { display: block; }
+.mt-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.mt-phase-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+}
+.mt-phase-btn.active { background: var(--accent); color: #000; }
+.mt-phase-btn:not(.active) { background: var(--surface); color: #aaa; }
+.mt-week-stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.mt-week-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#mtWeekDisplay2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
 .perio-bar { margin:0; background:linear-gradient(135deg,#1a1f0a 0%,#252d0e 100%); border-bottom:1px solid var(--accent); padding:10px 16px; text-align:center; }
 .perio-bar-main { font-size:13px; font-weight:700; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase; }
 .perio-bar-phase { font-size:11px; color:#8a9a50; margin-top:3px; }
@@ -2556,6 +2615,19 @@
  </div>
 </header>
 
+<!-- MT CONTROLS BAR -->
+<div id="mt-controls-bar">
+ <div class="mt-bar-inner">
+  <button id="mtPhase1Btn2" class="mt-phase-btn active" onclick="setMTPhase(1)">Phase 1</button>
+  <button id="mtPhase2Btn2" class="mt-phase-btn" onclick="setMTPhase(2)">Phase 2</button>
+  <div class="mt-week-stepper">
+   <button class="mt-week-btn" onclick="mtWeekStep(-1)">−</button>
+   <span id="mtWeekDisplay2">S1 · Développement</span>
+   <button class="mt-week-btn" onclick="mtWeekStep(1)">+</button>
+  </div>
+ </div>
+</div>
+
 <!-- SLIDE PANEL -->
 <div class="panel-backdrop" id="panelBackdrop" onclick="closePanel()"></div>
 <div class="slide-panel" id="slidePanel">
@@ -2567,20 +2639,6 @@
  <div class="panel-item-label">MT S&amp;C</div>
  <div class="panel-item-sub">Muay Thai S&amp;C · S1 / S2 / S3</div>
  </div>
- <div id="mtPhaseWeekControls" style="padding:8px 16px 4px;">
- <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#555;text-transform:uppercase;margin-bottom:6px">Phase MT</div>
- <div style="display:flex;gap:8px;margin-bottom:10px">
- <button id="mtPhase1Btn" onclick="setMTPhase(1)" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:12px;background:var(--accent);color:#000">Phase 1</button>
- <button id="mtPhase2Btn" onclick="setMTPhase(2)" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:12px;background:var(--surface);color:#aaa">Phase 2</button>
- </div>
- <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#555;text-transform:uppercase;margin-bottom:6px">Semaine</div>
- <div style="display:flex;align-items:center;gap:10px">
- <button onclick="mtWeekStep(-1)" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:16px;cursor:pointer;line-height:1">−</button>
- <span id="mtWeekDisplay" style="flex:1;text-align:center;font-weight:700;color:var(--accent);font-size:13px">S1 · Développement</span>
- <button onclick="mtWeekStep(1)" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:16px;cursor:pointer;line-height:1">+</button>
- </div>
- </div>
-
  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
  <div class="panel-item" onclick="openInjuriesPage(); closePanel();" style="border-bottom:none;">
  <div class="panel-item-label">⚠ Injuries</div>
@@ -3580,6 +3638,8 @@
  document.getElementById('session-' + id).classList.add('active');
  if (!btn) btn = document.querySelector('.tab[onclick*="' + id + '"]');
  if (btn) btn.classList.add('active');
+ const isSession = id !== 'overview' && id !== 'history';
+ document.getElementById('mt-controls-bar').classList.toggle('visible', isSession);
  window.scrollTo(0, 0);
  }
 
@@ -6045,17 +6105,16 @@ function getMTPhase() { return parseInt(localStorage.getItem('gymapp_mt_phase') 
 function setMTPhase(phase) {
   localStorage.setItem('gymapp_mt_phase', String(phase));
   applyMTPhase(phase);
-  closePanel();
 }
 function applyMTPhase(phase) {
   const s3Tabs = document.querySelectorAll('.tab[data-block="fullbody"]');
   s3Tabs.forEach(function(tab) {
     if (tab.textContent.trim() === 'S3') tab.style.display = phase === 2 ? 'none' : '';
   });
-  const p1 = document.getElementById('mtPhase1Btn');
-  const p2 = document.getElementById('mtPhase2Btn');
-  if (p1) { p1.style.background = phase===1 ? 'var(--accent)' : 'var(--surface)'; p1.style.color = phase===1 ? '#000' : '#fff'; p1.style.border = phase===1 ? 'none' : '1px solid var(--border)'; }
-  if (p2) { p2.style.background = phase===2 ? 'var(--accent)' : 'var(--surface)'; p2.style.color = phase===2 ? '#000' : '#fff'; p2.style.border = phase===2 ? 'none' : '1px solid var(--border)'; }
+  const p1 = document.getElementById('mtPhase1Btn2');
+  const p2 = document.getElementById('mtPhase2Btn2');
+  if (p1) p1.classList.toggle('active', phase === 1);
+  if (p2) p2.classList.toggle('active', phase === 2);
   if (phase === 2) {
     const activeSession = document.querySelector('.session.active[id="session-fullBodyC"]');
     if (activeSession) {
@@ -6073,7 +6132,7 @@ function mtWeekStep(delta) {
 function updateMTPanelUI() {
   const w = getPerioWeek();
   const pd = getPerioData(w);
-  const el = document.getElementById('mtWeekDisplay');
+  const el = document.getElementById('mtWeekDisplay2');
   if (el && pd) el.textContent = 'Semaine ' + w + ' · ' + pd.blocName;
   applyMTPhase(getMTPhase());
 }
