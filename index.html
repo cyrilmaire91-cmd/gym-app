@@ -2414,21 +2414,7 @@
 .gym-start-btn:active { opacity: 0.7; }
 
 /* Machine name input on exercise cards */
-.ex-machine-badge { margin-top: 6px; }
-.machine-input {
- width: 100%;
- background: #111;
- border: 1px dashed #2a2a2a;
- border-radius: 8px;
- padding: 6px 10px;
- font-family: 'Inter', sans-serif;
- font-size: 11px;
- color: var(--muted);
- outline: none;
- box-sizing: border-box;
-}
-.machine-input:focus { border-color: var(--accent); color: #fff; }
-.machine-input::placeholder { color: #444; }
+
 
 /* Equipment bottom sheet specifics */
 .equip-select-wrap {
@@ -3940,13 +3926,12 @@ function submitCheckin() {
  renderInjuryDashboard();
  renderInjuriesList();
  const cb = localStorage.getItem('gymapp_current_block') || 'main';
- renderOverview(cb === 'recovery' ? 'recovery' : 'main');
+ renderOverview('fullbody');
 
  // Now open the session
  if (pendingSessionTab && pendingSessionBtn) {
  _showTabWithAdapt(pendingSessionTab, pendingSessionBtn);
  applySessionImpact();
- setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
  }
  pendingSessionTab = null;
  pendingSessionBtn = null;
@@ -3957,7 +3942,6 @@ function skipCheckin() {
  if (pendingSessionTab && pendingSessionBtn) {
  _showTabWithAdapt(pendingSessionTab, pendingSessionBtn);
  applySessionImpact();
- setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
  }
  pendingSessionTab = null;
  pendingSessionBtn = null;
@@ -4654,9 +4638,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateAllGymPills() {
-  const activeGym = JSON.parse(localStorage.getItem('gymApp_activeSession') || '{}');
-  const gyms = JSON.parse(localStorage.getItem('gymApp_gyms') || '[]');
-  const gym = activeGym.gymId ? gyms.find(g => g.id === activeGym.gymId) : null;
   document.querySelectorAll('.session-gym-pill').forEach(pill => {
     pill.textContent = gym ? gym.name : 'No gym';
   });
@@ -5088,7 +5069,6 @@ document.addEventListener('DOMContentLoaded', () => {
  if (typeof updateMTPanelUI === 'function') updateMTPanelUI();
  setupAccordions(); // also handles superset toggle init
  // Inject machine badges now that accordions have created .ex-top-row elements
- try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
  // Add save button at the bottom of each session (not overview, not history)
  ['fullBodyA','fullBodyB','fullBodyC'].forEach(id => {
  const session = document.getElementById('session-' + id);
@@ -5107,28 +5087,7 @@ const SESSION_NAMES = { fullBodyA: 'S2 · Posterior Chain', fullBodyB: 'S1 · Qu
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- // Check if gym system is active
- try {
-   const active = lsGet('gymApp_activeSession', {});
-   if (active.gymId) {
-     // Gym selected — only match by equipment, never cross machine boundaries
-     const ge = lsGet('gymApp_gymEquipment', []);
-     const link = ge.find(l => l.slotId === exName && l.gymId === active.gymId);
-     if (link) {
-       const equip = lsGet('gymApp_equipment', []);
-       const eq = equip.find(e => e.id === link.equipmentId);
-       if (eq) {
-         for (const entry of history) {
-           const ex = entry.exercises.find(e => e.name === exName && e.equipmentId === eq.id);
-           if (ex && ex.sets.length > 0) return ex.sets;
-         }
-       }
-     }
-     // Gym selected but no equipment match — return null, don't cross machines
-     return null;
-   }
- } catch(e) {}
- // No gym configured — fallback to name-only match
+ // Match by exercise name
  for (const entry of history) {
    const ex = entry.exercises.find(e => e.name === exName);
    if (ex && ex.sets.length > 0) return ex.sets;
@@ -5663,8 +5622,6 @@ function saveSession() {
  const sessionId = getCurrentSessionId();
  if (!sessionId) return;
 
- const active = getActiveSession();
- const gymId = active.gymId;
  const exercises = [];
  document.querySelectorAll('#session-' + sessionId + ' .log-sets-container').forEach(container => {
  const exName = container.dataset.logExercise;
@@ -5707,14 +5664,6 @@ function saveSession() {
  const note = noteEl ? noteEl.value.trim() : '';
  if (sets.length > 0) {
  const exEntry = { name: exName, sets, note };
- // Attach equipment ID for machine-specific weight recall
- if (gymId) {
-   const equip = getEquipmentForSlot(exName, gymId);
-   if (equip) exEntry.equipmentId = equip.id;
- }
- // Attach substitute label if active
- const sub = active.substitutions[exName];
- if (sub) exEntry.substituteLabel = sub;
  exercises.push(exEntry);
  }
  });
@@ -5728,7 +5677,6 @@ function saveSession() {
  date: localDate + 'T' + now.toTimeString().slice(0,8),
  sessionId,
  sessionName: SESSION_NAMES[sessionId] || sessionId,
- gymId: gymId || undefined,
  exercises
  };
 
@@ -5736,13 +5684,10 @@ function saveSession() {
  history.unshift(entry);
  localStorage.setItem('gymapp_history_v1', JSON.stringify(history));
 
- // Reset substitutions for next session
- active.substitutions = {};
- setActiveSession(active);
 
  renderHistory();
  const cb = localStorage.getItem('gymapp_current_block') || 'main';
- renderOverview(cb === 'recovery' ? 'recovery' : 'main');
+ renderOverview('fullbody');
 
  showSummarySheet(entry);
 }
@@ -5853,7 +5798,7 @@ showTab = function(tabId, btn) {
  if (tabId === 'history') renderHistory();
  if (tabId === 'overview') {
    const cb = localStorage.getItem('gymapp_current_block') || 'main';
-   renderOverview(cb === 'recovery' ? 'recovery' : 'main');
+   renderOverview('fullbody');
  }
  if (SESSION_TABS.includes(tabId)) applySessionImpact();
  if (SESSION_TABS.includes(tabId)) setTimeout(function() { try { refreshAllMachineBadges(); } catch(e) {} }, 100);
@@ -6163,8 +6108,7 @@ function drawProgressCanvas(exerciseName) {
 
 // Data model initialization
 (function initGymData() {
- if (!localStorage.getItem('gymApp_gyms')) localStorage.setItem('gymApp_gyms', '[]');
- if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
+  if (!localStorage.getItem('gymApp_equipment')) localStorage.setItem('gymApp_equipment', '[]');
  if (!localStorage.getItem('gymApp_gymEquipment')) localStorage.setItem('gymApp_gymEquipment', '[]');
  if (!localStorage.getItem('gymApp_activeSession')) localStorage.setItem('gymApp_activeSession', JSON.stringify({ gymId: null, substitutions: {} }));
  // Auto-restore last used gym if active session has no gym
@@ -6187,41 +6131,6 @@ function drawProgressCanvas(exerciseName) {
   });
   localStorage.setItem(key, JSON.stringify(migrated));
 })();
-
-// ─── MACHINE NAME (simple per-exercise storage) ──────────────────
-function getMachineName(exName) { return localStorage.getItem('machine_' + exName) || ''; }
-function setMachineName(exName, name) { localStorage.setItem('machine_' + exName, name); }
-
-function createMachineBadge(exName) {
-  const badge = document.createElement('div');
-  badge.className = 'ex-machine-badge';
-  const saved = getMachineName(exName);
-  badge.innerHTML = '<input type="text" class="machine-input" placeholder="Machine name..." />';
-  const input = badge.querySelector('input');
-  input.value = saved;
-  input.addEventListener('change', () => setMachineName(exName, input.value.trim()));
-  return badge;
-}
-
-function refreshAllMachineBadges() {
-  document.querySelectorAll('.ex-machine-badge input').forEach(input => {
-    const ex = input.closest('.exercise');
-    if (!ex) return;
-    const nameEl = ex.querySelector('.ex-name');
-    if (!nameEl) return;
-    input.value = getMachineName(nameEl.textContent);
-  });
-}
-
-function injectMachineBadges() {
-  document.querySelectorAll('.exercise').forEach(ex => {
-    if (ex.querySelector('.ex-machine-badge')) return;
-    if (ex.closest('.prehab-box')) return;
-    const nameEl = ex.querySelector('.ex-name');
-    if (!nameEl) return;
-    ex.appendChild(createMachineBadge(nameEl.textContent));
-  });
-}
 
 
 </script>
