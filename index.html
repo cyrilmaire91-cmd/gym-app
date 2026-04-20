@@ -2661,7 +2661,7 @@
 <header>
  <div class="header-top">
  <div class="title-block">
- <h1>ARES <span>PROGRAM</span></h1>
+ <h1>MT <span>S&C</span></h1>
  </div>
  <button class="burger-btn" onclick="openPanel()">
  <span></span><span></span><span></span>
@@ -2669,9 +2669,9 @@
  </div>
  <div class="tabs" id="tabs">
  <button class="tab active" onclick="showTab('overview', this)">Overview</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyB', this)">Session A</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyA', this)">Session B</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyC', this)">Session C</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyB', this)">S1</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyA', this)">S2</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyC', this)">S3</button>
  <button class="tab" data-block="main" onclick="showTab('upperA', this)" style="display:none">Upper A</button>
  <button class="tab" data-block="main" onclick="showTab('lowerA', this)" style="display:none">Lower A</button>
  <button class="tab" data-block="main" onclick="showTab('upperB', this)" style="display:none">Upper B</button>
@@ -2691,8 +2691,21 @@
  <button class="panel-close" onclick="closePanel()">×</button>
  </div>
  <div class="panel-item active" data-block="fullbody" onclick="selectBlock('fullbody')">
- <div class="panel-item-label">Full Body 3-Day</div>
- <div class="panel-item-sub">ARES Program · Mon / Wed / Fri</div>
+ <div class="panel-item-label">MT S&amp;C</div>
+ <div class="panel-item-sub">Muay Thai S&amp;C · S1 / S2 / S3</div>
+ </div>
+ <div id="mtPhaseWeekControls" style="padding:8px 16px 4px;">
+ <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#555;text-transform:uppercase;margin-bottom:6px">Phase MT</div>
+ <div style="display:flex;gap:8px;margin-bottom:10px">
+ <button id="mtPhase1Btn" onclick="setMTPhase(1)" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:12px;background:var(--accent);color:#000">Phase 1</button>
+ <button id="mtPhase2Btn" onclick="setMTPhase(2)" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:12px;background:var(--surface);color:#aaa">Phase 2</button>
+ </div>
+ <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#555;text-transform:uppercase;margin-bottom:6px">Semaine</div>
+ <div style="display:flex;align-items:center;gap:10px">
+ <button onclick="mtWeekStep(-1)" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:16px;cursor:pointer;line-height:1">−</button>
+ <span id="mtWeekDisplay" style="flex:1;text-align:center;font-weight:700;color:var(--accent);font-size:13px">S1 · Développement</span>
+ <button onclick="mtWeekStep(1)" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:16px;cursor:pointer;line-height:1">+</button>
+ </div>
  </div>
  <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px;">
  <div style="padding:6px 16px 2px; font-size:9px; font-weight:700; letter-spacing:0.1em; color:#555; text-transform:uppercase;">4-Day Hypertrophy</div>
@@ -3476,412 +3489,433 @@
 
  </div>
 
- <!-- ===== FULL BODY B — Lundi · Panatta/Hammer Strength ===== -->
+ <!-- ===== S1 — Quad Dominant · MT S&C ===== -->
  <div class="session" id="session-fullBodyB">
 
  <div class="perio-bar" id="perio-badge-fullBodyB">
  <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
- <div class="perio-bar-phase">Technique</div>
+ <div class="perio-bar-phase">Développement</div>
  </div>
 
  <div class="session-header">
- <h2>Session A</h2>
+ <h2>S1 — Quad Dominant</h2>
  <div class="session-meta">
  <span class="badge badge-time">60–70 min</span>
- <span class="badge badge-focus">Full Body</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
  </div>
  </div>
 
+ <!-- PREHAB HIP AMBROSE -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 4–5 min</span></div>
- <div class="warmup-block">
- <div class="warmup-item"><span class="warmup-num">1</span><span class="warmup-name">T-spine flex/ext</span><span class="warmup-sets">2×8</span></div>
- <div class="warmup-item"><span class="warmup-num">2</span><span class="warmup-name">Kneeling hip flexor stretch</span><span class="warmup-sets">4 respirations / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">3</span><span class="warmup-name">World's Greatest Stretch</span><span class="warmup-sets">6–8 / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">4</span><span class="warmup-name">Leg swings front/back</span><span class="warmup-sets">10 / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">5</span><span class="warmup-name">Cossack Squat</span><span class="warmup-sets">8 / côté</span></div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>LEGS</span></div>
- <div class="exercise" data-tags="unilateral">
- <div class="ex-icon">⚖</div>
- <div class="ex-body">
- <div class="ex-name">Bulgarian Split Squat</div>
- <div class="ex-sets"><strong>3 × 8 each side</strong> · 3-1-0 · Rest 2min</div>
- <div class="ex-note">Pied avant assez avancé pour tibia vertical. Descente 3 sec contrôlée — genou dans l'axe du pied. Pousser sur le talon en montant. Départ 6 kg, objectif 12 kg (Ambrose). Plan B : Fentes avant.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+vertical+shin+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>HINGE</span></div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hip Thrust (Machine Panatta)</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-1 · Rest 2min"><strong>3 × 8–10</strong> · 2-1-1 · Rest 2min</div>
- <div class="ex-note">Pousser sur les talons, pas les orteils. Extension complète en haut — squeeze fessier 1 sec avant de redescendre. Pas d'hyperextension lombaire. Rentrer le menton.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hip+thrust+machine+panatta+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>PUSH / PULL</span></div>
- <div class="superset-group">
- <div class="superset-label">Superset — Rest 90s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Chest-Supported Row (Panatta)</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0"><strong>3 × 8–10</strong> · 2-1-0</div>
- <div class="ex-note">Prise neutre ou pronée selon le poignet. Tirer les coudes vers la hanche — pas vers le haut. Étirement complet en avant avant chaque répétition. Zéro balancement du tronc.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Flat Press (Semi-Pronated)</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0"><strong>3 × 8–10</strong> · 2-1-0</div>
- <div class="ex-note">Prise semi-pronée, coudes à 45° du tronc. Descente contrôlée jusqu'à l'étirement pectoral — pousser vers le haut et légèrement vers l'intérieur. Plan B : Cable chest press.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+flat+press+semi+pronated+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>ARM</span></div>
- <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Curl (Rope ou Barre)</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Poignée corde — plus douce pour le coude (épicondyle médial). Coude fixe le long du corps. Contracter fort en haut, descente 2 sec contrôlée.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+bicep+curl+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Rope Triceps Pressdown</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Coudes collés au corps — ne pas les laisser monter. Séparer la corde en bas de chaque côté pour contraction maximale.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=rope+triceps+pressdown+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>CORE</span></div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hanging Knee Raise</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12</strong> · 2-1-0</div>
- <div class="ex-note">Genoux vers la poitrine en expirant — pas juste les hanches. Descente 2 sec contrôlée, zéro élan. Plan B : Plank to Pike au sol.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hanging+knee+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Wrist Prehab · À faire ce soir à la maison</span></div>
+ <div class="section-label"><span>Prehab Hip · Ambrose Protocol · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 TFCC Rehab (Ambrose) — Light DB ou Bande</div>
+ <div class="prehab-box-title">Hip Prehab (Ambrose)</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Clamshell</div><div class="ex-sets"><strong>2 × 15</strong> each side · Band légère</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Hip Abduction (debout)</div><div class="ex-sets"><strong>2 × 15</strong> each side</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Glute Bridge Isométrique</div><div class="ex-sets"><strong>2 × 20 s</strong></div></div></div>
+ </div>
+ </div>
+
+ <!-- BLOC EXPLOSIVITE -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Explosivité · Force Réactive</span></div>
  <div class="exercise">
- <div class="ex-body"><div class="ex-name">Flexion · Extension · Pronation · Supination</div><div class="ex-sets"><strong>3 × 12</strong> chaque · Range sans douleur</div></div>
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Jump Squat — Bodyweight</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min · Sol plat, réception souple"><strong>3 × 4</strong> · Repos 2 min · Sol plat, réception souple</div>
+ <div class="ex-note">Intention maximale à chaque rep. Pause 3 s entre reps. Pas de fatigue — qualité absolue.</div>
  </div>
- </div>
- </div>
-
- </div>
-
- <!-- ===== FULL BODY A — Mercredi · Câbles/Technogym ===== -->
- <div class="session" id="session-fullBodyA">
-
- <div class="perio-bar" id="perio-badge-fullBodyA">
- <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
- <div class="perio-bar-phase">Technique</div>
- </div>
-
- <div class="session-header">
- <h2>Session B</h2>
- <div class="session-meta">
- <span class="badge badge-time">60–70 min</span>
- <span class="badge badge-focus">Full Body</span>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=jump+squat+bodyweight+explosive+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC FORCE -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 4–5 min</span></div>
- <div class="warmup-block">
- <div class="warmup-item"><span class="warmup-num">1</span><span class="warmup-name">T-spine flex/ext</span><span class="warmup-sets">2×8</span></div>
- <div class="warmup-item"><span class="warmup-num">2</span><span class="warmup-name">Kneeling hip flexor stretch</span><span class="warmup-sets">4 respirations / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">3</span><span class="warmup-name">World's Greatest Stretch</span><span class="warmup-sets">6–8 / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">4</span><span class="warmup-name">Leg swings front/back</span><span class="warmup-sets">10 / côté</span></div>
- <div class="warmup-item"><span class="warmup-num">5</span><span class="warmup-name">Cossack Squat</span><span class="warmup-sets">8 / côté</span></div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>LEGS</span></div>
+ <div class="section-label"><span>Bloc Force</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
  <div class="ex-name">Belt Squat</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="3-1-0 · Rest 2min30"><strong>3 × 8–10</strong> · 3-1-0 · Rest 2min30</div>
- <div class="ex-note">Descente 3 sec contrôlée, genou dans l'axe du pied. Stopper avant toute gêne au genou — ne jamais forcer. Pousser par les talons. Plan B : Hack Squat → Leg Press.</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min · Tempo 3-1-1"><strong>3 × 5</strong> @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Poids de ceinture, tibia vertical, descente contrôlée 3 s. Sub: Hack squat → Leg press.</div>
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC HYPERTROPHIE - superset -->
  <div class="section">
- <div class="section-label"><span>PUSH / PULL</span></div>
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 90s between rounds</div>
+ <div class="superset-label">A1 / A2</div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A1</div>
  <div class="ex-body">
- <div class="ex-name">DB Incline Press (Semi-Pronated)</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0"><strong>3 × 8–10</strong> · 2-1-0</div>
- <div class="ex-note">Prise semi-pronée, coudes à 60° du tronc. Descente jusqu'à l'étirement pectoral, pousser vers le haut et l'intérieur. Surveiller le poignet le lendemain (TFCC). Plan B : Cable chest press.</div>
+ <div class="ex-name">DB Incline Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de machine fixe (épaule gauche). Descente 2 s, pression en haut.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+semi+pronated+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon">⬇</div>
+ <div class="ex-icon">A2</div>
  <div class="ex-body">
- <div class="ex-name">Wide-Grip Pulldown</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0"><strong>3 × 8–10</strong> · 2-1-0</div>
- <div class="ex-note">Tirer vers la clavicule, coudes dans le plan du corps. Étirement complet en haut à chaque rep. Si poignet >2/10 : basculer en prise neutre immédiatement.</div>
+ <div class="ex-name">Chest-Supported Row — DB ou Machine</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-0-1</div>
+ <div class="ex-note">Poitrine sur le pad, coudes vers arrière, pas de rotation du tronc. Contrôle complet.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=wide+grip+lat+pulldown+pronated+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+dumbbell+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
  </div>
  </div>
  </div>
 
+ <!-- TRI-SET EPAULES/BRAS -->
  <div class="section">
- <div class="section-label"><span>PULL 2</span></div>
+ <div class="section-label"><span>Tri-set · Épaules + Bras · 3 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">B1 / B2 / B3</div>
+ <div class="exercise">
+ <div class="ex-icon">B1</div>
+ <div class="ex-body">
+ <div class="ex-name">Face Pull — Corde</div>
+ <div class="ex-sets"><strong>3 × 15</strong> · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Poulie haute, tirer vers le visage, coudes haut, rotation externe en fin de mouvement.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=face+pull+cable+rope+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">B2</div>
+ <div class="ex-body">
+ <div class="ex-name">Hammer Curl — DB Alterné</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1</div>
+ <div class="ex-note">Prise neutre, pas de balancement. Concentrique 1 s, excentrique 2 s.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=hammer+curl+dumbbell+alternating+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
  <div class="exercise" data-tags="optional">
- <div class="ex-icon"></div>
+ <div class="ex-icon">B3</div>
  <div class="ex-body">
- <div class="ex-name">Cable Row (Neutre ou Pronée)</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 10–12</strong> · 2-1-0</div>
- <div class="ex-note">Si temps ou énergie insuffisants : passer directement aux épaules. Tirage au nombril, coudes serrés. Dos droit — zéro balancement. Différencié du CSR Panatta du lundi.</div>
+ <div class="ex-name">Tricep Pushdown — Corde</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 1</div>
+ <div class="ex-note">Coudes fixes, extension complète, legèrement incliné vers l'avant. Poignet droit (TFCC).</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+seated+row+neutral+grip+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=tricep+rope+pushdown+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>ÉPAULES</span></div>
- <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Lateral Raise</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Bras légèrement fléchi, auriculaire leading. Lever jusqu'à l'horizontale — pas au-dessus. Descente 2 sec contrôlée. Poids léger.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+lateral+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Rear Delt Cable Fly</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Câbles croisés en haut, bras tendus. Tirer en arc jusqu'à l'alignement des épaules. Poids très léger — contraction > charge.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=rear+delt+cable+fly+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon">🅨</div>
- <div class="ex-body">
- <div class="ex-name">Y-Raise (Cable ou Prone)</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0" data-perio-fixed-sets="2"><strong>2 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Bras en Y à ~150° — pouces vers le ciel. Trapèze inférieur, pas épaule. Poids très léger. Essentiel pour la santé de l'épaule à long terme.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=Y+raise+lower+trap+activation+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- CORE -->
  <div class="section">
- <div class="section-label"><span>ARM</span></div>
- <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
+ <div class="section-label"><span>Core · Anti-Rotation</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Hammer Curl</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Prise neutre, coude fixe le long du corps. Pas de balancement. Contracter en haut, descente 2 sec.</div>
+ <div class="ex-name">Pallof Press — Cable</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1 · Tempo 2-2-2</div>
+ <div class="ex-note">Poulie à hauteur de nombril, bras tendus, ne pas laisser le câble tourner le tronc. Bracing actif.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hammer+curl+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Rope Pushdown</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Coudes collés au corps — ne pas les laisser monter. Séparer la corde en bas pour contraction maximale. Éviter l'extension overhead : trop de charge sur l'épicondyle médial.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=pallof+press+cable+anti+rotation+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- CARDIO CONDITIONING -->
  <div class="section">
- <div class="section-label"><span>CORE</span></div>
+ <div class="section-label"><span>Cardio Conditioning · Sprint Intervals</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Cable Crunch</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">À genoux, poignée corde tenue à la tempe. Fléchir le tronc — pas le cou. Hanches fixes. Contracter le core en bas, expirer.</div>
+ <div class="ex-name">Sprints — Tapis ou Vélo Assault</div>
+ <div class="ex-sets"><strong>6 × 20 s</strong> effort / 40 s repos · Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 9 pendant les sprints. Volume total progressif selon la périodisation (voir perio bar).</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+crunch+kneeling+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assault+bike+sprint+intervals+hiit" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ </div>
+
+ <!-- ===== S2 — Posterior Chain · MT S&C ===== -->
+ <div class="session" id="session-fullBodyA">
+
+ <div class="perio-bar" id="perio-badge-fullBodyA">
+ <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
+ <div class="perio-bar-phase">Développement</div>
+ </div>
+
+ <div class="session-header">
+ <h2>S2 — Posterior Chain</h2>
+ <div class="session-meta">
+ <span class="badge badge-time">60–70 min</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
+ </div>
+ </div>
+
+ <!-- PREHAB WRIST + DEAD BUG -->
  <div class="section">
- <div class="section-label"><span>Wrist Prehab · À faire ce soir à la maison</span></div>
+ <div class="section-label"><span>Prehab Poignet + Stabilité · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 TFCC Rehab (Ambrose) — Light DB ou Bande</div>
+ <div class="prehab-box-title">TFCC Prehab (Ambrose) + Core</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Wrist Flexion / Extension / Pronation / Supination</div><div class="ex-sets"><strong>2 × 12</strong> each · Band ou light DB · Range sans douleur</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Dead Bug</div><div class="ex-sets"><strong>2 × 8</strong> each side · Lombaires plaquées au sol</div></div></div>
+ </div>
+ </div>
+
+ <!-- BLOC EXPLOSIVITE -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Explosivité · Force Réactive</span></div>
  <div class="exercise">
- <div class="ex-body"><div class="ex-name">Flexion · Extension · Pronation · Supination</div><div class="ex-sets"><strong>3 × 12</strong> chaque · Range sans douleur</div></div>
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Med Ball Slam — Double Bras</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min · Slam violent, reset complet"><strong>3 × 4</strong> · Repos 2 min · Slam violent, reset complet</div>
+ <div class="ex-note">Extension complète en haut, slam maximal. Ramasser sans se presser. Qualité absolue à chaque rep.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=medicine+ball+slam+explosive+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC FORCE -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Force</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Romanian Deadlift — Barre</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min · Tempo 3-1-1"><strong>3 × 5</strong> @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Hanches arrière, barre proche du corps, dos neutre. Sentir les ischio s'étirer. Pas de flexion lombaire.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+barbell+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC HYPERTROPHIE - superset -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">A1 / A2</div>
+ <div class="exercise">
+ <div class="ex-icon">A1</div>
+ <div class="ex-body">
+ <div class="ex-name">Wide-Grip Pulldown — Machine ou Barre</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 2 · Tempo 2-1-2</div>
+ <div class="ex-note">Prise large pronée, tirer vers la clavicule, coudes vers les hanches. Étirement complet en haut.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=wide+grip+lat+pulldown+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">A2</div>
+ <div class="ex-body">
+ <div class="ex-name">DB Bench Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de machine fixe (épaule gauche). Descente contrôlée.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+bench+press+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- TRI-SET EPAULES/BRAS -->
+ <div class="section">
+ <div class="section-label"><span>Tri-set · Épaules + Dos · 3 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">B1 / B2 / B3</div>
+ <div class="exercise">
+ <div class="ex-icon">B1</div>
+ <div class="ex-body">
+ <div class="ex-name">Lateral Raise — Cable ou DB</div>
+ <div class="ex-sets"><strong>3 × 15</strong> · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Légère inclinaison avant, prise neutre, élévation jusqu'à l'horizontale. Contrôle complet.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=lateral+raise+cable+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">B2</div>
+ <div class="ex-body">
+ <div class="ex-name">Assisted Pull-Up — Machine</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 1</div>
+ <div class="ex-note">Prise neutre ou supine. Extension complète en bas, menton au-dessus de la barre.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assisted+pull+up+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise" data-tags="optional">
+ <div class="ex-icon">B3</div>
+ <div class="ex-body">
+ <div class="ex-name">Overhead Cable Extension — Corde</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 1</div>
+ <div class="ex-note">Attention golfer's elbow — charge légère, douleur = stop. Bras au-dessus de la tête, extension complète.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+rope+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- CORE -->
+ <div class="section">
+ <div class="section-label"><span>Core · Stabilité Lombaire</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Hanging Knee Raise</div>
+ <div class="ex-sets"><strong>3 × 12–15</strong> · RIR 1 · Tempo contrôlé</div>
+ <div class="ex-note">Pas de balancement. Genoux vers la poitrine, baisser lentement. Grip neutre si possible (TFCC).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=hanging+knee+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- CARDIO CONDITIONING -->
+ <div class="section">
+ <div class="section-label"><span>Cardio Conditioning · Vélo Intervals</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Vélo — Intervals Aérobie</div>
+ <div class="ex-sets"><strong>20 min</strong> · Effort modéré / Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 6–7. Maintenir cadence régulière. Volume total progressif selon la périodisation (voir perio bar).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=stationary+bike+interval+training+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
  </div>
 
- <!-- ===== FULL BODY C — Vendredi · Belt Squat/Câbles ===== -->
+ <!-- ===== S3 — Unilateral · MT S&C ===== -->
  <div class="session" id="session-fullBodyC">
 
  <div class="perio-bar" id="perio-badge-fullBodyC">
  <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
- <div class="perio-bar-phase">Technique</div>
+ <div class="perio-bar-phase">Développement</div>
  </div>
 
  <div class="session-header">
- <h2>Session C</h2>
+ <h2>S3 — Unilateral</h2>
  <div class="session-meta">
- <span class="badge badge-time">50–60 min</span>
- <span class="badge badge-focus">Full Body</span>
+ <span class="badge badge-time">60–70 min</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
  </div>
  </div>
 
+ <!-- PREHAB HIP AMBROSE -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 2 min</span></div>
- <div class="warmup-block">
- <div class="warmup-item"><span class="warmup-num">1</span><span class="warmup-name">T-spine flex/ext</span><span class="warmup-sets">2×8</span></div>
- <div class="warmup-item"><span class="warmup-num">2</span><span class="warmup-name">Leg swings front/back</span><span class="warmup-sets">10 / côté</span></div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Hip Prehab Ambrose · 5 min · Avant les séries</span></div>
+ <div class="section-label"><span>Prehab Hip · Ambrose Protocol · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 Protocole Hanche (Ambrose)</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+marching+hip+activation+glute" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Kick-Outs (Supine Tabletop)</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+kick+outs+supine+tabletop+hip+activation" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Hip Rotation (Assis)</div><div class="ex-sets"><strong>2 × 10</strong> chaque direction</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+hip+internal+external+rotation+exercise" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
+ <div class="prehab-box-title">Hip Prehab (Ambrose)</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Clamshell</div><div class="ex-sets"><strong>2 × 15</strong> each side · Band légère</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Hip Abduction (debout)</div><div class="ex-sets"><strong>2 × 15</strong> each side</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Glute Bridge Isométrique</div><div class="ex-sets"><strong>2 × 20 s</strong></div></div></div>
  </div>
  </div>
 
+ <!-- BLOC EXPLOSIVITE -->
  <div class="section">
- <div class="section-label"><span>LEGS</span></div>
- <div class="exercise">
+ <div class="section-label"><span>Bloc Explosivité · Unilatéral Réactif</span></div>
+ <div class="exercise" data-tags="unilateral">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Trap Bar Deadlift</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="3-0-1 · Rest 2min30"><strong>3 × 5–6</strong> · 3-0-1 · Rest 2min30</div>
- <div class="ex-note">Poignées hautes en priorité. Dos plat, poitrine haute, barre sous les épaules. Descente 3 sec contrôlée — bref reset complet au sol. Straps obligatoires (TFCC). Plan B : Conventional Deadlift avec straps.</div>
+ <div class="ex-name">Explosive Bulgarian Split Squat — BW</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min each side · Réception souple"><strong>3 × 4</strong> each side · Repos 2 min · Réception souple</div>
+ <div class="ex-note">Pas de charge. Poussée maximale depuis le sol. Pause 3 s entre reps. Qualité &gt; vitesse.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=trap+bar+deadlift+form+technique+high+handles" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=explosive+bulgarian+split+squat+plyometric" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC FORCE -->
  <div class="section">
- <div class="section-label"><span>ISOLATION</span></div>
+ <div class="section-label"><span>Bloc Force · Unilatéral</span></div>
+ <div class="exercise" data-tags="unilateral">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Bulgarian Split Squat Lestée — DB ou Barre Guidée</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min each side · Tempo 3-1-1"><strong>3 × 5</strong> each side @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Pied arrière sur banc, tibia avant vertical. Descente 3 s, pause en bas, poussée explosive. Sub: Leg press unilatéral.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+dumbbell+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC HYPERTROPHIE - superset -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
+ <div class="superset-label">A1 / A2</div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A1</div>
  <div class="ex-body">
- <div class="ex-name">Leg Extension</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">ROM 30°–90° — ne jamais aller en extension complète (tendinopathie patellaire). Contrôler la descente 2 sec. Stopper si douleur >2/10.</div>
+ <div class="ex-name">DB Shoulder Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de derrière la nuque. Épaule gauche — surveiller la douleur.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=leg+extension+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+shoulder+press+neutral+grip+seated" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A2</div>
  <div class="ex-body">
- <div class="ex-name">Ham Curl</div>
- <div class="ex-sets" data-perio-type="accessory" data-perio-suffix="2-1-0"><strong>3 × 12–15</strong> · 2-1-0</div>
- <div class="ex-note">Machine lying de préférence. Contracter fort en fin de course — 1 sec. Descente 2 sec. Éviter le mouvement compensatoire du bassin.</div>
+ <div class="ex-name">Cable Row — Prise Neutre</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 2 · Tempo 2-0-2</div>
+ <div class="ex-note">Poulie basse, V-bar, tirer vers le nombril, coudes près du corps. Étirement complet en avant.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+cable+row+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- BI-SET ISOLATION -->
  <div class="section">
- <div class="section-label"><span>PUSH / PULL</span></div>
+ <div class="section-label"><span>Bi-set · Isolation · 3 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 90s between rounds</div>
+ <div class="superset-label">B1 / B2</div>
  <div class="exercise">
- <div class="ex-icon">⬇</div>
+ <div class="ex-icon">B1</div>
  <div class="ex-body">
- <div class="ex-name">Neutral-Grip Pulldown</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="3-1-0"><strong>3 × 8–10</strong> · 3-1-0</div>
- <div class="ex-note">Étirement complet en haut à chaque rep. Tirer vers la clavicule, coudes vers la hanche — pas vers l'arrière. 3 sec de descente intentionnelle.</div>
+ <div class="ex-name">Lateral Raise — Cable Unilatéral</div>
+ <div class="ex-sets"><strong>3 × 15</strong> each side · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Poulie basse, bras légèrement fléchi, élévation latérale contrôlée. Contrôle total à la descente.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+lateral+raise+unilateral+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">B2</div>
  <div class="ex-body">
- <div class="ex-name">Cable Chest Press</div>
- <div class="ex-sets" data-perio-type="main" data-perio-suffix="2-1-0"><strong>3 × 8–10</strong> · 2-1-0</div>
- <div class="ex-note">Câble à hauteur des épaules. Légère supination en fin de course. Contrôler le retour — étirement pectoral en position ouverte. Plan B : DB Incline Press.</div>
+ <div class="ex-name">Hammer Curl — Cable Unilatéral</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1</div>
+ <div class="ex-note">Prise neutre via D-handle, pas de compensation. Excentrique 2 s.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+chest+press+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+hammer+curl+rope+neutral+grip" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- CORE -->
  <div class="section">
- <div class="section-label"><span>CORE</span></div>
- <div class="exercise" data-tags="time">
+ <div class="section-label"><span>Core · Rotation</span></div>
+ <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Copenhagen Side Plank</div>
- <div class="ex-sets"><strong>3 × 30s each side</strong></div>
- <div class="ex-note">Genou supérieur sur le banc, corps aligné — zéro rotation du bassin. Si trop difficile : genou inférieur au sol (version courte lever). Adducteurs + stabilisateurs de hanche. Essentiel pour Muay Thai.</div>
+ <div class="ex-name">Cable Woodchop — Haut vers Bas</div>
+ <div class="ex-sets"><strong>3 × 12</strong> each side · RIR 1 · Tempo 2-0-1</div>
+ <div class="ex-note">Rotation du tronc, pas des épaules. Bras tendus, regarder les mains. Pieds stables.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=copenhagen+side+plank+adductor+muay+thai" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+woodchop+rotation+core+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- CARDIO CONDITIONING -->
+ <div class="section">
+ <div class="section-label"><span>Cardio Conditioning · Intervals</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Intervals — Tapis ou Vélo Assault</div>
+ <div class="ex-sets"><strong>4 × 30 s</strong> effort / 60 s repos · Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 8–9 pendant les efforts. Volume total progressif selon la périodisation (voir perio bar).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assault+bike+interval+training+conditioning" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
@@ -5059,9 +5093,9 @@ function renderOverview(block) {
  monday.setHours(0,0,0,0);
 
  const sessionSequence = currentBlock === 'fullbody' ? [
-   { id: 'fullBodyB', tag: 'A', name: 'Session A', sub: 'Lundi · Hip Thrust · Bulgarian · Bras · Core' },
-   { id: 'fullBodyA', tag: 'B', name: 'Session B', sub: 'Mercredi · Belt Squat · Incline Press · Pulldown · Épaules' },
-   { id: 'fullBodyC', tag: 'C', name: 'Session C', sub: 'Vendredi · Deadlift · Jambes · Câbles · Copenhagen' },
+   { id: 'fullBodyB', tag: 'S1', name: 'S1', sub: 'Quad Dominant · Jump Squat · Belt Squat · Incline Press · Sprints' },
+   { id: 'fullBodyA', tag: 'S2', name: 'S2', sub: 'Posterior Chain · Med Ball · RDL · Pulldown · Vélo Intervals' },
+   { id: 'fullBodyC', tag: 'S3', name: 'S3', sub: 'Unilateral · Explosive BSS · BSS Lestée · DB Shoulder · Intervals' },
  ] : [
    { id: 'upperA', tag: 'UA', name: 'Upper A', sub: 'Chest · Shoulders · Triceps · Back' },
    { id: 'lowerA', tag: 'LA', name: 'Lower A', sub: 'Belt squat · RDL · Split squat' },
@@ -5207,11 +5241,11 @@ function renderOverview(block) {
  const weeklyScheduleHtml = currentBlock === 'fullbody' ? `
    <div class="ov-section-label">Weekly Schedule</div>
    <div class="overview-card" style="padding:12px 16px;">
-     <div class="day-row"><div class="day-label" style="min-width:40px">Lun</div><div><div class="day-name">Session A · Panatta/Hammer</div><div class="day-detail">Hip Thrust · Bulgarian · Bras · Core</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Mar</div><div><div class="day-name">🥊 Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Mer</div><div><div class="day-name">Session B · Câbles/Technogym</div><div class="day-detail">Belt Squat · Incline Press · Pulldown · Épaules</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Jeu</div><div><div class="day-name">🥊 Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
-     <div class="day-row"><div class="day-label" style="min-width:40px">Ven</div><div><div class="day-name">Session C · Câbles</div><div class="day-detail">Deadlift · Jambes · Tirage Neutre · Copenhagen</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Lun</div><div><div class="day-name">S1 — Quad Dominant</div><div class="day-detail">Jump Squat · Belt Squat · Incline Press · Sprints</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Mar</div><div><div class="day-name">Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Mer</div><div><div class="day-name">S2 — Posterior Chain</div><div class="day-detail">Med Ball · RDL · Pulldown · Vélo Intervals</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Jeu</div><div><div class="day-name">Muay Thai</div><div class="day-detail">Technique · Conditionnement</div></div></div>
+     <div class="day-row"><div class="day-label" style="min-width:40px">Ven</div><div><div class="day-name">S3 — Unilateral</div><div class="day-detail">Explosive BSS · BSS Lestée · DB Shoulder · Intervals</div></div></div>
      <div class="day-row"><div class="day-label" style="min-width:40px">S–D</div><div><div class="day-name">Repos</div><div class="day-detail">Récupération · Mobilité</div></div></div>
    </div>
  ` : '';
@@ -5887,6 +5921,7 @@ document.addEventListener('DOMContentLoaded', () => {
  tagAllExercises(); // infer tags before accordion setup reads them
  // Run periodization BEFORE accordion so headers get correct week's sets/reps
  if (typeof updatePeriodizationDisplay === 'function') updatePeriodizationDisplay();
+ if (typeof updateMTPanelUI === 'function') updateMTPanelUI();
  setupAccordions(); // also handles superset toggle init
  // Inject machine badges now that accordions have created .ex-top-row elements
  try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
@@ -5904,7 +5939,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── WORKOUT LOGGER ───────────────────────────────────────────────
 
-const SESSION_NAMES = { fullBodyA: 'Session B · Mercredi', fullBodyB: 'Session A · Lundi', fullBodyC: 'Session C · Vendredi', upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B', recA: 'Recovery A', recB: 'Recovery B', recC: 'Recovery C' };
+const SESSION_NAMES = { fullBodyA: 'S2 · Posterior Chain', fullBodyB: 'S1 · Quad Dominant', fullBodyC: 'S3 · Unilateral', upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B', recA: 'Recovery A', recB: 'Recovery B', recC: 'Recovery C' };
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
@@ -8089,20 +8124,59 @@ function removeAlternative(exName, idx) {
 <script>
 // ─── PERIODIZATION SYSTEM ─────────────────────────────────────────
 const PERIODIZATION_DATA = [
-  { week:1,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:3, phase:'Technique' },
-  { week:2,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:2, phase:'Accumulation' },
-  { week:3,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:1, phase:'Intensité' },
-  { week:4,  bloc:1, mainSets:3, mainReps:'6–8',  accSets:3, accReps:'10–15', rdlReps:'6–8',  rir:3, phase:'Déload · Volume −40%' },
-  { week:5,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:2, phase:'Force' },
-  { week:6,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:2, phase:'Force' },
-  { week:7,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:1, phase:'Force intensité' },
-  { week:8,  bloc:2, mainSets:3, mainReps:'5–6',  accSets:3, accReps:'8–12',  rdlReps:'5–6',  rir:3, phase:'Déload · Volume −40%' },
-  { week:9,  bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:2, phase:'Hypertrophie' },
-  { week:10, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:2, phase:'Hypertrophie' },
-  { week:11, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:1, phase:'Hypertrophie intensité' },
-  { week:12, bloc:3, mainSets:4, mainReps:'6–8',  accSets:4, accReps:'10–15', rdlReps:'8–10', rir:3, phase:'Déload · Volume −40%' },
+  // BLOC 1 — Développement (Weeks 1-4)
+  { week:1,  bloc:1, blocName:'Développement', forceSets:3, forceReps:'5',   forceRir:3, explSets:3, explReps:'4', cardioVol:70,  isDeload:false, phase:'Wk 1–2 · Cardio 70%' },
+  { week:2,  bloc:1, blocName:'Développement', forceSets:3, forceReps:'5',   forceRir:3, explSets:3, explReps:'4', cardioVol:70,  isDeload:false, phase:'Wk 1–2 · Cardio 70%' },
+  { week:3,  bloc:1, blocName:'Développement', forceSets:4, forceReps:'5',   forceRir:2, explSets:4, explReps:'4', cardioVol:100, isDeload:false, phase:'Wk 3 · Cardio 100%' },
+  { week:4,  bloc:1, blocName:'Développement', forceSets:2, forceReps:'5',   forceRir:4, explSets:2, explReps:'4', cardioVol:50,  isDeload:true,  phase:'Déload · Cardio 50%' },
+  // BLOC 2 — Accumulation (Weeks 5-8)
+  { week:5,  bloc:2, blocName:'Accumulation',  forceSets:3, forceReps:'6–8', forceRir:2, explSets:4, explReps:'4', cardioVol:100, isDeload:false, phase:'Wk 5 · Cardio 100%' },
+  { week:6,  bloc:2, blocName:'Accumulation',  forceSets:4, forceReps:'6–8', forceRir:2, explSets:4, explReps:'5', cardioVol:100, isDeload:false, phase:'Wk 6 · Cardio 100%' },
+  { week:7,  bloc:2, blocName:'Accumulation',  forceSets:4, forceReps:'6–8', forceRir:1, explSets:4, explReps:'5', cardioVol:120, isDeload:false, phase:'Wk 7 · Cardio +20%' },
+  { week:8,  bloc:2, blocName:'Accumulation',  forceSets:2, forceReps:'6',   forceRir:4, explSets:2, explReps:'4', cardioVol:50,  isDeload:true,  phase:'Déload · Cardio 50%' },
+  // BLOC 3 — Réalisation (Weeks 9-12)
+  { week:9,  bloc:3, blocName:'Réalisation',   forceSets:4, forceReps:'3–4', forceRir:2, explSets:4, explReps:'3', cardioVol:100, isDeload:false, phase:'Wk 9 · Cardio 100%' },
+  { week:10, bloc:3, blocName:'Réalisation',   forceSets:4, forceReps:'3–4', forceRir:1, explSets:4, explReps:'3', cardioVol:100, isDeload:false, phase:'Wk 10 · Cardio 100%' },
+  { week:11, bloc:3, blocName:'Réalisation',   forceSets:3, forceReps:'3',   forceRir:1, explSets:3, explReps:'3', cardioVol:80,  isDeload:false, phase:'Wk 11 · Cardio -20%' },
+  { week:12, bloc:3, blocName:'Réalisation',   forceSets:2, forceReps:'3',   forceRir:4, explSets:0, explReps:'—', cardioVol:0,   isDeload:true,  phase:'Déload · Transition' },
 ];
 
+function getMTPhase() { return parseInt(localStorage.getItem('gymapp_mt_phase') || '1'); }
+function setMTPhase(phase) {
+  localStorage.setItem('gymapp_mt_phase', String(phase));
+  applyMTPhase(phase);
+  closePanel();
+}
+function applyMTPhase(phase) {
+  const s3Tabs = document.querySelectorAll('.tab[data-block="fullbody"]');
+  s3Tabs.forEach(function(tab) {
+    if (tab.textContent.trim() === 'S3') tab.style.display = phase === 2 ? 'none' : '';
+  });
+  const p1 = document.getElementById('mtPhase1Btn');
+  const p2 = document.getElementById('mtPhase2Btn');
+  if (p1) { p1.style.background = phase===1 ? 'var(--accent)' : 'var(--surface)'; p1.style.color = phase===1 ? '#000' : '#fff'; p1.style.border = phase===1 ? 'none' : '1px solid var(--border)'; }
+  if (p2) { p2.style.background = phase===2 ? 'var(--accent)' : 'var(--surface)'; p2.style.color = phase===2 ? '#000' : '#fff'; p2.style.border = phase===2 ? 'none' : '1px solid var(--border)'; }
+  if (phase === 2) {
+    const activeSession = document.querySelector('.session.active[id="session-fullBodyC"]');
+    if (activeSession) {
+      const s1Tab = document.querySelector('.tab[data-block="fullbody"]');
+      if (s1Tab) showTab('fullBodyB', s1Tab);
+    }
+  }
+}
+function mtWeekStep(delta) {
+  const w = Math.max(1, Math.min(12, getPerioWeek() + delta));
+  localStorage.setItem('gymapp_perio_week', String(w));
+  updatePeriodizationDisplay();
+  updateMTPanelUI();
+}
+function updateMTPanelUI() {
+  const w = getPerioWeek();
+  const pd = getPerioData(w);
+  const el = document.getElementById('mtWeekDisplay');
+  if (el && pd) el.textContent = 'Semaine ' + w + ' · ' + pd.blocName;
+  applyMTPhase(getMTPhase());
+}
 function getPerioWeek() {
   return Math.min(parseInt(localStorage.getItem('gymapp_perio_week') || '1'), 12);
 }
@@ -8131,25 +8205,22 @@ function updatePeriodizationDisplay() {
   const week = getPerioWeek();
   const pd = getPerioData(week);
   if (!pd) return;
-  ['fullBodyB','fullBodyA','fullBodyC'].forEach(sid => {
+  ['fullBodyB','fullBodyA','fullBodyC'].forEach(function(sid) {
     const badge = document.getElementById('perio-badge-' + sid);
     if (!badge) return;
-    const isDeload = pd.phase.toLowerCase().includes('déload');
-    badge.innerHTML = '<div class="perio-bar-main">BLOC ' + pd.bloc + ' &nbsp;·&nbsp; SEMAINE ' + pd.week + ' &nbsp;·&nbsp; RIR ' + pd.rir + '</div><div class="perio-bar-phase' + (isDeload ? ' perio-deload' : '') + '">' + pd.phase + '</div>';
+    badge.innerHTML = '<div class="perio-bar-main">BLOC ' + pd.bloc + ' &nbsp;·&nbsp; SEMAINE ' + pd.week + ' &nbsp;·&nbsp; RIR ' + pd.forceRir + '</div><div class="perio-bar-phase' + (pd.isDeload ? ' perio-deload' : '') + '">' + pd.blocName + ' · ' + pd.phase + '</div>';
   });
-  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="main"]').forEach(function(el) {
+  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="mt-force"]').forEach(function(el) {
     var suffix = el.dataset.perioSuffix;
-    el.innerHTML = '<strong>' + pd.mainSets + ' × ' + pd.mainReps + '</strong>' + (suffix ? ' · ' + suffix : '');
+    el.innerHTML = '<strong>' + pd.forceSets + ' × ' + pd.forceReps + '</strong> @ ' + pd.forceRir + ' RIR · ' + (suffix || '');
   });
-  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="accessory"]').forEach(function(el) {
+  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="mt-explosif"]').forEach(function(el) {
     var suffix = el.dataset.perioSuffix;
-    var sets = el.dataset.perioFixedSets || pd.accSets;
-    el.innerHTML = '<strong>' + sets + ' × ' + pd.accReps + '</strong>' + (suffix ? ' · ' + suffix : '');
-  });
-  // RDL in FB-C: Bloc 1-2 same sets as main, Bloc 3 uses 8-10 reps instead of 6-8
-  document.querySelectorAll('.session[id^="session-fullBody"] [data-perio-type="rdl-fbc"]').forEach(function(el) {
-    var suffix = el.dataset.perioSuffix;
-    el.innerHTML = '<strong>' + pd.mainSets + ' × ' + pd.rdlReps + '</strong>' + (suffix ? ' · ' + suffix : '');
+    if (pd.explSets === 0) {
+      el.innerHTML = '<strong>—</strong> · Repos Explosif (Déload)';
+    } else {
+      el.innerHTML = '<strong>' + pd.explSets + ' × ' + pd.explReps + '</strong> · ' + (suffix || '');
+    }
   });
 }
 document.addEventListener('DOMContentLoaded', function() {
