@@ -1802,39 +1802,6 @@
  margin-top: 2px;
 }
 
-/* LUMBAGO ROUTINE PAGE */
-.lumbago-page {
- position: fixed;
- inset: 0;
- background: var(--bg);
- z-index: 500;
- display: none;
- flex-direction: column;
- overflow-y: auto;
- padding-bottom: 80px;
-}
-.lumbago-page.visible { display: flex; }
-.lumbago-section-tag {
- display: inline-block;
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 1px;
- padding: 4px 10px;
- border-radius: 6px;
- margin-bottom: 6px;
-}
-.lumbago-section-tag.mobility { background: rgba(64,196,255,0.15); color: var(--blue); }
-.lumbago-section-tag.stability { background: rgba(255,152,0,0.15); color: #ff9800; }
-.lumbago-section-tag.relax { background: rgba(0,230,118,0.15); color: var(--green); }
-.lumbago-note {
- font-size: 12px;
- color: var(--muted);
- font-style: italic;
- padding: 4px 16px 8px;
- line-height: 1.4;
-}
 
 .injuries-list { padding: 16px; flex: 1; }
 .zone-card {
@@ -2446,40 +2413,22 @@
 }
 .gym-start-btn:active { opacity: 0.7; }
 
-/* Machine badge on exercise cards */
-.ex-machine-badge {
+/* Machine name input on exercise cards */
+.ex-machine-badge { margin-top: 6px; }
+.machine-input {
+ width: 100%;
  background: #111;
+ border: 1px dashed #2a2a2a;
  border-radius: 8px;
  padding: 6px 10px;
  font-family: 'Inter', sans-serif;
- font-size: 10px;
- margin-top: 4px;
- cursor: pointer;
- display: flex;
- align-items: center;
- gap: 6px;
- transition: opacity 0.15s;
-}
-.ex-machine-badge:active { opacity: 0.7; }
-.ex-machine-badge.configured {
+ font-size: 11px;
  color: var(--muted);
- border: 1px solid transparent;
+ outline: none;
+ box-sizing: border-box;
 }
-.ex-machine-badge.substituted {
- color: var(--accent);
- border: 1px solid var(--accent);
- background: rgba(226, 241, 107, 0.08);
-}
-.ex-machine-badge.unconfigured {
- color: #555;
- border: 1px dashed #2a2a2a;
- background: #111;
-}
-.ex-machine-badge.no-gym {
- color: #666;
- border: 1px dashed #333;
- background: #161616;
-}
+.machine-input:focus { border-color: var(--accent); color: #fff; }
+.machine-input::placeholder { color: #444; }
 
 /* Equipment bottom sheet specifics */
 .equip-select-wrap {
@@ -2672,13 +2621,6 @@
  <button class="tab" data-block="fullbody" onclick="showTab('fullBodyB', this)">S1</button>
  <button class="tab" data-block="fullbody" onclick="showTab('fullBodyA', this)">S2</button>
  <button class="tab" data-block="fullbody" onclick="showTab('fullBodyC', this)">S3</button>
- <button class="tab" data-block="main" onclick="showTab('upperA', this)" style="display:none">Upper A</button>
- <button class="tab" data-block="main" onclick="showTab('lowerA', this)" style="display:none">Lower A</button>
- <button class="tab" data-block="main" onclick="showTab('upperB', this)" style="display:none">Upper B</button>
- <button class="tab" data-block="main" onclick="showTab('lowerB', this)" style="display:none">Lower B</button>
- <button class="tab" data-block="recovery" onclick="showTab('recA', this)" style="display:none">Rec A</button>
- <button class="tab" data-block="recovery" onclick="showTab('recB', this)" style="display:none">Rec B</button>
- <button class="tab" data-block="recovery" onclick="showTab('recC', this)" style="display:none">Rec C</button>
  <button class="tab" onclick="showTab('history', this)"> History</button>
  </div>
 </header>
@@ -2707,41 +2649,14 @@
  <button onclick="mtWeekStep(1)" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:16px;cursor:pointer;line-height:1">+</button>
  </div>
  </div>
- <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px;">
- <div style="padding:6px 16px 2px; font-size:9px; font-weight:700; letter-spacing:0.1em; color:#555; text-transform:uppercase;">4-Day Hypertrophy</div>
- <div class="panel-item" data-block="main" onclick="selectBlock('main')">
- <div class="panel-item-label">Hypertrophy · WK 1–2</div>
- <div class="panel-item-sub">4-Day Split · Archived</div>
- </div>
- <div class="panel-item" data-block="main34" onclick="selectBlock('main34')">
- <div class="panel-item-label">Hypertrophy · WK 3–4</div>
- <div class="panel-item-sub">4-Day Split · Archived</div>
- </div>
- </div>
- <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px;">
- <div class="panel-item" data-block="recovery" onclick="selectBlock('recovery')">
- <div class="panel-item-label">Recovery</div>
- <div class="panel-item-sub">2-Week Deload Block</div>
- </div>
- </div>
- <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
- <div class="panel-item" onclick="openSettings(); closePanel();" style="border-bottom:none;">
- <div class="panel-item-label">Settings</div>
- <div class="panel-item-sub">Gyms, equipment, exercises</div>
- </div>
- </div>
+
  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
  <div class="panel-item" onclick="openInjuriesPage(); closePanel();" style="border-bottom:none;">
  <div class="panel-item-label">⚠ Injuries</div>
  <div class="panel-item-sub">Manage tracked zones</div>
  </div>
  </div>
- <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px;">
- <div class="panel-item" onclick="openLumbagoPage(); closePanel();" style="border-bottom:none;">
- <div class="panel-item-label"> Lumbago Routine</div>
- <div class="panel-item-sub">Evening low-back rehab · 10–12 min</div>
- </div>
- </div>
+
 </div>
 
 <!-- INJURIES PAGE -->
@@ -2771,110 +2686,6 @@
  <button class="zone-log-btn" id="zoneLogBtn" onclick="logSingleZone()">Log score now</button>
  </div>
 </div>
-
-<!-- LUMBAGO ROUTINE PAGE -->
-<div class="lumbago-page" id="lumbagoPage">
- <div class="injuries-page-header">
- <button class="injuries-back" onclick="closeLumbagoPage()">←</button>
- <div>
- <div class="injuries-page-title">Lumbago Routine</div>
- <div class="injuries-page-sub">Routine soir — Lombalgie / Bas du dos · 10–12 min</div>
- </div>
- </div>
-
- <div style="padding:16px;">
- <div class="session-meta" style="margin-bottom:16px;">
- <span class="badge badge-time">10–12 min</span>
- <span class="badge badge-focus"> Au sol, pas d'équipement</span>
- <span class="badge badge-intensity"> Soir ou post-vélo</span>
- </div>
-
- <div class="section">
- <div class="section-label"><span><span class="lumbago-section-tag mobility"> Mobilité</span> Relâcher les tensions</span></div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Knees to Chest</div>
- <div class="ex-sets"><strong>1 × 60</strong> · Genoux ramenés, bascule douce D/G</div>
- <div class="ex-note">Allongé sur le dos, ramène les deux genoux vers la poitrine, mains derrière les cuisses. Très doux, aucune douleur.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=knees+to+chest+stretch+low+back" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cat-Cow</div>
- <div class="ex-sets"><strong>1 × 10</strong> · Lentes, inspiration dos creux, expiration dos rond</div>
- <div class="ex-note">À quatre pattes. Inspiration → dos creux (cow). Expiration → dos rond (cat). Lent et contrôlé.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cat+cow+stretch+low+back+pain" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Thread the Needle</div>
- <div class="ex-sets"><strong>2 × 8</strong> · Rotation thoracique, 8 reps chaque côté</div>
- <div class="ex-note">À quatre pattes, glisse un bras sous l'autre jusqu'au sol. Contrepoids au vélo qui fige la thoracique en flexion.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=thread+the+needle+thoracic+rotation+stretch" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">90/90 Hip Stretch</div>
- <div class="ex-sets"><strong>2 × 45</strong> · 45 sec chaque côté</div>
- <div class="ex-note">Assis au sol, jambes en 90/90. Penche-toi vers la jambe avant. Utile aussi pour la mobilité de hanche Muay Thai.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=90+90+hip+stretch+mobility" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span><span class="lumbago-section-tag stability"> Stabilisation</span> Activer sans charger</span></div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon">🪲</div>
- <div class="ex-body">
- <div class="ex-name">Dead Bug</div>
- <div class="ex-sets"><strong>2 × 8</strong> · 8 reps chaque côté, lent et contrôlé</div>
- <div class="ex-note">Allongé sur le dos, lombaires collées au sol. Bras tendus, genoux à 90°. Bras droit + jambe gauche simultanément, sans creuser le bas du dos.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dead+bug+exercise+core+low+back" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Bird Dog</div>
- <div class="ex-sets"><strong>2 × 8</strong> · 8 reps chaque côté, tiens 2 sec</div>
- <div class="ex-note">À quatre pattes, dos plat. Bras droit + jambe gauche, tiens 2 sec, reviens sans rotation du bassin.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=bird+dog+exercise+core+stability" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span><span class="lumbago-section-tag relax"> Détente finale</span></span></div>
-
- <div class="exercise" data-lumbago="1">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Child's Pose</div>
- <div class="ex-sets"><strong>1 × 90</strong> · 60–90 sec tenu, respiration abdominale</div>
- <div class="ex-note">Genoux écartés, bras tendus devant, front au sol. Respiration abdominale profonde.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=child+pose+stretch+relaxation+low+back" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-</div>
-
-<!-- SETTINGS PAGE -->
-<div class="settings-page" id="settingsPage"></div>
 
 <!-- ADD ZONE SHEET -->
 <div class="picker-overlay" id="addZoneOverlay" onclick="closeAddZone()"></div>
@@ -2922,572 +2733,6 @@
 
  <!-- ===== OVERVIEW (dynamic) ===== -->
  <div class="session active" id="session-overview"></div>
-
- <!-- ===== UPPER A ===== -->
- <div class="session" id="session-upperA">
-
- <div class="session-header">
- <h2><span class="session-title-label">Upper A</span><span>Push Focus</span></h2>
- <div class="session-goal">Build chest & shoulder volume. Protect left shoulder and right wrist.</div>
- <div class="session-meta">
- <span class="badge badge-time">55–65 min</span>
- <span class="badge badge-intensity" id="upperA-intensity">2–3 RIR</span>
- <span class="badge badge-focus">Chest · Shoulder · Back</span>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Warm-up · 7 min</span></div>
-
- <div class="exercise">
- <div class="ex-icon">🩹</div>
- <div class="ex-body">
- <div class="ex-name">Band Pull-Aparts</div>
- <div class="ex-sets"><strong>2 × 15</strong> · Light band</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=band+pull+apart+shoulder+warm+up" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Shoulder CARs</div>
- <div class="ex-sets"><strong>5 slow circles</strong> · Each arm</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=shoulder+CARs+controlled+articular+rotation" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Thoracic Rotation (Quadruped)</div>
- <div class="ex-sets"><strong>5 each side</strong></div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=thoracic+rotation+quadruped+mobility" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Incline Press (Semi-Pronated)</div>
- <div class="ex-sets" id="upperA-main1"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min30</div>
- <div class="ex-note">Semi-pronated grip, progressive reintro. Monitor wrist next day. Plan B: Cable chest press.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+semi+pronated+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Chest-Supported Row (Wide Grip Pronated)</div>
- <div class="ex-sets" id="upperA-main2"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min30</div>
- <div class="ex-note">Wide pronated grip. Straps recommended.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+wide+grip+pronated+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Accessories — Superset A then B</span></div>
-
- <div class="superset-group">
- <div class="superset-label">Superset A — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Flat Press (Semi-Pronated)</div>
- <div class="ex-sets"><strong>3 × 8–12</strong> · 2-1-0</div>
- <div class="ex-note">Semi-pronated grip. Plan B: Cable chest press.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+flat+press+semi+pronated+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon">⬇</div>
- <div class="ex-body">
- <div class="ex-name">Wide-Grip Lat Pulldown (Pronated)</div>
- <div class="ex-sets"><strong>3 × 8–12</strong> · 2-1-0</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=wide+grip+lat+pulldown+pronated+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="superset-group">
- <div class="superset-label">Superset B — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Rope Triceps Pressdown</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Plan B: Overhead cable extension.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=rope+triceps+pressdown+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon">🅨</div>
- <div class="ex-body">
- <div class="ex-name">Y-Raise (Cable or Prone)</div>
- <div class="ex-sets"><strong>2 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Lower trap activation. Key for long-term shoulder health.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=Y+raise+lower+trap+activation+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hammer Curl</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hammer+curl+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Crunch</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Kneel under high cable, rope attachment. Flex trunk not neck. Squeeze at bottom.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+crunch+kneeling+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Cool-down · Wrist Prehab (Ambrose) · 5 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">🩺 TFCC Rehab — Light DB or Band</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">1. Wrist Flexion</div><div class="ex-sets"><strong>3 × 12</strong> · Curl wrist up from neutral</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=wrist+flexion+exercise+TFCC+rehab" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">2. Wrist Extension</div><div class="ex-sets"><strong>3 × 12</strong> · Pain-free range only</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=wrist+extension+exercise+rehab" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">3. Pronation</div><div class="ex-sets"><strong>3 × 12</strong> · Rotate palm down, light hammer</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=forearm+pronation+supination+exercise+dumbbell" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">4. Supination</div><div class="ex-sets"><strong>3 × 12</strong> · Rotate palm up</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=forearm+pronation+supination+exercise+dumbbell" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>If it flares</span></div>
- <div class="flare-box">
- <div class="flare-box-title">⚡ Substitutions</div>
- <div class="flare-item"><strong>Left shoulder:</strong> DB Incline → Landmine Press · Cable press → cable crossover (low-to-high)</div>
- <div class="flare-item"><strong>Right wrist:</strong> Add wrist wrap on pressing · Hammer curl → cable curl with rope</div>
- <div class="flare-item"><strong>Golfer's elbow:</strong> Cut hammer curl to 2 sets · Switch to rope handle cable curl</div>
- </div>
- </div>
-
- </div>
-
- <!-- ===== LOWER A ===== -->
- <div class="session" id="session-lowerA">
-
- <div class="session-header">
- <h2><span class="session-title-label">Lower A</span><span>Quad / Glute</span></h2>
- <div class="session-goal">Build quad and glute volume with controlled tempo. Protect knee with volume management.</div>
- <div class="session-meta">
- <span class="badge badge-time">55–65 min</span>
- <span class="badge badge-intensity" id="lowerA-intensity">2–3 RIR</span>
- <span class="badge badge-focus">Quad · Glute · Hamstring</span>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Warm-up · Hip Prehab (Ambrose) · 7 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">🩺 Hip Control Protocol</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+marching+hip+activation+glute" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Kick-Outs (Supine Tabletop)</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+kick+outs+supine+tabletop+hip+activation" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Seated Hip Int/Ext Rotation (Ball)</div><div class="ex-sets"><strong>2 × 10</strong> each direction</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+hip+internal+external+rotation+exercise" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Lateral Hip Abduction (Cable/Band)</div><div class="ex-sets"><strong>2 × 12</strong> each side · Foot slightly inward</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+hip+abduction+standing+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Belt Squat</div>
- <div class="ex-sets" id="lowerA-main1"><strong>3 × 8–10</strong> · 2–3 RIR · Rest 2 min</div>
- <div class="ex-note">3-sec lowering. Stop just before knee discomfort. Best choice for long femurs + knee health. Plan B: Hack squat → Leg press.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Romanian Deadlift</div>
- <div class="ex-sets" id="lowerA-main2"><strong>3 × 8–10</strong> · 2–3 RIR · Rest 2 min</div>
- <div class="ex-note">Hip hinge, neutral spine. Straps once you have them.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+hip+hinge" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Accessories — Superset A then B</span></div>
-
- <div class="superset-group">
- <div class="superset-label">Superset A</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Bulgarian Split Squat</div>
- <div class="ex-sets"><strong>3 × 10</strong> each · BW or light DB</div>
- <div class="ex-note">Vertical shin bias. Slow and controlled. No forward lean.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+vertical+shin+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Lying or Seated Ham Curl</div>
- <div class="ex-sets"><strong>3 × 12–15</strong></div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="superset-group">
- <div class="superset-label">Superset B</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Seated Calf Raise</div>
- <div class="ex-sets"><strong>3 × 15–20</strong></div>
- <div class="ex-note">Plan B: Standing or leg press calf</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+calf+raise+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Copenhagen Side Plank (Short Lever)</div>
- <div class="ex-sets"><strong>2 × 20s</strong> each side</div>
- <div class="ex-note">Scale down if too hard. Key for hip health + Muay Thai.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=copenhagen+side+plank+short+lever+adductor" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>If it flares</span></div>
- <div class="flare-box">
- <div class="flare-box-title">⚡ Substitutions</div>
- <div class="flare-item"><strong>Knee:</strong> Belt squat → hack squat → leg press (pain-free ROM only) · Drop split squat → low-box step-up · Cut quad volume by 1 set · Use isometrics if really bad</div>
- <div class="flare-item"><strong>Lower back:</strong> RDL → hip thrust or ham curl</div>
- </div>
- </div>
-
- </div>
-
- <!-- ===== UPPER B ===== -->
- <div class="session" id="session-upperB">
-
- <div class="session-header">
- <h2><span class="session-title-label">Upper B</span><span>Pull Focus</span></h2>
- <div class="session-goal">Back and bicep volume. Shoulder health work. Chest accessory.</div>
- <div class="session-meta">
- <span class="badge badge-time">55–65 min</span>
- <span class="badge badge-intensity" id="upperB-intensity">2–3 RIR</span>
- <span class="badge badge-focus">Back · Biceps · Rear Delt</span>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Warm-up · 7 min</span></div>
-
- <div class="exercise">
- <div class="ex-icon">🩹</div>
- <div class="ex-body">
- <div class="ex-name">Face Pulls or Band Pull-Aparts</div>
- <div class="ex-sets"><strong>2 × 20</strong></div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+face+pull+form+rear+delt" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Shoulder Int/Ext Rotation (Light Band)</div>
- <div class="ex-sets"><strong>10 each</strong> direction</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=shoulder+internal+external+rotation+band+warm+up" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon">⬇</div>
- <div class="ex-body">
- <div class="ex-name">Dead Hang (if wrist OK)</div>
- <div class="ex-sets"><strong>20s</strong> · Skip if wrist irritated</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dead+hang+benefits+shoulder+decompression" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Row (Straight Bar / Pronated)</div>
- <div class="ex-sets" id="upperB-main1"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min30</div>
- <div class="ex-note">Wide pronated grip, pull to navel, tempo 2-1-0.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+row+straight+bar+pronated+wide+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon">⬇</div>
- <div class="ex-body">
- <div class="ex-name">Neutral-Grip Pulldown</div>
- <div class="ex-sets" id="upperB-main2"><strong>3 × 6–8</strong> · 2-1-0 · Rest 2min30</div>
- <div class="ex-note">Full stretch at top, squeeze at bottom. Slow and intentional.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Accessories — Superset A then B</span></div>
-
- <div class="superset-group">
- <div class="superset-label">Superset A — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Incline Press or Cable Chest Press</div>
- <div class="ex-sets"><strong>3 × 8–12</strong> · 2-1-0</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+chest+press+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Rear Delt Cable Fly / Machine</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Light, squeeze the rear delt.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=rear+delt+cable+fly+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Lateral Raise</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+lateral+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="superset-group">
- <div class="superset-label">Superset B — Rest 60s between rounds</div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Overhead Cable Extension</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Plan B: Rope pressdown</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Curl (Rope or Bar Handle)</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Rope handle easier on golfer's elbow.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+bicep+curl+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hanging Knee Raise</div>
- <div class="ex-sets"><strong>3 × 10–15</strong> · 2-1-0</div>
- <div class="ex-note">Control the descent — no swing. Plan B: Plank to Pike on floor.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hanging+knee+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Cool-down · Wrist Prehab (Ambrose) · 5 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">🩺 Same as Upper A — Flexion · Extension · Pronation · Supination · 3×12 each</div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>If it flares</span></div>
- <div class="flare-box">
- <div class="flare-box-title">⚡ Substitutions</div>
- <div class="flare-item"><strong>Golfer's elbow:</strong> Drop cable curl to 2 sets · Rope handle only · Add wrist extensor eccentric 2×10 light</div>
- <div class="flare-item"><strong>Left shoulder on pressing:</strong> Skip chest accessory entirely · Add extra rear delt set instead</div>
- <div class="flare-item"><strong>Right wrist:</strong> Skip dead hang · Use straps or wrist wrap on rows</div>
- </div>
- </div>
-
- </div>
-
- <!-- ===== LOWER B ===== -->
- <div class="session" id="session-lowerB">
-
- <div class="session-header">
- <h2><span class="session-title-label">Lower B</span><span>Posterior Chain</span></h2>
- <div class="session-goal">Hip thrust and hinge focus. Belt squat for quad work. Hip abduction for Muay Thai. Optional light conditioning.</div>
- <div class="session-meta">
- <span class="badge badge-time">55–65 min</span>
- <span class="badge badge-intensity" id="lowerB-intensity">2–3 RIR</span>
- <span class="badge badge-focus">Glute · Hinge · Hip Abduction</span>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Warm-up · Hip Prehab (Ambrose) · 7 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">Hip Control Protocol</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+marching+hip+activation+glute" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Kick-Outs (Supine Tabletop)</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=banded+kick+outs+supine+tabletop+hip+activation" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Seated Hip Int/Ext Rotation (Ball)</div><div class="ex-sets"><strong>2 × 10</strong> each direction</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+hip+internal+external+rotation+exercise" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Lateral Hip Abduction (Cable/Band)</div><div class="ex-sets"><strong>2 × 12</strong> each side · Foot slightly inward</div></div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+hip+abduction+standing+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hip Thrust (Barbell or Machine)</div>
- <div class="ex-sets" id="lowerB-main1"><strong>3 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
- <div class="ex-note">Full hip extension at top. No hyperextension of lumbar.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hip+thrust+form+barbell+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
-
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Belt Squat (Wider Stance)</div>
- <div class="ex-sets" id="lowerB-main2"><strong>3 × 10–12</strong> · 2–3 RIR · Rest 90s</div>
- <div class="ex-note">Wider stance = more glute/adductor. 3-sec lowering. Plan B: Hack squat → Leg press.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+wide+stance+glute+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Accessories — Superset A then B</span></div>
-
- <div class="superset-group">
- <div class="superset-label">Superset A</div>
- <div class="exercise">
- <div class="ex-icon">⚖</div>
- <div class="ex-body">
- <div class="ex-name">Single-Leg RDL</div>
- <div class="ex-sets"><strong>3 × 10</strong> each · Light DB</div>
- <div class="ex-note">Focus on balance and control. Key for kicking base leg.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=single+leg+RDL+dumbbell+form+balance" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Seated Leg Curl</div>
- <div class="ex-sets"><strong>3 × 12–15</strong></div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+leg+curl+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="superset-group">
- <div class="superset-label">Superset B</div>
- <div class="exercise">
- <div class="ex-icon">↔</div>
- <div class="ex-body">
- <div class="ex-name">Cable Hip Abduction (Standing)</div>
- <div class="ex-sets"><strong>3 × 15</strong> each side</div>
- <div class="ex-note">Foot slightly inward. Key for roundkick mechanics.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=standing+cable+hip+abduction+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Copenhagen Side Plank</div>
- <div class="ex-sets"><strong>2 × 20–25s</strong> each side</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=copenhagen+side+plank+adductor+muay+thai" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>Optional Conditioning · 8 min</span></div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Bike or Rower — Low intensity</div>
- <div class="ex-sets"><strong>480s</strong> · Keep HR under 140</div>
- <div class="ex-note">Not a HIIT session. Active recovery / aerobic base.</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=low+intensity+cardio+zone+2+training" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- </div>
-
- <div class="section">
- <div class="section-label"><span>If it flares</span></div>
- <div class="flare-box">
- <div class="flare-box-title">⚡ Substitutions</div>
- <div class="flare-item"><strong>Knee:</strong> Belt squat → hack squat → leg press · Single-leg RDL → hip thrust variation · Skip conditioning · Add isometric wall sit instead</div>
- <div class="flare-item"><strong>Lower back:</strong> Hip thrust → glute bridge on floor · Drop leg press</div>
- </div>
- </div>
-
- </div>
 
  <!-- ===== S1 — Quad Dominant · MT S&C ===== -->
  <div class="session" id="session-fullBodyB">
@@ -3569,7 +2814,6 @@
  </div>
  </div>
  </div>
- </div>
 
  <!-- TRI-SET EPAULES/BRAS -->
  <div class="section">
@@ -3602,7 +2846,6 @@
  <div class="ex-note">Coudes fixes, extension complète, legèrement incliné vers l'avant. Poignet droit (TFCC).</div>
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=tricep+rope+pushdown+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
  </div>
  </div>
  </div>
@@ -3716,7 +2959,6 @@
  </div>
  </div>
  </div>
- </div>
 
  <!-- TRI-SET EPAULES/BRAS -->
  <div class="section">
@@ -3749,7 +2991,6 @@
  <div class="ex-note">Attention golfer's elbow — charge légère, douleur = stop. Bras au-dessus de la tête, extension complète.</div>
  </div>
  <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+rope+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
  </div>
  </div>
  </div>
@@ -3921,340 +3162,431 @@
 
  </div>
 
- <!-- ===== RECOVERY A — Full Body Push ===== -->
- <div class="session" id="session-recA">
+ <div class="session active" id="session-overview"></div>
+
+ <!-- ===== S1 — Quad Dominant · MT S&C ===== -->
+ <div class="session" id="session-fullBodyB">
+
+ <div class="perio-bar" id="perio-badge-fullBodyB">
+ <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
+ <div class="perio-bar-phase">Développement</div>
+ </div>
 
  <div class="session-header">
- <h2><span class="session-title-label">Recovery A</span><span>Push Emphasis</span></h2>
- <div class="session-goal">Full body deload. Lower volume, higher RIR. Focus on movement quality.</div>
+ <h2>S1 — Quad Dominant</h2>
  <div class="session-meta">
- <span class="badge badge-time">50–60 min</span>
- <span class="badge badge-intensity">RIR 3</span>
- <span class="badge badge-focus">Full Body · Push</span>
+ <span class="badge badge-time">60–70 min</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
  </div>
  </div>
 
+ <!-- PREHAB HIP AMBROSE -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 7 min</span></div>
+ <div class="section-label"><span>Prehab Hip · Ambrose Protocol · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 Activation Protocol</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 15</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Kick-Outs</div><div class="ex-sets"><strong>2 × 15</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Shoulder CARs</div><div class="ex-sets"><strong>2 × 5</strong> each side</div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Thoracic Rotation Quadruped</div><div class="ex-sets"><strong>2 × 8</strong> each side</div></div>
- </div>
+ <div class="prehab-box-title">Hip Prehab (Ambrose)</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Clamshell</div><div class="ex-sets"><strong>2 × 15</strong> each side · Band légère</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Hip Abduction (debout)</div><div class="ex-sets"><strong>2 × 15</strong> each side</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Glute Bridge Isométrique</div><div class="ex-sets"><strong>2 × 20 s</strong></div></div></div>
  </div>
  </div>
 
+ <!-- BLOC EXPLOSIVITE -->
  <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
+ <div class="section-label"><span>Bloc Explosivité · Force Réactive</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Jump Squat — Bodyweight</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min · Sol plat, réception souple"><strong>3 × 4</strong> · Repos 2 min · Sol plat, réception souple</div>
+ <div class="ex-note">Intention maximale à chaque rep. Pause 3 s entre reps. Pas de fatigue — qualité absolue.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=jump+squat+bodyweight+explosive+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC FORCE -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Force</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
  <div class="ex-name">Belt Squat</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 2 min</div>
- <div class="ex-note">Tempo 3-1-1</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min · Tempo 3-1-1"><strong>3 × 5</strong> @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Poids de ceinture, tibia vertical, descente contrôlée 3 s. Sub: Hack squat → Leg press.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Incline Press (Neutral Grip)</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">Neutral grip, avoid fixed machine</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+neutral+grip" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Chest-Supported Row</div>
- <div class="ex-sets"><strong>3 × 12</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">Overhand or neutral — NOT supinated</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Romanian Deadlift</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">Hook grip if elbow flares</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=belt+squat+machine+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC HYPERTROPHIE - superset -->
  <div class="section">
- <div class="section-label"><span>Accessories — Superset</span></div>
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
+ <div class="superset-label">A1 / A2</div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A1</div>
  <div class="ex-body">
- <div class="ex-name">Cable Lateral Raise</div>
- <div class="ex-sets"><strong>3 × 15</strong></div>
+ <div class="ex-name">DB Incline Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de machine fixe (épaule gauche). Descente 2 s, pression en haut.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+incline+press+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A2</div>
  <div class="ex-body">
- <div class="ex-name">Face Pull</div>
- <div class="ex-sets"><strong>3 × 15</strong></div>
+ <div class="ex-name">Chest-Supported Row — DB ou Machine</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-0-1</div>
+ <div class="ex-note">Poitrine sur le pad, coudes vers arrière, pas de rotation du tronc. Contrôle complet.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=chest+supported+row+dumbbell+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- TRI-SET EPAULES/BRAS -->
  <div class="section">
- <div class="section-label"><span>Abs</span></div>
+ <div class="section-label"><span>Tri-set · Épaules + Bras · 3 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">B1 / B2 / B3</div>
+ <div class="exercise">
+ <div class="ex-icon">B1</div>
+ <div class="ex-body">
+ <div class="ex-name">Face Pull — Corde</div>
+ <div class="ex-sets"><strong>3 × 15</strong> · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Poulie haute, tirer vers le visage, coudes haut, rotation externe en fin de mouvement.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=face+pull+cable+rope+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">B2</div>
+ <div class="ex-body">
+ <div class="ex-name">Hammer Curl — DB Alterné</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1</div>
+ <div class="ex-note">Prise neutre, pas de balancement. Concentrique 1 s, excentrique 2 s.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=hammer+curl+dumbbell+alternating+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise" data-tags="optional">
+ <div class="ex-icon">B3</div>
+ <div class="ex-body">
+ <div class="ex-name">Tricep Pushdown — Corde</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 1</div>
+ <div class="ex-note">Coudes fixes, extension complète, legèrement incliné vers l'avant. Poignet droit (TFCC).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=tricep+rope+pushdown+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+ </div>
+
+ <!-- CORE -->
+ <div class="section">
+ <div class="section-label"><span>Core · Anti-Rotation</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Cable Crunch</div>
- <div class="ex-sets"><strong>3 × 15</strong> · RIR 2 · Rest 60s</div>
- <div class="ex-note">Kneel at cable, rope attachment, hinge at hips not waist</div>
+ <div class="ex-name">Pallof Press — Cable</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1 · Tempo 2-2-2</div>
+ <div class="ex-note">Poulie à hauteur de nombril, bras tendus, ne pas laisser le câble tourner le tronc. Bracing actif.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+crunch+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=pallof+press+cable+anti+rotation+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- CARDIO CONDITIONING -->
  <div class="section">
- <div class="section-label"><span>Cool-down · Wrist Prehab · 5 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">🩺 TFCC Rehab — Flexion · Extension · Pronation · Supination · 3×12 each</div>
+ <div class="section-label"><span>Cardio Conditioning · Sprint Intervals</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Sprints — Tapis ou Vélo Assault</div>
+ <div class="ex-sets"><strong>6 × 20 s</strong> effort / 40 s repos · Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 9 pendant les sprints. Volume total progressif selon la périodisation (voir perio bar).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assault+bike+sprint+intervals+hiit" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
  </div>
 
- <!-- ===== RECOVERY B — Full Body Pull ===== -->
- <div class="session" id="session-recB">
+ <!-- ===== S2 — Posterior Chain · MT S&C ===== -->
+ <div class="session" id="session-fullBodyA">
+
+ <div class="perio-bar" id="perio-badge-fullBodyA">
+ <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
+ <div class="perio-bar-phase">Développement</div>
+ </div>
 
  <div class="session-header">
- <h2><span class="session-title-label">Recovery B</span><span>Pull Emphasis</span></h2>
- <div class="session-goal">Full body deload. Focus on back and posterior chain. Keep RIR high.</div>
+ <h2>S2 — Posterior Chain</h2>
  <div class="session-meta">
- <span class="badge badge-time">50–60 min</span>
- <span class="badge badge-intensity">RIR 3</span>
- <span class="badge badge-focus">Full Body · Pull</span>
+ <span class="badge badge-time">60–70 min</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
  </div>
  </div>
 
+ <!-- PREHAB WRIST + DEAD BUG -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 7 min</span></div>
+ <div class="section-label"><span>Prehab Poignet + Stabilité · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 Activation Protocol</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 15</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Seated Hip IR/ER</div><div class="ex-sets"><strong>2 × 10</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Band Pull-Aparts</div><div class="ex-sets"><strong>2 × 15</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Shoulder CARs</div><div class="ex-sets"><strong>2 × 5</strong> each side</div></div>
- </div>
+ <div class="prehab-box-title">TFCC Prehab (Ambrose) + Core</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Wrist Flexion / Extension / Pronation / Supination</div><div class="ex-sets"><strong>2 × 12</strong> each · Band ou light DB · Range sans douleur</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Dead Bug</div><div class="ex-sets"><strong>2 × 8</strong> each side · Lombaires plaquées au sol</div></div></div>
  </div>
  </div>
 
+ <!-- BLOC EXPLOSIVITE -->
  <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
+ <div class="section-label"><span>Bloc Explosivité · Force Réactive</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Hack Squat</div>
- <div class="ex-sets"><strong>3 × 12</strong> · RIR 3 · Rest 2 min</div>
- <div class="ex-note">Tempo 3-0-1. Sub: Leg press</div>
+ <div class="ex-name">Med Ball Slam — Double Bras</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min · Slam violent, reset complet"><strong>3 × 4</strong> · Repos 2 min · Slam violent, reset complet</div>
+ <div class="ex-note">Extension complète en haut, slam maximal. Ramasser sans se presser. Qualité absolue à chaque rep.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hack+squat+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon">⬇</div>
- <div class="ex-body">
- <div class="ex-name">Neutral-Grip Pulldown</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">V-bar or neutral bar</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Shoulder Press</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">Neutral grip, elbows slightly forward</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+shoulder+press+neutral+grip" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Hip Thrust Machine</div>
- <div class="ex-sets"><strong>3 × 12</strong> · RIR 2 · Rest 90s</div>
- <div class="ex-note">Drive glutes, not lower back</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=hip+thrust+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=medicine+ball+slam+explosive+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC FORCE -->
  <div class="section">
- <div class="section-label"><span>Accessories — Superset</span></div>
+ <div class="section-label"><span>Bloc Force</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Romanian Deadlift — Barre</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min · Tempo 3-1-1"><strong>3 × 5</strong> @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Hanches arrière, barre proche du corps, dos neutre. Sentir les ischio s'étirer. Pas de flexion lombaire.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=romanian+deadlift+barbell+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC HYPERTROPHIE - superset -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
+ <div class="superset-label">A1 / A2</div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A1</div>
  <div class="ex-body">
- <div class="ex-name">Leg Curl</div>
- <div class="ex-sets"><strong>3 × 12</strong></div>
+ <div class="ex-name">Wide-Grip Pulldown — Machine ou Barre</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 2 · Tempo 2-1-2</div>
+ <div class="ex-note">Prise large pronée, tirer vers la clavicule, coudes vers les hanches. Étirement complet en haut.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=wide+grip+lat+pulldown+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A2</div>
  <div class="ex-body">
- <div class="ex-name">Rear Delt Fly Cable</div>
- <div class="ex-sets"><strong>3 × 15</strong></div>
+ <div class="ex-name">DB Bench Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de machine fixe (épaule gauche). Descente contrôlée.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+bench+press+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- TRI-SET EPAULES/BRAS -->
  <div class="section">
- <div class="section-label"><span>Abs</span></div>
+ <div class="section-label"><span>Tri-set · Épaules + Dos · 3 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">B1 / B2 / B3</div>
+ <div class="exercise">
+ <div class="ex-icon">B1</div>
+ <div class="ex-body">
+ <div class="ex-name">Lateral Raise — Cable ou DB</div>
+ <div class="ex-sets"><strong>3 × 15</strong> · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Légère inclinaison avant, prise neutre, élévation jusqu'à l'horizontale. Contrôle complet.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=lateral+raise+cable+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">B2</div>
+ <div class="ex-body">
+ <div class="ex-name">Assisted Pull-Up — Machine</div>
+ <div class="ex-sets"><strong>3 × 8–10</strong> · RIR 1</div>
+ <div class="ex-note">Prise neutre ou supine. Extension complète en bas, menton au-dessus de la barre.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assisted+pull+up+machine+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise" data-tags="optional">
+ <div class="ex-icon">B3</div>
+ <div class="ex-body">
+ <div class="ex-name">Overhead Cable Extension — Corde</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 1</div>
+ <div class="ex-note">Attention golfer's elbow — charge légère, douleur = stop. Bras au-dessus de la tête, extension complète.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=overhead+cable+tricep+extension+rope+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+ </div>
+
+ <!-- CORE -->
+ <div class="section">
+ <div class="section-label"><span>Core · Stabilité Lombaire</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Dead Bug</div>
- <div class="ex-sets"><strong>3 × 10</strong> each side · Rest 60s</div>
- <div class="ex-note">Lower back flat on floor throughout, slow and controlled</div>
+ <div class="ex-name">Hanging Knee Raise</div>
+ <div class="ex-sets"><strong>3 × 12–15</strong> · RIR 1 · Tempo contrôlé</div>
+ <div class="ex-note">Pas de balancement. Genoux vers la poitrine, baisser lentement. Grip neutre si possible (TFCC).</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=hanging+knee+raise+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- CARDIO CONDITIONING -->
  <div class="section">
- <div class="section-label"><span>Cool-down · Wrist Prehab · 5 min</span></div>
- <div class="prehab-box">
- <div class="prehab-box-title">🩺 TFCC Rehab — Flexion · Extension · Pronation · Supination · 3×12 each</div>
+ <div class="section-label"><span>Cardio Conditioning · Vélo Intervals</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Vélo — Intervals Aérobie</div>
+ <div class="ex-sets"><strong>20 min</strong> · Effort modéré / Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 6–7. Maintenir cadence régulière. Volume total progressif selon la périodisation (voir perio bar).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=stationary+bike+interval+training+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
  </div>
 
- <!-- ===== RECOVERY C — Full Body Legs ===== -->
- <div class="session" id="session-recC">
+ <!-- ===== S3 — Unilateral · MT S&C ===== -->
+ <div class="session" id="session-fullBodyC">
+
+ <div class="perio-bar" id="perio-badge-fullBodyC">
+ <div class="perio-bar-main">BLOC 1 &nbsp;·&nbsp; SEMAINE 1 &nbsp;·&nbsp; RIR 3</div>
+ <div class="perio-bar-phase">Développement</div>
+ </div>
 
  <div class="session-header">
- <h2><span class="session-title-label">Recovery C</span><span>Legs Emphasis</span></h2>
- <div class="session-goal">Full body deload. Extra lower body volume. Controlled tempo throughout.</div>
+ <h2>S3 — Unilateral</h2>
  <div class="session-meta">
- <span class="badge badge-time">50–60 min</span>
- <span class="badge badge-intensity">RIR 3</span>
- <span class="badge badge-focus">Full Body · Legs</span>
+ <span class="badge badge-time">60–70 min</span>
+ <span class="badge badge-focus">Muay Thai S&amp;C</span>
  </div>
  </div>
 
+ <!-- PREHAB HIP AMBROSE -->
  <div class="section">
- <div class="section-label"><span>Warm-up · 8 min</span></div>
+ <div class="section-label"><span>Prehab Hip · Ambrose Protocol · 5 min</span></div>
  <div class="prehab-box">
- <div class="prehab-box-title">🩺 Activation Protocol</div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Marching</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Banded Kick-Outs</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Seated Hip IR/ER</div><div class="ex-sets"><strong>2 × 10</strong> each direction</div></div>
- </div>
- <div class="exercise">
- <div class="ex-body"><div class="ex-name">Glute Bridge March</div><div class="ex-sets"><strong>2 × 20</strong></div></div>
- </div>
+ <div class="prehab-box-title">Hip Prehab (Ambrose)</div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Clamshell</div><div class="ex-sets"><strong>2 × 15</strong> each side · Band légère</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Banded Hip Abduction (debout)</div><div class="ex-sets"><strong>2 × 15</strong> each side</div></div></div>
+ <div class="exercise"><div class="ex-body"><div class="ex-name">Glute Bridge Isométrique</div><div class="ex-sets"><strong>2 × 20 s</strong></div></div></div>
  </div>
  </div>
 
+ <!-- BLOC EXPLOSIVITE -->
  <div class="section">
- <div class="section-label"><span>Main Lifts</span></div>
- <div class="exercise">
+ <div class="section-label"><span>Bloc Explosivité · Unilatéral Réactif</span></div>
+ <div class="exercise" data-tags="unilateral">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Bulgarian Split Squat</div>
- <div class="ex-sets"><strong>3 × 8</strong> each · RIR 3 · Rest 2 min</div>
- <div class="ex-note">Vertical shin, DB in hands</div>
+ <div class="ex-name">Explosive Bulgarian Split Squat — BW</div>
+ <div class="ex-sets" data-perio-type="mt-explosif" data-perio-suffix="Repos 2 min each side · Réception souple"><strong>3 × 4</strong> each side · Repos 2 min · Réception souple</div>
+ <div class="ex-note">Pas de charge. Poussée maximale depuis le sol. Pause 3 s entre reps. Qualité &gt; vitesse.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Cable Row (Neutral)</div>
- <div class="ex-sets"><strong>3 × 12</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">V-bar, elbows close to body</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+row+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">DB Bench Press (Neutral Grip)</div>
- <div class="ex-sets"><strong>3 × 10</strong> · RIR 3 · Rest 90s</div>
- <div class="ex-note">Neutral wrists throughout</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+bench+press+neutral+grip" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
- </div>
- <div class="exercise">
- <div class="ex-icon"></div>
- <div class="ex-body">
- <div class="ex-name">Seated Calf Raise</div>
- <div class="ex-sets"><strong>3 × 15</strong> · RIR 2 · Rest 60s</div>
- <div class="ex-note">Slow tempo, full ROM</div>
- </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+calf+raise+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=explosive+bulgarian+split+squat+plyometric" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
+ <!-- BLOC FORCE -->
  <div class="section">
- <div class="section-label"><span>Accessories — Superset</span></div>
+ <div class="section-label"><span>Bloc Force · Unilatéral</span></div>
+ <div class="exercise" data-tags="unilateral">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Bulgarian Split Squat Lestée — DB ou Barre Guidée</div>
+ <div class="ex-sets" data-perio-type="mt-force" data-perio-suffix="Repos 3 min each side · Tempo 3-1-1"><strong>3 × 5</strong> each side @ 3 RIR · Repos 3 min · Tempo 3-1-1</div>
+ <div class="ex-note">Pied arrière sur banc, tibia avant vertical. Descente 3 s, pause en bas, poussée explosive. Sub: Leg press unilatéral.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+dumbbell+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- BLOC HYPERTROPHIE - superset -->
+ <div class="section">
+ <div class="section-label"><span>Bloc Hypertrophie · Superset · 3–4 séries</span></div>
  <div class="superset-group">
- <div class="superset-label">Superset — Rest 60s between rounds</div>
+ <div class="superset-label">A1 / A2</div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A1</div>
  <div class="ex-body">
- <div class="ex-name">Leg Extension</div>
- <div class="ex-sets"><strong>3 × 15</strong></div>
- <div class="ex-note">Tempo 3-2-1</div>
+ <div class="ex-name">DB Shoulder Press — Neutral Grip</div>
+ <div class="ex-sets"><strong>3 × 10–12</strong> · RIR 2 · Tempo 2-1-1</div>
+ <div class="ex-note">Neutral grip, coudes à 45°, pas de derrière la nuque. Épaule gauche — surveiller la douleur.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=dumbbell+shoulder+press+neutral+grip+seated" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  <div class="exercise">
- <div class="ex-icon"></div>
+ <div class="ex-icon">A2</div>
  <div class="ex-body">
- <div class="ex-name">Hamstring Curl</div>
- <div class="ex-sets"><strong>3 × 12</strong></div>
+ <div class="ex-name">Cable Row — Prise Neutre</div>
+ <div class="ex-sets"><strong>3 × 12</strong> · RIR 2 · Tempo 2-0-2</div>
+ <div class="ex-note">Poulie basse, V-bar, tirer vers le nombril, coudes près du corps. Étirement complet en avant.</div>
  </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=seated+cable+row+neutral+grip+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
  </div>
 
+ <!-- BI-SET ISOLATION -->
  <div class="section">
- <div class="section-label"><span>Abs</span></div>
+ <div class="section-label"><span>Bi-set · Isolation · 3 séries</span></div>
+ <div class="superset-group">
+ <div class="superset-label">B1 / B2</div>
+ <div class="exercise">
+ <div class="ex-icon">B1</div>
+ <div class="ex-body">
+ <div class="ex-name">Lateral Raise — Cable Unilatéral</div>
+ <div class="ex-sets"><strong>3 × 15</strong> each side · RIR 1 · Repos minimal</div>
+ <div class="ex-note">Poulie basse, bras légèrement fléchi, élévation latérale contrôlée. Contrôle total à la descente.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+lateral+raise+unilateral+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ <div class="exercise">
+ <div class="ex-icon">B2</div>
+ <div class="ex-body">
+ <div class="ex-name">Hammer Curl — Cable Unilatéral</div>
+ <div class="ex-sets"><strong>3 × 10</strong> each side · RIR 1</div>
+ <div class="ex-note">Prise neutre via D-handle, pas de compensation. Excentrique 2 s.</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+hammer+curl+rope+neutral+grip" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+ </div>
+
+ <!-- CORE -->
+ <div class="section">
+ <div class="section-label"><span>Core · Rotation</span></div>
  <div class="exercise">
  <div class="ex-icon"></div>
  <div class="ex-body">
- <div class="ex-name">Plank</div>
- <div class="ex-sets"><strong>3 × 45s</strong> · Rest 60s</div>
- <div class="ex-note">Posterior pelvic tilt, squeeze glutes, don't hold breath</div>
+ <div class="ex-name">Cable Woodchop — Haut vers Bas</div>
+ <div class="ex-sets"><strong>3 × 12</strong> each side · RIR 1 · Tempo 2-0-1</div>
+ <div class="ex-note">Rotation du tronc, pas des épaules. Bras tendus, regarder les mains. Pieds stables.</div>
  </div>
- <a class="yt-btn" href="https://www.youtube.com/results?search_query=plank+form+technique" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=cable+woodchop+rotation+core+form" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
+ </div>
+ </div>
+
+ <!-- CARDIO CONDITIONING -->
+ <div class="section">
+ <div class="section-label"><span>Cardio Conditioning · Intervals</span></div>
+ <div class="exercise">
+ <div class="ex-icon"></div>
+ <div class="ex-body">
+ <div class="ex-name">Intervals — Tapis ou Vélo Assault</div>
+ <div class="ex-sets"><strong>4 × 30 s</strong> effort / 60 s repos · Volume ajusté selon la semaine</div>
+ <div class="ex-note">RPE 8–9 pendant les efforts. Volume total progressif selon la périodisation (voir perio bar).</div>
+ </div>
+ <a class="yt-btn" href="https://www.youtube.com/results?search_query=assault+bike+interval+training+conditioning" target="_blank"><svg viewBox="0 0 18 18" width="18" height="18"><rect x="0" y="3" width="18" height="12" rx="3" fill="#ffffff"/><polygon points="7.5,6 12.5,9 7.5,12" fill="#3a3a3c"/></svg></a>
  </div>
  </div>
 
@@ -4396,53 +3728,12 @@
 
  function setBlock(block) {
  localStorage.setItem('gymapp_current_block', block);
- if (!localStorage.getItem('gymapp_block_start_' + block)) {
-   const _d = new Date();
-   localStorage.setItem('gymapp_block_start_' + block, _d.getFullYear() + '-' + String(_d.getMonth()+1).padStart(2,'0') + '-' + String(_d.getDate()).padStart(2,'0'));
- }
  currentBlock = block;
- // Update panel active state
  document.querySelectorAll('.panel-item').forEach(i => i.classList.toggle('active', i.dataset.block === block));
-
- // Apply week-specific changes for main blocks
- if (block === 'main' || block === 'main34') {
- const isWk34 = block === 'main34';
- const rirText = isWk34 ? '1–2 RIR' : '2–3 RIR';
- const sets = isWk34 ? '4' : '3';
- ['upperA','lowerA','upperB','lowerB'].forEach(s => {
- const el = document.getElementById(s + '-intensity');
- if (el) el.textContent = rirText;
- });
- const mainUpdates = {
- 'upperA-main1': `<strong>${sets} × 6–8</strong> · 2-1-0 · Rest 2min30`,
- 'upperA-main2': `<strong>${sets} × 6–8</strong> · 2-1-0 · Rest 2min30`,
- 'lowerA-main1': `<strong>${sets} × 8–10</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 2 min`,
- 'lowerA-main2': `<strong>${sets} × 8–10</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 2 min`,
- 'upperB-main1': `<strong>${sets} × 6–8</strong> · 2-1-0 · Rest 2min30`,
- 'upperB-main2': `<strong>${sets} × 6–8</strong> · 2-1-0 · Rest 2min30`,
- 'lowerB-main1': `<strong>${sets} × 10–12</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
- 'lowerB-main2': `<strong>${sets} × 12–15</strong> · ${isWk34 ? '1–2' : '2–3'} RIR · Rest 90s`,
- };
- Object.entries(mainUpdates).forEach(([id, html]) => {
- const el = document.getElementById(id);
- if (el) el.innerHTML = html;
- });
- }
-
- // Show/hide tabs based on block
- document.querySelectorAll('.tab[data-block="fullbody"]').forEach(t => t.style.display = block === 'fullbody' ? '' : 'none');
- document.querySelectorAll('.tab[data-block="main"]').forEach(t => t.style.display = (block === 'main' || block === 'main34') ? '' : 'none');
- document.querySelectorAll('.tab[data-block="recovery"]').forEach(t => t.style.display = block === 'recovery' ? '' : 'none');
-
- // Render overview for this block and switch to it
- renderOverview(block === 'recovery' ? 'recovery' : block === 'fullbody' ? 'fullbody' : 'main');
- if (block === 'fullbody') {
-   const fbBTab = document.querySelector('.tab[onclick*="fullBodyB"]');
-   if (fbBTab) showTab('fullBodyB', fbBTab);
- } else {
-   const overviewTab = document.querySelector('.tab');
-   if (overviewTab) showTab('overview', overviewTab);
- }
+ document.querySelectorAll('.tab[data-block="fullbody"]').forEach(t => t.style.display = '');
+ renderOverview('fullbody');
+ const fbBTab = document.querySelector('.tab[onclick*="fullBodyB"]');
+ if (fbBTab) showTab('fullBodyB', fbBTab);
  }
 
 // ─── SLIDE PANEL ──────────────────────────────────────────────────
@@ -4715,133 +4006,6 @@ function closeInjuriesPage() {
  document.getElementById('injuriesPage').classList.remove('visible');
 }
 
-function openLumbagoPage() {
- document.getElementById('lumbagoPage').classList.add('visible');
- setupLumbagoAccordions();
-}
-
-function closeLumbagoPage() {
- document.getElementById('lumbagoPage').classList.remove('visible');
-}
-
-function setupLumbagoAccordions() {
- document.querySelectorAll('#lumbagoPage .exercise').forEach(ex => {
- if (ex.closest('.exercise-wrap')) return;
-
- const parent = ex.parentNode;
- const wrap = document.createElement('div');
- wrap.className = 'exercise-wrap';
- parent.insertBefore(wrap, ex);
- wrap.appendChild(ex);
-
- const origYtBtn = ex.querySelector('.yt-btn');
- if (origYtBtn) { ex.dataset.ytHref = origYtBtn.href; origYtBtn.onclick = (e) => e.stopPropagation(); }
-
- // Restructure: wrap ex-body + yt-btn in top row
- const lexBody = ex.querySelector('.ex-body');
- const lexIcon = ex.querySelector('.ex-icon');
- const lexNote = ex.querySelector('.ex-note');
- if (lexIcon) lexIcon.remove();
-
- if (lexBody) {
- const topRow = document.createElement('div');
- topRow.className = 'ex-top-row';
- ex.insertBefore(topRow, lexBody);
- topRow.appendChild(lexBody);
- if (origYtBtn) topRow.appendChild(origYtBtn);
- if (lexNote) ex.appendChild(lexNote);
- }
-
- const accordion = document.createElement('div');
- accordion.className = 'ex-accordion';
- const inner = document.createElement('div');
- inner.className = 'ex-accordion-inner';
- accordion.appendChild(inner);
- wrap.appendChild(accordion);
-
- const nameEl = ex.querySelector('.ex-name');
- const setsEl = ex.querySelector('.ex-sets');
- const setsMatch = setsEl ? setsEl.textContent.match(/(\d+)\s*[×x]\s*(\d+)/) : null;
- const numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
- const targetReps = setsMatch ? parseInt(setsMatch[2]) : 10;
- const exName = nameEl ? nameEl.textContent : 'Exercise';
- const isTimeExL = exHasTag(ex, 'time');
-
- const headerDiv = document.createElement('div');
- headerDiv.className = 'ex-expand-header';
- headerDiv.onclick = (e) => e.stopPropagation();
-
- const hName = document.createElement('div');
- hName.className = 'ex-expand-name';
- hName.textContent = exName;
- headerDiv.appendChild(hName);
-
- const badgesDiv = document.createElement('div');
- badgesDiv.className = 'ex-expand-badges';
- if (isTimeExL) {
- badgesDiv.innerHTML += `<span class="ex-expand-badge badge-rest">TIMED</span>`;
- }
- headerDiv.appendChild(badgesDiv);
-
- const ytHref = ex.dataset.ytHref;
- if (ytHref) {
- const vidLink = document.createElement('a');
- vidLink.className = 'ex-video-link';
- vidLink.href = ytHref;
- vidLink.target = '_blank';
- vidLink.textContent = 'Video guide';
- vidLink.onclick = (e) => e.stopPropagation();
- badgesDiv.appendChild(vidLink);
- }
-
- inner.appendChild(headerDiv);
-
- const container = document.createElement('div');
- container.className = 'log-sets-container';
- container.dataset.logExercise = 'lumbago_' + exName;
- if (isTimeExL) container.dataset.timeEx = '1';
- const isUniExL = exHasTag(ex, 'unilateral') && !isTimeExL;
- if (isUniExL) container.dataset.uniEx = '1';
- container.onclick = (e) => e.stopPropagation();
-
- // Column headers
- const lHeaders = document.createElement('div');
- lHeaders.className = 'log-set-headers';
- if (isTimeExL) {
-   lHeaders.innerHTML = '<span class="header-label header-label-wide">SEC</span><div class="header-spacer"></div>';
- } else if (isUniExL) {
-   lHeaders.innerHTML = '<span class="header-label uni-side-header"></span><span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
- } else {
-   lHeaders.innerHTML = '<span class="header-label">WEIGHT</span><span class="header-label">REPS</span><div class="header-spacer"></div>';
- }
- container.appendChild(lHeaders);
-
- for (let s = 0; s < numSets; s++) {
- container.appendChild(createSetRow(targetReps, 0, wrap, s + 1, null, isTimeExL, isUniExL));
- }
-
- const addRow = document.createElement('div');
- addRow.className = 'log-add-set';
- addRow.innerHTML = 'Add set';
- addRow.onclick = (e) => { e.stopPropagation(); addSetToContainer(container, targetReps, wrap); };
- container.appendChild(addRow);
-
- const noteInput = document.createElement('textarea');
- noteInput.className = 'log-note';
- noteInput.placeholder = 'Add a note…';
- noteInput.dataset.logNote = 'lumbago_' + exName;
- noteInput.onclick = (e) => e.stopPropagation();
- container.appendChild(noteInput);
-
- inner.appendChild(container);
-
- ex.onclick = (e) => {
- if (e.target.closest('.log-context-menu')) return;
- toggleAccordion(wrap);
- };
- });
-}
-
 function renderInjuriesList() {
  const zones = getZones();
  const list = document.getElementById('injuriesList');
@@ -4967,7 +4131,7 @@ function applySessionImpact() {
  INJURY_ZONES.forEach(z => {
  const s = scores[z.key] ?? 0;
  if (s >= 5) {
- ['fullBodyA','fullBodyB','fullBodyC','upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(sid => {
+ ['fullBodyA','fullBodyB','fullBodyC'].forEach(sid => {
  const session = document.getElementById('session-' + sid);
  if (!session) return;
  const header = session.querySelector('.session-header');
@@ -5456,7 +4620,7 @@ async function submitAdapt() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
- ['fullBodyA','fullBodyB','fullBodyC','upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
+ ['fullBodyA','fullBodyB','fullBodyC'].forEach(id => {
  const session = document.getElementById('session-' + id);
  if (!session) return;
  const banner = document.createElement('div');
@@ -5469,7 +4633,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Inject inline Adapt buttons into each session (after session-header, before warm-up)
 document.addEventListener('DOMContentLoaded', () => {
- ['fullBodyA','fullBodyB','fullBodyC','upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
+ ['fullBodyA','fullBodyB','fullBodyC'].forEach(id => {
  const session = document.getElementById('session-' + id);
  if (!session) return;
  const header = session.querySelector('.session-header');
@@ -5926,7 +5090,7 @@ document.addEventListener('DOMContentLoaded', () => {
  // Inject machine badges now that accordions have created .ex-top-row elements
  try { injectMachineBadges(); } catch(e) { console.error('Badge injection:', e); }
  // Add save button at the bottom of each session (not overview, not history)
- ['fullBodyA','fullBodyB','fullBodyC','upperA','lowerA','upperB','lowerB','recA','recB','recC'].forEach(id => {
+ ['fullBodyA','fullBodyB','fullBodyC'].forEach(id => {
  const session = document.getElementById('session-' + id);
  if (!session) return;
  const btn = document.createElement('button');
@@ -5939,7 +5103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── WORKOUT LOGGER ───────────────────────────────────────────────
 
-const SESSION_NAMES = { fullBodyA: 'S2 · Posterior Chain', fullBodyB: 'S1 · Quad Dominant', fullBodyC: 'S3 · Unilateral', upperA: 'Upper A', lowerA: 'Lower A', upperB: 'Upper B', lowerB: 'Lower B', recA: 'Recovery A', recB: 'Recovery B', recC: 'Recovery C' };
+const SESSION_NAMES = { fullBodyA: 'S2 · Posterior Chain', fullBodyB: 'S1 · Quad Dominant', fullBodyC: 'S3 · Unilateral' };
 
 function getPreviousExerciseData(exName) {
  const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
@@ -6678,7 +5842,7 @@ function renderHistory() {
 
 // Patch showTab to handle history + pre-session check-in
 const _showTabWithAdapt = showTab;
-const SESSION_TABS = ['fullBodyA','fullBodyB','fullBodyC','upperA','lowerA','upperB','lowerB','recA','recB','recC'];
+const SESSION_TABS = ['fullBodyA','fullBodyB','fullBodyC'];
 showTab = function(tabId, btn) {
  // TODO: re-enable pre-session check-in modal for session tabs
  // if (SESSION_TABS.includes(tabId)) {
@@ -7024,1087 +6188,43 @@ function drawProgressCanvas(exerciseName) {
   localStorage.setItem(key, JSON.stringify(migrated));
 })();
 
-function getGyms() { return JSON.parse(localStorage.getItem('gymApp_gyms') || '[]'); }
-function setGyms(g) { localStorage.setItem('gymApp_gyms', JSON.stringify(g)); }
-function getEquipment() { return JSON.parse(localStorage.getItem('gymApp_equipment') || '[]'); }
-function setEquipment(e) { localStorage.setItem('gymApp_equipment', JSON.stringify(e)); }
-function getGymEquipment() { return JSON.parse(localStorage.getItem('gymApp_gymEquipment') || '[]'); }
-function setGymEquipment(ge) { localStorage.setItem('gymApp_gymEquipment', JSON.stringify(ge)); }
-function getActiveSession() { return JSON.parse(localStorage.getItem('gymApp_activeSession') || '{"gymId":null,"substitutions":{}}'); }
-function setActiveSession(s) { localStorage.setItem('gymApp_activeSession', JSON.stringify(s)); }
-
-// ─── PART 1: GYM SELECTION BOTTOM SHEET ─────────────────────────
-
-let pendingGymSessionId = null;
-let pendingGymSessionBtn = null;
-
-function openGymSheet(sessionId, btn, sessionName, sessionSub) {
- const gyms = getGyms();
-
- // If only 1 gym AND not freshly added (avoid auto-skip when user just created first gym)
- if (gyms.length === 1 && !openGymSheet._forceShow) {
-   const active = getActiveSession();
-   active.gymId = gyms[0].id;
-   active.substitutions = {};
-   setActiveSession(active);
-   localStorage.setItem('gymApp_lastGymId', gyms[0].id);
-   _showTabWithAdapt(sessionId, btn);
-   if (SESSION_TABS.includes(sessionId)) applySessionImpact();
-   refreshAllMachineBadges();
-   return;
- }
- openGymSheet._forceShow = false;
-
- pendingGymSessionId = sessionId;
- pendingGymSessionBtn = btn;
-
- const lastGymId = localStorage.getItem('gymApp_lastGymId');
-
- document.getElementById('gymSheetTitle').textContent = sessionName || 'Start Session';
- document.getElementById('gymSheetSub').textContent = sessionSub || '';
-
- let body = '';
-
- if (gyms.length === 0) {
-   body += '<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">No gyms yet — add one to get started.</div>';
- } else {
-   body += '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600;">Select gym</div>';
-   body += '<div class="gym-pills" id="gymPillsContainer">';
-   gyms.forEach(g => {
-     const isActive = g.id === lastGymId;
-     body += `<button class="gym-pill${isActive ? ' active' : ''}" data-gym-id="${g.id}" onclick="selectGymPill(this)">${g.name}</button>`;
-   });
-   body += '</div>';
- }
-
- body += '<div class="gym-add-row"><input class="gym-add-input" id="gymAddInput" placeholder="Add a gym" /><button class="gym-add-btn" onclick="addGymFromSheet()">Add</button></div>';
- body += '<button class="gym-start-btn" id="gymStartBtn" onclick="startSessionFromGym()">Start session</button>';
-
- document.getElementById('gymSheetBody').innerHTML = body;
-
- // Enter key on input
- const addInput = document.getElementById('gymAddInput');
- if (addInput) addInput.onkeydown = function(e) { if (e.key === 'Enter') addGymFromSheet(); };
-
- document.getElementById('gymSheetOverlay').classList.add('visible');
- document.getElementById('gymSheet').classList.add('open');
-}
-
-function selectGymPill(pill) {
- document.querySelectorAll('#gymPillsContainer .gym-pill').forEach(p => p.classList.remove('active'));
- pill.classList.add('active');
-}
-
-function addGymFromSheet() {
- const input = document.getElementById('gymAddInput');
- const name = input.value.trim();
- if (!name) return;
-
- const gyms = getGyms();
- const newGym = { id: 'gym_' + Date.now(), name };
- gyms.push(newGym);
- setGyms(gyms);
- input.value = '';
-
- // Re-render pills
- let container = document.getElementById('gymPillsContainer');
- if (!container) {
-   // First gym added — rebuild body (force show sheet so user sees their new gym)
-   openGymSheet._forceShow = true;
-   openGymSheet(pendingGymSessionId, pendingGymSessionBtn,
-     document.getElementById('gymSheetTitle').textContent,
-     document.getElementById('gymSheetSub').textContent);
-   // Auto-select the new gym
-   setTimeout(() => {
-     const pills = document.querySelectorAll('#gymPillsContainer .gym-pill');
-     pills.forEach(p => p.classList.remove('active'));
-     const newPill = document.querySelector(`[data-gym-id="${newGym.id}"]`);
-     if (newPill) newPill.classList.add('active');
-   }, 50);
-   return;
- }
-
- // Add new pill
- const pill = document.createElement('button');
- pill.className = 'gym-pill active';
- pill.dataset.gymId = newGym.id;
- pill.textContent = name;
- pill.onclick = function() { selectGymPill(this); };
- // Deselect others
- container.querySelectorAll('.gym-pill').forEach(p => p.classList.remove('active'));
- container.appendChild(pill);
-}
-
-function startSessionFromGym() {
- const activePill = document.querySelector('#gymPillsContainer .gym-pill.active');
- if (!activePill) {
-   // If no gym selected, check if any gyms exist
-   const gyms = getGyms();
-   if (gyms.length === 0) {
-     // No gyms — start without gym
-     closeGymSheet();
-     if (pendingGymSessionId && pendingGymSessionBtn) {
-       const active = getActiveSession();
-       active.gymId = null;
-       active.substitutions = {};
-       setActiveSession(active);
-       _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
-       if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
-       refreshAllMachineBadges();
-     }
-     return;
-   }
-   return; // Must select a gym
- }
-
- const gymId = activePill.dataset.gymId;
- const active = getActiveSession();
- active.gymId = gymId;
- active.substitutions = {};
- setActiveSession(active);
- localStorage.setItem('gymApp_lastGymId', gymId);
-
- closeGymSheet();
-
- if (pendingGymSessionId && pendingGymSessionBtn) {
-   _showTabWithAdapt(pendingGymSessionId, pendingGymSessionBtn);
-   if (SESSION_TABS.includes(pendingGymSessionId)) applySessionImpact();
-   refreshAllMachineBadges();
- }
- updateAllGymPills();
- pendingGymSessionId = null;
- pendingGymSessionBtn = null;
-}
-
-function closeGymSheet() {
- document.getElementById('gymSheetOverlay').classList.remove('visible');
- document.getElementById('gymSheet').classList.remove('open');
-}
-
-// ─── PART 2: MACHINE BADGE ON EXERCISE CARDS ────────────────────
-
-function getEquipmentForSlot(slotId, gymId) {
- const ge = getGymEquipment();
- const link = ge.find(l => l.slotId === slotId && l.gymId === gymId);
- if (!link) return null;
- const equip = getEquipment();
- return equip.find(e => e.id === link.equipmentId) || null;
-}
-
-function getLastWeightForEquipment(equipmentId, exName) {
- const history = JSON.parse(localStorage.getItem('gymapp_history_v1') || '[]');
- for (const entry of history) {
-   const ex = entry.exercises.find(e => e.name === exName);
-   if (ex && ex.equipmentId === equipmentId && ex.sets.length > 0) {
-     const best = ex.sets.reduce((b, s) => s.weight > b ? s.weight : b, 0);
-     if (best > 0) return best;
-   }
- }
- return null;
-}
+// ─── MACHINE NAME (simple per-exercise storage) ──────────────────
+function getMachineName(exName) { return localStorage.getItem('machine_' + exName) || ''; }
+function setMachineName(exName, name) { localStorage.setItem('machine_' + exName, name); }
 
 function createMachineBadge(exName) {
- const badge = document.createElement('div');
- badge.className = 'ex-machine-badge';
- badge.dataset.slotId = exName;
- updateMachineBadge(badge, exName);
- badge.onclick = function(e) {
-   e.stopPropagation();
-   openEquipSheet(exName);
- };
- return badge;
-}
-
-function updateMachineBadge(badge, exName) {
- const active = getActiveSession();
- const gymId = active.gymId;
- const sub = active.substitutions[exName];
-
- if (sub) {
-   badge.className = 'ex-machine-badge substituted';
-   badge.innerHTML = '↔ ' + sub + ' <span style="font-size:9px;opacity:0.7">(today\'s substitute)</span>';
-   return;
- }
-
- if (!gymId) {
-   badge.className = 'ex-machine-badge no-gym';
-   badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#444" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg> Add machine';
-   return;
- }
-
- const equip = getEquipmentForSlot(exName, gymId);
- if (equip) {
-   const lastW = getLastWeightForEquipment(equip.id, exName);
-   const weightStr = lastW !== null ? ' · ' + lastW + 'kg' : '';
-   badge.className = 'ex-machine-badge configured';
-   badge.textContent = equipDisplayName(equip) + weightStr;
- } else {
-   badge.className = 'ex-machine-badge unconfigured';
-   badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#555" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg> Add machine';
- }
+  const badge = document.createElement('div');
+  badge.className = 'ex-machine-badge';
+  const saved = getMachineName(exName);
+  badge.innerHTML = '<input type="text" class="machine-input" placeholder="Machine name..." />';
+  const input = badge.querySelector('input');
+  input.value = saved;
+  input.addEventListener('change', () => setMachineName(exName, input.value.trim()));
+  return badge;
 }
 
 function refreshAllMachineBadges() {
- document.querySelectorAll('.ex-machine-badge').forEach(badge => {
-   const slotId = badge.dataset.slotId;
-   if (slotId) updateMachineBadge(badge, slotId);
- });
+  document.querySelectorAll('.ex-machine-badge input').forEach(input => {
+    const ex = input.closest('.exercise');
+    if (!ex) return;
+    const nameEl = ex.querySelector('.ex-name');
+    if (!nameEl) return;
+    input.value = getMachineName(nameEl.textContent);
+  });
 }
 
-// ─── PART 3: EQUIPMENT BOTTOM SHEET ─────────────────────────────
-
-let currentEquipSlotId = null;
-
-function equipDisplayName(eq) {
- if (!eq) return '';
- return eq.brand ? eq.brand + ' \u2013 ' + eq.name : eq.name;
-}
-
-function openEquipSheet(slotId) {
- currentEquipSlotId = slotId;
- const active = getActiveSession();
- const gymId = active.gymId;
- const equip = gymId ? getEquipmentForSlot(slotId, gymId) : null;
- const allEquip = getEquipment();
- const gyms = getGyms();
-
- const label = slotId.length > 28 ? slotId.slice(0, 26) + '...' : slotId;
- document.getElementById('equipSheetTitle').textContent = label;
- document.getElementById('equipSheetTitle').title = slotId;
- document.getElementById('equipSheetSub').textContent = gymId ? (gyms.find(g => g.id === gymId) || {}).name || '' : 'No gym selected';
-
- let body = '';
-
- // Gym selector — if no gym is active, let user pick one inline
- if (!gymId) {
-   const allGyms = getGyms();
-   if (allGyms.length > 0) {
-     body += '<div class="equip-select-wrap">';
-     body += '<div class="equip-select-label">Select gym first</div>';
-     body += '<select class="equip-select" id="equipGymSelect" onchange="equipGymChanged()">';
-     body += '<option value="">Choose a gym…</option>';
-     allGyms.forEach(g => { body += `<option value="${g.id}">${g.name}</option>`; });
-     body += '</select></div>';
-   } else {
-     body += '<div class="equip-select-wrap">';
-     body += '<div class="equip-select-label">Add a gym</div>';
-     body += '<div style="display:flex;gap:8px"><input class="gym-add-input" id="equipGymAddInput" placeholder="Gym name" style="flex:1" />';
-     body += '<button class="equip-action-btn equip-save-btn" style="width:auto;margin:0;padding:10px 16px" onclick="addGymFromEquipSheet()">Add</button></div>';
-     body += '</div>';
-   }
- }
-
- // Dropdown: all machines saved at this gym
- if (gymId) {
-   const ge = getGymEquipment();
-   const gymLinks = ge.filter(l => l.gymId === gymId);
-   const seen = new Set();
-   const gymMachines = [];
-   gymLinks.forEach(l => {
-     if (seen.has(l.equipmentId)) return;
-     seen.add(l.equipmentId);
-     const eq = allEquip.find(e => e.id === l.equipmentId);
-     if (eq) gymMachines.push(eq);
-   });
-   if (gymMachines.length > 0) {
-     body += '<div class="equip-select-wrap">';
-     body += '<div class="equip-select-label">Machines at this gym</div>';
-     body += `<select class="equip-select" id="equipMachineSelect" onchange="equipSelectChanged('${slotId}')">`;
-     body += '<option value="">Select a machine…</option>';
-     gymMachines.forEach(eq => {
-       const selected = equip && equip.id === eq.id ? ' selected' : '';
-       body += `<option value="${eq.id}"${selected}>${equipDisplayName(eq)}</option>`;
-     });
-     body += '</select></div>';
-   }
- }
-
- // Single text input, pre-filled if machine is linked
- const currentName = equip ? equipDisplayName(equip) : '';
- body += '<div class="equip-input-wrap">';
- body += `<input class="gym-add-input" id="equipNameInput" placeholder="e.g. Hammer Strength \u2013 Chest Press" value="${currentName.replace(/"/g, '&quot;')}" />`;
- body += '</div>';
-
- // Save button
- body += '<button class="equip-action-btn equip-save-btn" onclick="addEquipmentFromSheet()">Save machine</button>';
-
- // Remove link (only if machine currently linked)
- if (equip && gymId) {
-   body += `<button class="equip-action-btn equip-remove-btn" onclick="removeEquipmentLink('${slotId}')">Remove machine link</button>`;
- }
-
- document.getElementById('equipSheetBody').innerHTML = body;
- document.getElementById('equipSheetOverlay').classList.add('visible');
- document.getElementById('equipSheet').classList.add('open');
-}
-
-function closeEquipSheet() {
- document.getElementById('equipSheetOverlay').classList.remove('visible');
- document.getElementById('equipSheet').classList.remove('open');
- currentEquipSlotId = null;
-}
-
-function assignEquipmentToSlot(equipId, slotId) {
- const active = getActiveSession();
- const gymId = active.gymId;
- if (!gymId) return;
-
- const ge = getGymEquipment();
- // Remove existing link for this gym+slot
- const filtered = ge.filter(l => !(l.gymId === gymId && l.slotId === slotId));
- filtered.push({ gymId, equipmentId: equipId, slotId });
- setGymEquipment(filtered);
-
- refreshAllMachineBadges();
- closeEquipSheet();
-}
-
-function equipGymChanged() {
- const sel = document.getElementById('equipGymSelect');
- if (!sel || !sel.value) return;
- const active = getActiveSession();
- active.gymId = sel.value;
- active.substitutions = {};
- setActiveSession(active);
- localStorage.setItem('gymApp_lastGymId', sel.value);
- refreshAllMachineBadges();
- // Re-open the sheet with the gym now set
- if (currentEquipSlotId) openEquipSheet(currentEquipSlotId);
-}
-
-function addGymFromEquipSheet() {
- const input = document.getElementById('equipGymAddInput');
- const name = input ? input.value.trim() : '';
- if (!name) return;
- const gyms = getGyms();
- const newGym = { id: 'gym_' + Date.now(), name };
- gyms.push(newGym);
- setGyms(gyms);
- // Auto-select the new gym
- const active = getActiveSession();
- active.gymId = newGym.id;
- active.substitutions = {};
- setActiveSession(active);
- localStorage.setItem('gymApp_lastGymId', newGym.id);
- refreshAllMachineBadges();
- if (currentEquipSlotId) openEquipSheet(currentEquipSlotId);
-}
-
-function equipSelectChanged(slotId) {
- const sel = document.getElementById('equipMachineSelect');
- if (!sel || !sel.value) return;
- assignEquipmentToSlot(sel.value, slotId);
-}
-
-function addEquipmentFromSheet() {
- const name = document.getElementById('equipNameInput').value.trim();
- if (!name) return;
-
- const active = getActiveSession();
- const gymId = active.gymId;
- const currentEquip = gymId ? getEquipmentForSlot(currentEquipSlotId, gymId) : null;
-
- // If editing an existing linked machine, update it in place
- if (currentEquip && equipDisplayName(currentEquip) !== name) {
-   currentEquip.brand = '';
-   currentEquip.name = name;
-   const allEquip = getEquipment();
-   const idx = allEquip.findIndex(e => e.id === currentEquip.id);
-   if (idx >= 0) { allEquip[idx] = currentEquip; setEquipment(allEquip); }
-   refreshAllMachineBadges();
-   closeEquipSheet();
-   return;
- }
-
- // Otherwise create new equipment and link it
- const allEquip = getEquipment();
- const newEquip = { id: 'equip_' + Date.now(), brand: '', name };
- allEquip.push(newEquip);
- setEquipment(allEquip);
-
- if (gymId && currentEquipSlotId) {
-   assignEquipmentToSlot(newEquip.id, currentEquipSlotId);
- } else {
-   closeEquipSheet();
- }
-}
-
-function removeEquipmentLink(slotId) {
- const active = getActiveSession();
- const gymId = active.gymId;
- if (!gymId) return;
-
- const ge = getGymEquipment();
- const filtered = ge.filter(l => !(l.gymId === gymId && l.slotId === slotId));
- setGymEquipment(filtered);
-
- refreshAllMachineBadges();
- closeEquipSheet();
-}
-
-// ─── PART 4: SUBSTITUTION FLOW ──────────────────────────────────
-
-function openSubstitutionFlow(slotId) {
- let alternatives = [];
- const stored = JSON.parse(localStorage.getItem('gymApp_alternatives') || '{}');
- if (stored[slotId] && stored[slotId].length > 0) {
-   alternatives = stored[slotId];
- } else {
-   // Parse Plan B suggestions from the exercise's .ex-note
-   document.querySelectorAll('.exercise').forEach(ex => {
-     const nameEl = ex.querySelector('.ex-name');
-     if (nameEl && nameEl.textContent === slotId) {
-       const noteEl = ex.querySelector('.ex-note');
-       if (noteEl) {
-         const text = noteEl.textContent;
-         const planBMatch = text.match(/Plan\s*B[:\s]*(.+)/i);
-         if (planBMatch) {
-           // Split by "or", "→", ","
-           planBMatch[1].split(/\s*(?:or|→|,)\s*/i).forEach(s => {
-             const trimmed = s.replace(/[.]+$/, '').trim();
-             if (trimmed) alternatives.push(trimmed);
-           });
-         }
-       }
-     }
-   });
- }
- const suggestions = alternatives;
-
- let subHtml = '<div class="sub-flow">';
- subHtml += '<div class="sub-flow-title">Substitute: ' + slotId + '</div>';
-
- if (suggestions.length > 0) {
-   subHtml += '<div class="sub-suggestions">';
-   suggestions.forEach(s => {
-     subHtml += `<button class="sub-suggestion-pill" onclick="selectSubSuggestion(this, '${s.replace(/'/g, "\\'")}')">${s}</button>`;
-   });
-   subHtml += '</div>';
- }
-
- subHtml += '<input class="sub-free-input" id="subFreeInput" placeholder="Or type a substitute..." />';
- subHtml += '<div class="sub-btn-row">';
- subHtml += '<button class="sub-cancel-btn" onclick="cancelSubstitution()">Cancel</button>';
- subHtml += `<button class="sub-confirm-btn" onclick="confirmSubstitution('${slotId.replace(/'/g, "\\'")}')">Confirm</button>`;
- subHtml += '</div></div>';
-
- document.getElementById('equipSheetBody').innerHTML = subHtml;
-}
-
-function selectSubSuggestion(pill, name) {
- document.querySelectorAll('.sub-suggestion-pill').forEach(p => p.classList.remove('active'));
- pill.classList.add('active');
- document.getElementById('subFreeInput').value = name;
-}
-
-function cancelSubstitution() {
- if (currentEquipSlotId) {
-   openEquipSheet(currentEquipSlotId);
- } else {
-   closeEquipSheet();
- }
-}
-
-function confirmSubstitution(slotId) {
- const input = document.getElementById('subFreeInput');
- const value = input ? input.value.trim() : '';
- if (!value) return;
-
- const active = getActiveSession();
- active.substitutions[slotId] = value;
- setActiveSession(active);
-
- refreshAllMachineBadges();
- closeEquipSheet();
-}
-
-// getPreviousExerciseData and saveSession are defined in the main script block
-
-// ─── INJECT MACHINE BADGES INTO ACCORDIONS ──────────────────────
-
-// Inject machine badges on all exercise cards
 function injectMachineBadges() {
- document.querySelectorAll('.exercise').forEach(ex => {
-   if (ex.querySelector('.ex-machine-badge')) return;
-   if (ex.closest('.prehab-box')) return;
-
-   const nameEl = ex.querySelector('.ex-name');
-   if (!nameEl) return;
-   const exName = nameEl.textContent;
-
-   const topRow = ex.querySelector('.ex-top-row');
-   const exNote = ex.querySelector('.ex-note');
-
-   const badge = createMachineBadge(exName);
-   ex.appendChild(badge);
- });
+  document.querySelectorAll('.exercise').forEach(ex => {
+    if (ex.querySelector('.ex-machine-badge')) return;
+    if (ex.closest('.prehab-box')) return;
+    const nameEl = ex.querySelector('.ex-name');
+    if (!nameEl) return;
+    ex.appendChild(createMachineBadge(nameEl.textContent));
+  });
 }
 
-// Badge injection now runs inside the setupAccordions DOMContentLoaded handler
-// to guarantee .ex-top-row elements exist before badges are inserted.
 
 </script>
-<script>
-// ─── SETTINGS SYSTEM ──────────────────────────────────────────────
-
-function getAlternatives() { return JSON.parse(localStorage.getItem('gymApp_alternatives') || '{}'); }
-function setAlternatives(a) { localStorage.setItem('gymApp_alternatives', JSON.stringify(a)); }
-
-const settingsStack = [];
-
-function openSettings() {
-  document.getElementById('settingsPage').classList.add('visible');
-  settingsStack.length = 0;
-  renderSettingsRoot();
-}
-
-function closeSettings() {
-  document.getElementById('settingsPage').classList.remove('visible');
-  settingsStack.length = 0;
-  try { refreshAllMachineBadges(); } catch(e) {}
-  try { updateAllGymPills(); } catch(e) {}
-}
-
-function pushSettingsScreen(renderFn) {
-  settingsStack.push(renderFn);
-  renderFn();
-}
-
-function popSettingsScreen() {
-  settingsStack.pop();
-  if (settingsStack.length > 0) {
-    settingsStack[settingsStack.length - 1]();
-  } else {
-    renderSettingsRoot();
-  }
-}
-
-function settingsGenId() {
-  return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-}
-
-// ─── ROOT ─────────────────────────────────────────────────────────
-
-function renderSettingsRoot() {
-  const gyms = getGyms();
-  const equip = getEquipment();
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="closeSettings()">&lt; Close</button>
-    </div>
-    <div class="settings-title">Settings</div>
-    <div class="settings-section-label">Training</div>
-    <div class="settings-row" onclick="pushSettingsScreen(renderGymsScreen)">
-      <div class="settings-row-content">
-        <div class="settings-row-title">Gyms</div>
-        <div class="settings-row-sub">${gyms.length} gym${gyms.length !== 1 ? 's' : ''} configured</div>
-      </div>
-      <div class="settings-chevron">&rsaquo;</div>
-    </div>
-    <div class="settings-row" onclick="pushSettingsScreen(renderEquipmentScreen)">
-      <div class="settings-row-content">
-        <div class="settings-row-title">Equipment</div>
-        <div class="settings-row-sub">${equip.length} machine${equip.length !== 1 ? 's' : ''} in your library</div>
-      </div>
-      <div class="settings-chevron">&rsaquo;</div>
-    </div>
-    <div class="settings-row" onclick="pushSettingsScreen(renderExercisesScreen)">
-      <div class="settings-row-content">
-        <div class="settings-row-title">Exercises</div>
-        <div class="settings-row-sub">Manage Plan B / C alternatives</div>
-      </div>
-      <div class="settings-chevron">&rsaquo;</div>
-    </div>
-    <div class="settings-section-label">App</div>
-    <div class="settings-row" style="opacity:0.4;cursor:default">
-      <div class="settings-row-content">
-        <div class="settings-row-title">General</div>
-      </div>
-      <div class="settings-chevron">&rsaquo;</div>
-    </div>
-    <div class="settings-row" style="opacity:0.4;cursor:default">
-      <div class="settings-row-content">
-        <div class="settings-row-title">Export data</div>
-      </div>
-      <div class="settings-chevron">&rsaquo;</div>
-    </div>
-  `;
-}
-
-// ─── GYMS ─────────────────────────────────────────────────────────
-
-function renderGymsScreen() {
-  const gyms = getGyms();
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-      <button class="settings-add-btn" onclick="pushSettingsScreen(renderAddGym)">+ Add</button>
-    </div>
-    <div class="settings-title">Gyms</div>
-    ${gyms.length === 0 ? '<div class="settings-empty">No gyms configured yet.</div>' : ''}
-    ${gyms.map(g => `
-      <div class="settings-row" onclick="pushSettingsScreen(() => renderGymDetail('${g.id}'))">
-        <div class="settings-row-content">
-          <div class="settings-row-title">${g.name}</div>
-          <div class="settings-row-sub">${getGymEquipCount(g.id)} machine${getGymEquipCount(g.id) !== 1 ? 's' : ''}</div>
-        </div>
-        <div class="settings-chevron">&rsaquo;</div>
-      </div>
-    `).join('')}
-  `;
-}
-
-function getGymEquipCount(gymId) {
-  return getGymEquipment().filter(ge => ge.gymId === gymId).length;
-}
-
-function renderGymDetail(gymId) {
-  const gyms = getGyms();
-  const gym = gyms.find(g => g.id === gymId);
-  if (!gym) { popSettingsScreen(); return; }
-  const ge = getGymEquipment().filter(x => x.gymId === gymId);
-  const allEquip = getEquipment();
-  const linkedEquip = ge.map(x => allEquip.find(e => e.id === x.equipmentId)).filter(Boolean);
-
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">${gym.name}</div>
-    <div class="settings-section-label">Equipment at this gym</div>
-    ${linkedEquip.length === 0 ? '<div class="settings-empty">No equipment linked yet.</div>' : ''}
-    ${linkedEquip.map(e => `
-      <div class="settings-row" style="cursor:default">
-        <div class="settings-row-content">
-          <div class="settings-row-title">${e.brand ? e.brand + ' — ' : ''}${e.name}</div>
-          ${e.slot ? '<div class="settings-row-sub">' + e.slot + '</div>' : ''}
-        </div>
-      </div>
-    `).join('')}
-    <button class="settings-danger-btn" onclick="removeGym('${gymId}')">Remove gym</button>
-  `;
-}
-
-function removeGym(gymId) {
-  if (!confirm('Remove this gym and all its equipment links?')) return;
-  const gyms = getGyms().filter(g => g.id !== gymId);
-  setGyms(gyms);
-  const ge = getGymEquipment().filter(x => x.gymId !== gymId);
-  setGymEquipment(ge);
-  popSettingsScreen();
-}
-
-function renderAddGym() {
-  const equip = getEquipment();
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">Add Gym</div>
-    <div class="settings-form">
-      <input class="settings-input" id="settingsGymName" placeholder="Gym name" />
-      ${equip.length > 0 ? '<div class="settings-section-label" style="padding-left:0">Equipment available</div>' : ''}
-      <div id="settingsGymEquipChecks">
-        ${equip.map(e => `
-          <div class="settings-check-row" onclick="this.querySelector('.settings-check').classList.toggle('checked')">
-            <div class="settings-check" data-equip-id="${e.id}" data-slot-id="${e.slot || ''}"></div>
-            <div style="flex:1">
-              <div class="settings-row-title">${e.brand ? e.brand + ' — ' : ''}${e.name}</div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      <button class="settings-save-btn" onclick="saveNewGym()">Save gym</button>
-    </div>
-  `;
-}
-
-function saveNewGym() {
-  const name = document.getElementById('settingsGymName').value.trim();
-  if (!name) return;
-  const gymId = settingsGenId();
-  const gyms = getGyms();
-  gyms.push({ id: gymId, name: name });
-  setGyms(gyms);
-
-  const checkedEls = document.querySelectorAll('#settingsGymEquipChecks .settings-check.checked');
-  const ge = getGymEquipment();
-  checkedEls.forEach(el => {
-    ge.push({ gymId: gymId, equipmentId: el.dataset.equipId, slotId: el.dataset.slotId || '' });
-  });
-  setGymEquipment(ge);
-  popSettingsScreen();
-}
-
-// ─── EQUIPMENT ────────────────────────────────────────────────────
-
-function renderEquipmentScreen() {
-  const equip = getEquipment();
-  const gyms = getGyms();
-  const ge = getGymEquipment();
-
-  // Group by brand
-  const grouped = {};
-  equip.forEach(e => {
-    const brand = e.brand || 'Other';
-    if (!grouped[brand]) grouped[brand] = [];
-    grouped[brand].push(e);
-  });
-
-  const page = document.getElementById('settingsPage');
-  let html = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-      <button class="settings-add-btn" onclick="pushSettingsScreen(renderAddEquipment)">+ Add</button>
-    </div>
-    <div class="settings-title">Equipment</div>
-  `;
-
-  if (equip.length === 0) {
-    html += '<div class="settings-empty">No equipment added yet.</div>';
-  }
-
-  Object.keys(grouped).sort().forEach(brand => {
-    html += `<div class="settings-section-label">${brand}</div>`;
-    grouped[brand].forEach(e => {
-      const eGyms = ge.filter(x => x.equipmentId === e.id).map(x => gyms.find(g => g.id === x.gymId)).filter(Boolean);
-      const gymNames = eGyms.map(g => g.name).join(', ') || 'No gym';
-      html += `
-        <div class="settings-row" onclick="pushSettingsScreen(() => renderEquipmentDetail('${e.id}'))">
-          <div class="settings-row-content">
-            <div class="settings-row-title">${e.name}</div>
-            <div class="settings-row-sub">${e.slot ? e.slot + ' · ' : ''}${gymNames}</div>
-          </div>
-          <div class="settings-chevron">&rsaquo;</div>
-        </div>
-      `;
-    });
-  });
-
-  page.innerHTML = html;
-}
-
-function renderEquipmentDetail(equipId) {
-  const equip = getEquipment();
-  const item = equip.find(e => e.id === equipId);
-  if (!item) { popSettingsScreen(); return; }
-  const gyms = getGyms();
-  const ge = getGymEquipment();
-  const linkedGyms = ge.filter(x => x.equipmentId === equipId).map(x => {
-    const g = gyms.find(gg => gg.id === x.gymId);
-    return g ? { ...g, geId: x.gymId } : null;
-  }).filter(Boolean);
-  const unlinkedGyms = gyms.filter(g => !ge.some(x => x.equipmentId === equipId && x.gymId === g.id));
-
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">${item.brand ? item.brand + ' — ' : ''}${item.name}</div>
-
-    <div class="settings-section-label">Linked exercise slot</div>
-    <div style="padding:6px 14px;">
-      ${item.slot ? `<span class="settings-pill accent">${item.slot}</span>` : '<span class="settings-pill muted">Not linked</span>'}
-      <button class="settings-add-btn" style="margin-left:12px" onclick="pushSettingsScreen(() => renderChangeSlot('${equipId}'))">Change slot</button>
-    </div>
-
-    <div class="settings-section-label">Available at</div>
-    ${linkedGyms.length === 0 ? '<div class="settings-empty">Not linked to any gym.</div>' : ''}
-    ${linkedGyms.map(g => `
-      <div class="settings-row" style="cursor:default">
-        <div class="settings-row-content">
-          <div class="settings-row-title">${g.name}</div>
-        </div>
-        <button class="settings-remove-btn" onclick="unlinkEquipGym('${equipId}','${g.id}')">&times;</button>
-      </div>
-    `).join('')}
-    ${unlinkedGyms.length > 0 ? `
-      <button class="settings-add-btn" style="padding:10px 14px" onclick="showAddGymToEquip('${equipId}')">+ Add gym</button>
-      <div id="settingsAddGymToEquipList"></div>
-    ` : ''}
-
-    <div class="settings-section-label" style="margin-top:16px">Danger zone</div>
-    <button class="settings-danger-btn" onclick="deleteEquipment('${equipId}')">Delete machine</button>
-  `;
-}
-
-function unlinkEquipGym(equipId, gymId) {
-  const ge = getGymEquipment().filter(x => !(x.equipmentId === equipId && x.gymId === gymId));
-  setGymEquipment(ge);
-  renderEquipmentDetail(equipId);
-}
-
-function showAddGymToEquip(equipId) {
-  const gyms = getGyms();
-  const ge = getGymEquipment();
-  const unlinked = gyms.filter(g => !ge.some(x => x.equipmentId === equipId && x.gymId === g.id));
-  const container = document.getElementById('settingsAddGymToEquipList');
-  if (!container) return;
-  container.innerHTML = unlinked.map(g => `
-    <div class="settings-check-row" onclick="linkEquipGym('${equipId}','${g.id}')">
-      <div class="settings-row-title">${g.name}</div>
-    </div>
-  `).join('');
-}
-
-function linkEquipGym(equipId, gymId) {
-  const ge = getGymEquipment();
-  const equip = getEquipment().find(e => e.id === equipId);
-  const slotId = equip && equip.slot ? equip.slot : '';
-  ge.push({ gymId: gymId, equipmentId: equipId, slotId: slotId });
-  setGymEquipment(ge);
-  try { refreshAllMachineBadges(); } catch(e) {}
-  renderEquipmentDetail(equipId);
-}
-
-function deleteEquipment(equipId) {
-  if (!confirm('Delete this machine and all its links?')) return;
-  const equip = getEquipment().filter(e => e.id !== equipId);
-  setEquipment(equip);
-  const ge = getGymEquipment().filter(x => x.equipmentId !== equipId);
-  setGymEquipment(ge);
-  popSettingsScreen();
-}
-
-function renderChangeSlot(equipId) {
-  const exNames = [];
-  document.querySelectorAll('.session:not(#session-history) .ex-name').forEach(el => {
-    const n = el.textContent.trim();
-    if (n && !exNames.includes(n)) exNames.push(n);
-  });
-  const equip = getEquipment();
-  const item = equip.find(e => e.id === equipId);
-
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">Change Slot</div>
-    <div class="settings-section-label">Select exercise for ${item ? item.name : 'machine'}</div>
-    <div class="settings-row" onclick="setEquipSlot('${equipId}', '')">
-      <div class="settings-row-content">
-        <div class="settings-row-title" style="color:#555">None (unlink)</div>
-      </div>
-    </div>
-    ${exNames.map(n => `
-      <div class="settings-row" onclick="setEquipSlot('${equipId}', '${n.replace(/'/g, "\\'")}')">
-        <div class="settings-row-content">
-          <div class="settings-row-title">${n}</div>
-        </div>
-        ${item && item.slot === n ? '<span class="settings-pill accent">Current</span>' : ''}
-      </div>
-    `).join('')}
-  `;
-}
-
-function setEquipSlot(equipId, slot) {
-  const equip = getEquipment();
-  const item = equip.find(e => e.id === equipId);
-  if (item) {
-    item.slot = slot;
-    setEquipment(equip);
-  }
-  popSettingsScreen();
-}
-
-function renderAddEquipment() {
-  const gyms = getGyms();
-  const exNames = [];
-  document.querySelectorAll('.session:not(#session-history) .ex-name').forEach(el => {
-    const n = el.textContent.trim();
-    if (n && !exNames.includes(n)) exNames.push(n);
-  });
-
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">Add Equipment</div>
-    <div class="settings-form">
-      <input class="settings-input" id="settingsEquipBrand" placeholder="Brand (e.g. Hammer Strength)" />
-      <input class="settings-input" id="settingsEquipName" placeholder="Machine name" />
-
-      <div class="settings-section-label" style="padding-left:0">Exercise slot</div>
-      <div id="settingsEquipSlotPick" style="max-height:200px;overflow-y:auto;border:1px solid #1c1c1e;border-radius:8px;margin-bottom:8px">
-        <div class="settings-check-row" onclick="pickEquipSlot(this, '')" >
-          <div class="settings-check checked" data-slot=""></div>
-          <div class="settings-row-title" style="color:#555">None</div>
-        </div>
-        ${exNames.map(n => `
-          <div class="settings-check-row" onclick="pickEquipSlot(this, '${n.replace(/'/g, "\\'")}')">
-            <div class="settings-check" data-slot="${n}"></div>
-            <div class="settings-row-title">${n}</div>
-          </div>
-        `).join('')}
-      </div>
-
-      ${gyms.length > 0 ? '<div class="settings-section-label" style="padding-left:0">Available at gyms</div>' : ''}
-      <div id="settingsEquipGymChecks">
-        ${gyms.map(g => `
-          <div class="settings-check-row" onclick="this.querySelector('.settings-check').classList.toggle('checked')">
-            <div class="settings-check" data-gym-id="${g.id}"></div>
-            <div class="settings-row-title">${g.name}</div>
-          </div>
-        `).join('')}
-      </div>
-
-      <button class="settings-save-btn" onclick="saveNewEquipment()">Save machine</button>
-    </div>
-  `;
-}
-
-function pickEquipSlot(row, slot) {
-  document.querySelectorAll('#settingsEquipSlotPick .settings-check').forEach(c => c.classList.remove('checked'));
-  row.querySelector('.settings-check').classList.add('checked');
-}
-
-function saveNewEquipment() {
-  const brand = document.getElementById('settingsEquipBrand').value.trim();
-  const name = document.getElementById('settingsEquipName').value.trim();
-  if (!name) return;
-
-  const slotEl = document.querySelector('#settingsEquipSlotPick .settings-check.checked');
-  const slot = slotEl ? slotEl.dataset.slot : '';
-
-  const equipId = settingsGenId();
-  const equip = getEquipment();
-  equip.push({ id: equipId, brand: brand, name: name, slot: slot });
-  setEquipment(equip);
-
-  const checkedGyms = document.querySelectorAll('#settingsEquipGymChecks .settings-check.checked');
-  const ge = getGymEquipment();
-  checkedGyms.forEach(el => {
-    ge.push({ gymId: el.dataset.gymId, equipmentId: equipId, slotId: slot });
-  });
-  setGymEquipment(ge);
-  popSettingsScreen();
-}
-
-// ─── EXERCISES ────────────────────────────────────────────────────
-
-function renderExercisesScreen() {
-  const sessions = document.querySelectorAll('.session:not(#session-overview):not(#session-history)');
-  const alts = getAlternatives();
-
-  const page = document.getElementById('settingsPage');
-  let html = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">Exercises</div>
-  `;
-
-  sessions.forEach(session => {
-    const sessionId = session.id;
-    const label = sessionId.replace('session-', '').replace(/([a-z])([A-Z])/g, '$1 $2');
-    html += `<div class="settings-section-label">${label}</div>`;
-    const exNames = [];
-    session.querySelectorAll('.ex-name').forEach(el => {
-      const n = el.textContent.trim();
-      if (n && !exNames.includes(n)) exNames.push(n);
-    });
-    exNames.forEach(n => {
-      const myAlts = alts[n] || [];
-      const altPills = myAlts.length > 0
-        ? myAlts.map((a, i) => `<span class="settings-pill accent" style="margin-right:4px">Plan ${String.fromCharCode(66 + i)}: ${a}</span>`).join('')
-        : '<span style="color:#333;font-size:10px">No alternatives set</span>';
-      html += `
-        <div class="settings-row" onclick="pushSettingsScreen(() => renderExerciseDetail('${n.replace(/'/g, "\\'")}'))">
-          <div class="settings-row-content">
-            <div class="settings-row-title">${n}</div>
-            <div class="settings-row-sub" style="margin-top:3px">${altPills}</div>
-          </div>
-          <div class="settings-chevron">&rsaquo;</div>
-        </div>
-      `;
-    });
-  });
-
-  page.innerHTML = html;
-}
-
-function renderExerciseDetail(exName) {
-  const alts = getAlternatives();
-  const myAlts = alts[exName] || [];
-  const gyms = getGyms();
-  const ge = getGymEquipment();
-  const equip = getEquipment();
-
-  // Find equipment linked to this exercise slot, per gym
-  const machinesByGym = gyms.map(g => {
-    const gymEquipIds = ge.filter(x => x.gymId === g.id).map(x => x.equipmentId);
-    const machines = equip.filter(e => gymEquipIds.includes(e.id) && e.slot === exName);
-    return { gym: g, machines: machines };
-  }).filter(x => x.machines.length > 0);
-
-  const page = document.getElementById('settingsPage');
-  page.innerHTML = `
-    <div class="settings-nav">
-      <button class="settings-back" onclick="popSettingsScreen()">&lt; Back</button>
-    </div>
-    <div class="settings-title">${exName}</div>
-
-    <div class="settings-section-label">Alternatives</div>
-    ${myAlts.length === 0 ? '<div class="settings-empty">No alternatives configured.</div>' : ''}
-    ${myAlts.map((a, i) => `
-      <div class="settings-row" style="cursor:default">
-        <div class="settings-row-content">
-          <div class="settings-row-title"><span class="settings-tag">Plan ${String.fromCharCode(66 + i)}</span> ${a}</div>
-        </div>
-        <button class="settings-remove-btn" onclick="removeAlternative('${exName.replace(/'/g, "\\'")}', ${i})">&times;</button>
-      </div>
-    `).join('')}
-
-    <div class="settings-form" style="padding-top:8px">
-      <div style="display:flex;gap:8px">
-        <input class="settings-input" id="settingsNewAlt" placeholder="Add alternative exercise" style="margin-bottom:0;flex:1" onkeydown="if(event.key==='Enter') addAlternative('${exName.replace(/'/g, "\\'")}')" />
-        <button class="settings-save-btn" style="width:auto;margin-top:0;padding:10px 16px" onclick="addAlternative('${exName.replace(/'/g, "\\'")}')">Add</button>
-      </div>
-    </div>
-
-    ${machinesByGym.length > 0 ? `
-      <div class="settings-section-label" style="margin-top:8px">Machine by gym</div>
-      ${machinesByGym.map(x => `
-        <div class="settings-row" style="cursor:default">
-          <div class="settings-row-content">
-            <div class="settings-row-title">${x.gym.name}</div>
-            <div class="settings-row-sub">${x.machines.map(m => (m.brand ? m.brand + ' ' : '') + m.name).join(', ')}</div>
-          </div>
-        </div>
-      `).join('')}
-    ` : ''}
-  `;
-}
-
-function addAlternative(exName) {
-  const input = document.getElementById('settingsNewAlt');
-  const val = input.value.trim();
-  if (!val) return;
-  const alts = getAlternatives();
-  if (!alts[exName]) alts[exName] = [];
-  alts[exName].push(val);
-  setAlternatives(alts);
-  renderExerciseDetail(exName);
-}
-
-function removeAlternative(exName, idx) {
-  const alts = getAlternatives();
-  if (!alts[exName]) return;
-  alts[exName].splice(idx, 1);
-  if (alts[exName].length === 0) delete alts[exName];
-  setAlternatives(alts);
-  renderExerciseDetail(exName);
-}
-
-</script>
-
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeAdaptDrawer()"></div>
 
