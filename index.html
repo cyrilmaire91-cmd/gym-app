@@ -2608,10 +2608,9 @@
  </div>
  <div class="tabs" id="tabs">
  <button class="tab active" onclick="showTab('overview', this)">Overview</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyB', this)">S1</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyA', this)">S2</button>
- <button class="tab" data-block="fullbody" onclick="showTab('fullBodyC', this)">S3</button>
- <button class="tab" onclick="showTab('history', this)"> History</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyB', this)">Session 1</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyA', this)">Session 2</button>
+ <button class="tab" data-block="fullbody" onclick="showTab('fullBodyC', this)">Session 3</button>
  </div>
 </header>
 
@@ -6025,7 +6024,7 @@ function setMTPhase(phase) {
 function applyMTPhase(phase) {
   const s3Tabs = document.querySelectorAll('.tab[data-block="fullbody"]');
   s3Tabs.forEach(function(tab) {
-    if (tab.textContent.trim() === 'S3') tab.style.display = phase === 2 ? 'none' : '';
+    if (tab.textContent.trim() === 'Session 3') tab.style.display = phase === 2 ? 'none' : '';
   });
   const p1 = document.getElementById('mtPhase1Btn2');
   const p2 = document.getElementById('mtPhase2Btn2');
